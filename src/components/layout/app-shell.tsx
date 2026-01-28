@@ -8,7 +8,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="bg-background grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
+    <div className="bg-background grid h-screen grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_1fr]">
       {/* Sidebar - spans both rows */}
       <div className="row-span-2 hidden md:block">
         <Sidebar />

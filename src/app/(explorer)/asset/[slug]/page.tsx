@@ -106,7 +106,7 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="bg-card/50 rounded-lg p-4">
                 <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
                   <Users className="size-4" />
@@ -205,7 +205,7 @@ function AssetStats({ asset }: { asset: StellarAsset }) {
         <CardTitle className="text-base">Statistics</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           <div className="bg-card/50 rounded-lg p-4 text-center">
             <div className="text-2xl font-semibold tabular-nums">
               {formatCompactNumber(asset.num_accounts)}

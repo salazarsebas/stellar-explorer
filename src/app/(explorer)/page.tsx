@@ -55,7 +55,7 @@ function NetworkStats() {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
       {stats.map((stat, i) => (
         <Card
           key={stat.title}
@@ -180,7 +180,7 @@ export default function HomePage() {
         </div>
         <Suspense
           fallback={
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Card key={i} variant="glass" className="border-0 py-0">
                   <CardContent className="p-4">
@@ -266,7 +266,7 @@ export default function HomePage() {
       {/* Quick links */}
       <section>
         <h2 className="mb-5 text-lg font-semibold">Explore</h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {[
             {
               href: "/transactions",
