@@ -41,8 +41,11 @@ export function Header() {
           </div>
         </Link>
 
+        {/* Spacer for mobile to push actions to right */}
+        <div className="flex-1 md:hidden" />
+
         {/* Global Search */}
-        <GlobalSearch className="max-w-2xl flex-1" />
+        <GlobalSearch className="md:max-w-2xl md:flex-1" />
 
         {/* Right side actions */}
         <div className="flex items-center gap-1">

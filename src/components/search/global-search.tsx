@@ -127,19 +127,24 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
 
   return (
     <>
-      {/* Search trigger button */}
+      {/* Search trigger - icon only on mobile, full bar on md+ */}
+      <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(true)}>
+        <Search className="size-5" />
+        <span className="sr-only">Search</span>
+      </Button>
+
       <Button
         variant="outline"
         className={cn(
-          "text-muted-foreground relative justify-start",
-          "h-9 w-full px-3 md:w-64 lg:w-80",
+          "text-muted-foreground relative hidden justify-start md:flex",
+          "h-9 w-64 px-3 lg:w-80",
           className
         )}
         onClick={() => setOpen(true)}
       >
         <Search className="mr-2 size-4" />
         <span className="flex-1 truncate text-left">Search transactions, accounts...</span>
-        <kbd className="bg-muted text-muted-foreground hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none md:inline-flex">
+        <kbd className="bg-muted text-muted-foreground hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none lg:inline-flex">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
