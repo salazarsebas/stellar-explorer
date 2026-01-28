@@ -1,0 +1,186 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Home,
+  Layers,
+  ArrowRightLeft,
+  Users,
+  Coins,
+  FileCode,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { StellarLogo } from "./stellar-icon";
+import { useState } from "react";
+
+const navItems = [
+  { href: "/", icon: Home, label: "Overview" },
+  { href: "/ledgers", icon: Layers, label: "Ledgers" },
+  { href: "/transactions", icon: ArrowRightLeft, label: "Transactions" },
+  { href: "/accounts", icon: Users, label: "Accounts" },
+  { href: "/assets", icon: Coins, label: "Assets" },
+  { href: "/contracts", icon: FileCode, label: "Contracts" },
+];
+
+const bottomItems = [{ href: "/watchlist", icon: Star, label: "Watchlist" }];
+
+export function Sidebar() {
+  const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <aside
+      className={cn(
+        "border-border bg-sidebar/50 flex h-screen flex-col border-r backdrop-blur-sm transition-all duration-300",
+        collapsed ? "w-16" : "w-60"
+      )}
+    >
+      {/* Logo */}
+      <div className="border-border/50 flex h-16 items-center border-b px-4">
+        <Link href="/" className="group flex items-center gap-3">
+          <div className="relative">
+            <div className="bg-primary/30 absolute inset-0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+            <StellarLogo className="relative size-9 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+          </div>
+          {!collapsed && <span className="text-foreground text-lg font-bold">Stellar</span>}
+        </Link>
+      </div>
+
+      {/* Navigation */}
+      <ScrollArea className="flex-1 py-4">
+        <TooltipProvider delayDuration={0}>
+          <nav className="flex flex-col gap-1 px-3">
+            {navItems.map((item) => {
+              const isActive =
+                pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+
+              const link = (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                    "hover:bg-white/5 hover:pl-4",
+                    isActive
+                      ? "from-primary/15 text-foreground bg-gradient-to-r to-transparent"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {/* Active indicator bar */}
+                  {isActive && (
+                    <div className="from-primary to-primary/50 absolute top-1/2 left-0 h-6 w-0.5 -translate-y-1/2 rounded-full bg-gradient-to-b" />
+                  )}
+                  <item.icon
+                    className={cn(
+                      "size-[18px] shrink-0 transition-colors duration-200",
+                      isActive
+                        ? "text-primary"
+                        : "text-muted-foreground group-hover:text-foreground"
+                    )}
+                  />
+                  {!collapsed && (
+                    <span className="transition-colors duration-200">{item.label}</span>
+                  )}
+                </Link>
+              );
+
+              if (collapsed) {
+                return (
+                  <Tooltip key={item.href}>
+                    <TooltipTrigger asChild>{link}</TooltipTrigger>
+                    <TooltipContent side="right" className="font-medium">
+                      {item.label}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              }
+
+              return link;
+            })}
+          </nav>
+        </TooltipProvider>
+      </ScrollArea>
+
+      {/* Bottom section */}
+      <div className="border-border/50 border-t p-3">
+        <TooltipProvider delayDuration={0}>
+          <nav className="flex flex-col gap-1">
+            {bottomItems.map((item) => {
+              const isActive = pathname === item.href;
+
+              const link = (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                    "hover:bg-white/5 hover:pl-4",
+                    isActive
+                      ? "from-warning/15 text-foreground bg-gradient-to-r to-transparent"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {isActive && (
+                    <div className="from-warning to-warning/50 absolute top-1/2 left-0 h-6 w-0.5 -translate-y-1/2 rounded-full bg-gradient-to-b" />
+                  )}
+                  <item.icon
+                    className={cn(
+                      "size-[18px] shrink-0 transition-colors duration-200",
+                      isActive
+                        ? "text-warning"
+                        : "text-muted-foreground group-hover:text-foreground"
+                    )}
+                  />
+                  {!collapsed && <span>{item.label}</span>}
+                </Link>
+              );
+
+              if (collapsed) {
+                return (
+                  <Tooltip key={item.href}>
+                    <TooltipTrigger asChild>{link}</TooltipTrigger>
+                    <TooltipContent side="right" className="font-medium">
+                      {item.label}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              }
+
+              return link;
+            })}
+          </nav>
+        </TooltipProvider>
+
+        <Separator className="my-3 opacity-50" />
+
+        {/* Collapse toggle */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCollapsed(!collapsed)}
+          className={cn(
+            "w-full justify-center transition-all duration-200 hover:bg-white/5",
+            !collapsed && "justify-start px-3"
+          )}
+        >
+          {collapsed ? (
+            <ChevronRight className="size-4" />
+          ) : (
+            <>
+              <ChevronLeft className="size-4" />
+              <span className="text-muted-foreground ml-2">Collapse</span>
+            </>
+          )}
+        </Button>
+      </div>
+    </aside>
+  );
+}
