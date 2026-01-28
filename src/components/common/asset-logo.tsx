@@ -5,22 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useAssetMetadata } from "@/lib/hooks/use-asset-metadata";
 
-// Stellar/XLM logo as inline SVG for native asset
-const StellarLogoSvg = () => (
-  <svg viewBox="0 0 100 100" className="h-full w-full">
-    <circle cx="50" cy="50" r="50" fill="currentColor" className="text-primary/20" />
-    <path
-      d="M73.8 35.8L69.6 38C65.4 40.2 60.6 41.4 55.7 41.4H25.8L23.5 43.7L24.9 44.4C30.5 47.2 36.8 48.6 43.2 48.6H74.2L76.5 46.3L75.1 45.6C74.7 45.4 74.2 45.2 73.8 45V35.8Z"
-      fill="currentColor"
-      className="text-primary"
-    />
-    <path
-      d="M76.5 53.7L74.2 51.4H43.2C36.8 51.4 30.5 52.8 24.9 55.6L23.5 56.3L25.8 58.6H55.7C60.6 58.6 65.4 59.8 69.6 62L73.8 64.2V55C74.2 54.8 74.7 54.6 75.1 54.4L76.5 53.7Z"
-      fill="currentColor"
-      className="text-primary"
-    />
-  </svg>
-);
+// XLM logo path in public folder
+const XLM_LOGO_PATH = "/logo_xlm.png";
 
 // Generate a deterministic color based on asset code
 function getAssetColor(code: string): string {
@@ -85,7 +71,7 @@ export function AssetLogo({ code, issuer, tomlUrl, size = "md", className }: Ass
   if (isNative) {
     return (
       <div className={cn("relative overflow-hidden rounded-full", sizeClass, className)}>
-        <StellarLogoSvg />
+        <Image src={XLM_LOGO_PATH} alt="XLM logo" fill className="object-cover" />
       </div>
     );
   }
