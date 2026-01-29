@@ -45,6 +45,8 @@ export const stellarKeys = {
   contract: (network: NetworkKey, id: string) => [...stellarKeys.contracts(network), id] as const,
   contractEvents: (network: NetworkKey, id: string) =>
     [...stellarKeys.contract(network, id), "events"] as const,
+  contractCode: (network: NetworkKey, id: string) =>
+    [...stellarKeys.contract(network, id), "code"] as const,
 
   // Fee stats
   feeStats: (network: NetworkKey) => [...stellarKeys.network(network), "feeStats"] as const,
@@ -249,5 +251,78 @@ export const stellarQueries = {
       });
     },
     staleTime: STALE_TIME,
+  }),
+
+  contractCode: (network: NetworkKey, contractId: string) => ({
+    queryKey: stellarKeys.contractCode(network, contractId),
+    queryFn: async () => {
+      const rpc = getRpcClient(network);
+      const { Contract, xdr } = await import("@stellar/stellar-sdk");
+
+      // Create contract instance
+      const contract = new Contract(contractId);
+
+      // Get the contract instance ledger entry
+      const contractInstanceKey = xdr.LedgerKey.contractData(
+        new xdr.LedgerKeyContractData({
+          contract: contract.address().toScAddress(),
+          key: xdr.ScVal.scvLedgerKeyContractInstance(),
+          durability: xdr.ContractDataDurability.persistent(),
+        })
+      );
+
+      const instanceResponse = await rpc.getLedgerEntries(contractInstanceKey);
+
+      if (!instanceResponse.entries || instanceResponse.entries.length === 0) {
+        throw new Error("Contract instance not found");
+      }
+
+      // Extract the WASM hash from the contract instance
+      const instanceEntry = instanceResponse.entries[0];
+      const contractData = instanceEntry.val.contractData();
+      const contractInstance = contractData.val().instance();
+      const executable = contractInstance.executable();
+
+      // Check if it's a WASM contract (not a Stellar Asset Contract)
+      if (executable.switch().name !== "contractExecutableWasm") {
+        return {
+          type: "sac" as const,
+          wasmHash: null,
+          wasmCode: null,
+          wasmCodeHex: null,
+          codeSize: 0,
+        };
+      }
+
+      const wasmHash = executable.wasmHash();
+      const wasmHashHex = wasmHash.toString("hex");
+
+      // Now get the WASM code using the hash
+      const wasmCodeKey = xdr.LedgerKey.contractCode(
+        new xdr.LedgerKeyContractCode({
+          hash: wasmHash,
+        })
+      );
+
+      const codeResponse = await rpc.getLedgerEntries(wasmCodeKey);
+
+      if (!codeResponse.entries || codeResponse.entries.length === 0) {
+        throw new Error("Contract WASM code not found");
+      }
+
+      const codeEntry = codeResponse.entries[0];
+      const contractCode = codeEntry.val.contractCode();
+      const wasmCode = contractCode.code();
+      const wasmCodeHex = wasmCode.toString("hex");
+
+      return {
+        type: "wasm" as const,
+        wasmHash: wasmHashHex,
+        wasmCode: wasmCode,
+        wasmCodeHex: wasmCodeHex,
+        codeSize: wasmCode.length,
+      };
+    },
+    staleTime: Infinity, // Contract code is immutable
   }),
 };

@@ -120,3 +120,12 @@ export function useContractEvents(contractId: string, startLedger?: number) {
     enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
   });
 }
+
+// Hook for contract code (WASM)
+export function useContractCode(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractCode(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}
