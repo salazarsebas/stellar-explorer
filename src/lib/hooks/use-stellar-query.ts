@@ -129,3 +129,12 @@ export function useContractCode(contractId: string) {
     enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
   });
 }
+
+// Hook for contract storage
+export function useContractStorage(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractStorage(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}

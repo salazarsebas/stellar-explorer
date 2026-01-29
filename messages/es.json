@@ -190,7 +190,16 @@
     "noCodeDescription": "No se pudo obtener el código del contrato.",
     "stellarAssetContract": "Contrato de Activo Stellar",
     "sacDescription": "Este es un Contrato de Activo Stellar (SAC) nativo. Envuelve un activo Stellar y no tiene código WASM personalizado.",
-    "nativeContract": "Contrato Nativo"
+    "nativeContract": "Contrato Nativo",
+    "instanceStorage": "Almacenamiento de Instancia",
+    "ttl": "TTL",
+    "ledgers": "libros",
+    "key": "Clave",
+    "value": "Valor",
+    "liveUntilLedger": "Vigente Hasta el Libro",
+    "failedToLoadStorage": "Error al cargar el almacenamiento",
+    "noStorage": "Sin Entradas de Almacenamiento",
+    "noStorageDescription": "Este contrato no tiene datos de almacenamiento de instancia."
   },
   "watchlist": {
     "title": "Favoritos",

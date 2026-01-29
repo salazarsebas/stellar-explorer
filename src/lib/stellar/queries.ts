@@ -47,6 +47,8 @@ export const stellarKeys = {
     [...stellarKeys.contract(network, id), "events"] as const,
   contractCode: (network: NetworkKey, id: string) =>
     [...stellarKeys.contract(network, id), "code"] as const,
+  contractStorage: (network: NetworkKey, id: string) =>
+    [...stellarKeys.contract(network, id), "storage"] as const,
 
   // Fee stats
   feeStats: (network: NetworkKey) => [...stellarKeys.network(network), "feeStats"] as const,
@@ -324,5 +326,85 @@ export const stellarQueries = {
       };
     },
     staleTime: Infinity, // Contract code is immutable
+  }),
+
+  contractStorage: (network: NetworkKey, contractId: string) => ({
+    queryKey: stellarKeys.contractStorage(network, contractId),
+    queryFn: async () => {
+      const rpc = getRpcClient(network);
+      const { Contract, xdr, scValToNative } = await import("@stellar/stellar-sdk");
+
+      // Create contract instance
+      const contract = new Contract(contractId);
+
+      // Get the contract instance ledger entry
+      const contractInstanceKey = xdr.LedgerKey.contractData(
+        new xdr.LedgerKeyContractData({
+          contract: contract.address().toScAddress(),
+          key: xdr.ScVal.scvLedgerKeyContractInstance(),
+          durability: xdr.ContractDataDurability.persistent(),
+        })
+      );
+
+      const instanceResponse = await rpc.getLedgerEntries(contractInstanceKey);
+
+      if (!instanceResponse.entries || instanceResponse.entries.length === 0) {
+        throw new Error("Contract instance not found");
+      }
+
+      const instanceEntry = instanceResponse.entries[0];
+      const contractData = instanceEntry.val.contractData();
+      const contractInstance = contractData.val().instance();
+
+      // Helper to decode ScVal to readable format
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const decodeScVal = (val: any): { type: string; value: unknown; raw: string } => {
+        const type = val.switch().name;
+        let value: unknown;
+        const raw = val.toXDR("base64");
+
+        try {
+          value = scValToNative(val);
+        } catch {
+          // If native conversion fails, try to get a string representation
+          value = raw;
+        }
+
+        return { type, value, raw };
+      };
+
+      // Extract instance storage
+      const instanceStorage: Array<{
+        key: { type: string; value: unknown; raw: string };
+        value: { type: string; value: unknown; raw: string };
+        durability: "instance";
+      }> = [];
+
+      const storage = contractInstance.storage();
+      if (storage && storage.length > 0) {
+        for (const entry of storage) {
+          instanceStorage.push({
+            key: decodeScVal(entry.key()),
+            value: decodeScVal(entry.val()),
+            durability: "instance",
+          });
+        }
+      }
+
+      // Get live until ledger (TTL info)
+      const liveUntilLedger = instanceEntry.liveUntilLedgerSeq;
+
+      // Get latest ledger for TTL calculation
+      const latestLedger = await rpc.getLatestLedger();
+
+      return {
+        instanceStorage,
+        totalEntries: instanceStorage.length,
+        liveUntilLedger,
+        currentLedger: latestLedger.sequence,
+        ttlLedgers: liveUntilLedger ? liveUntilLedger - latestLedger.sequence : null,
+      };
+    },
+    staleTime: STALE_TIME,
   }),
 };

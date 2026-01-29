@@ -190,7 +190,16 @@
     "noCodeDescription": "Unable to retrieve the contract code.",
     "stellarAssetContract": "Stellar Asset Contract",
     "sacDescription": "This is a native Stellar Asset Contract (SAC). It wraps a Stellar asset and doesn't have custom WASM code.",
-    "nativeContract": "Native Contract"
+    "nativeContract": "Native Contract",
+    "instanceStorage": "Instance Storage",
+    "ttl": "TTL",
+    "ledgers": "ledgers",
+    "key": "Key",
+    "value": "Value",
+    "liveUntilLedger": "Live Until Ledger",
+    "failedToLoadStorage": "Failed to load storage",
+    "noStorage": "No Storage Entries",
+    "noStorageDescription": "This contract doesn't have any instance storage data."
   },
   "watchlist": {
     "title": "Watchlist",
