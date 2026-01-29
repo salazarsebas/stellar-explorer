@@ -268,5 +268,30 @@
     "hourlyActivity": "Hourly activity",
     "collectingData": "Collecting data...",
     "chartWillPopulate": "Chart will populate as transactions are processed"
+  },
+  "transactionSearch": {
+    "title": "Search Transactions",
+    "byHash": "By Hash",
+    "byAccount": "By Account",
+    "byLedger": "By Ledger",
+    "search": "Search",
+    "hashPlaceholder": "Enter transaction hash (64 hex characters)...",
+    "accountPlaceholder": "Enter account address (G...)...",
+    "ledgerPlaceholder": "Enter ledger sequence number...",
+    "hashRequired": "Please enter a transaction hash",
+    "accountRequired": "Please enter an account address",
+    "ledgerRequired": "Please enter a ledger sequence number",
+    "invalidHash": "Invalid hash. Must be 64 hexadecimal characters.",
+    "invalidAccount": "Invalid account. Must start with G and be 56 characters.",
+    "invalidLedger": "Invalid ledger sequence. Must be a positive number.",
+    "searchingFor": "Showing transactions for",
+    "accountLabel": "Account",
+    "ledgerLabel": "Ledger",
+    "clearSearch": "Clear search",
+    "filterByStatus": "Filter",
+    "showAll": "All",
+    "showSuccess": "Success",
+    "showFailed": "Failed",
+    "noTransactionsFor": "No transactions found for this {type}."
   }
 }

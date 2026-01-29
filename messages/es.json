@@ -268,5 +268,30 @@
     "hourlyActivity": "Actividad por hora",
     "collectingData": "Recopilando datos...",
     "chartWillPopulate": "El gráfico se llenará a medida que se procesen transacciones"
+  },
+  "transactionSearch": {
+    "title": "Buscar Transacciones",
+    "byHash": "Por Hash",
+    "byAccount": "Por Cuenta",
+    "byLedger": "Por Libro",
+    "search": "Buscar",
+    "hashPlaceholder": "Ingresa el hash de transacción (64 caracteres hex)...",
+    "accountPlaceholder": "Ingresa la dirección de cuenta (G...)...",
+    "ledgerPlaceholder": "Ingresa el número de secuencia del libro...",
+    "hashRequired": "Por favor ingresa un hash de transacción",
+    "accountRequired": "Por favor ingresa una dirección de cuenta",
+    "ledgerRequired": "Por favor ingresa un número de secuencia de libro",
+    "invalidHash": "Hash inválido. Debe tener 64 caracteres hexadecimales.",
+    "invalidAccount": "Cuenta inválida. Debe comenzar con G y tener 56 caracteres.",
+    "invalidLedger": "Secuencia de libro inválida. Debe ser un número positivo.",
+    "searchingFor": "Mostrando transacciones para",
+    "accountLabel": "Cuenta",
+    "ledgerLabel": "Libro",
+    "clearSearch": "Limpiar búsqueda",
+    "filterByStatus": "Filtrar",
+    "showAll": "Todas",
+    "showSuccess": "Exitosas",
+    "showFailed": "Fallidas",
+    "noTransactionsFor": "No se encontraron transacciones para este {type}."
   }
 }
