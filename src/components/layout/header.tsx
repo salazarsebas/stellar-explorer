@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { RefreshCw, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "./network-selector";
 import { MobileNav } from "./mobile-nav";
 import { StellarLogo } from "./stellar-icon";
 import { GlobalSearch } from "@/components/search/global-search";
+import { LocaleSwitcher } from "@/components/common/locale-switcher";
 import { useTheme } from "@/lib/providers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -74,6 +75,9 @@ export function Header() {
             {resolvedTheme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
+
+          {/* Language switcher */}
+          <LocaleSwitcher />
         </div>
       </div>
     </header>

@@ -1,7 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import { Layers, Activity, Wallet, TrendingUp, Sparkles } from "lucide-react";
+import { Layers, Activity, Wallet, TrendingUp, Sparkles, BarChart3 } from "lucide-react";
+import { DashboardCharts } from "@/components/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
@@ -196,6 +197,17 @@ export default function HomePage() {
         >
           <NetworkStats />
         </Suspense>
+      </section>
+
+      {/* Network Activity Charts */}
+      <section>
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="text-muted-foreground size-5" />
+            <h2 className="text-lg font-semibold">Network Activity</h2>
+          </div>
+        </div>
+        <DashboardCharts />
       </section>
 
       {/* Two-column layout for transactions and ledgers */}
