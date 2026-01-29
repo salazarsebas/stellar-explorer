@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/layout/page-header";
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
 import { EmptyState } from "@/components/common/empty-state";
@@ -9,12 +13,36 @@ import { useLatestLedger } from "@/lib/hooks";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { formatLedgerSequence } from "@/lib/utils";
+import { isValidLedgerSequence } from "@/lib/utils/entity";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 
 export default function LedgersPage() {
+  const router = useRouter();
   const { network } = useNetwork();
   const { data: latestLedger, isLoading, error, refetch } = useLatestLedger();
+
+  const [ledgerSequence, setLedgerSequence] = useState("");
+  const [searchError, setSearchError] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchError("");
+
+    const trimmed = ledgerSequence.trim();
+
+    if (!trimmed) {
+      setSearchError("Please enter a ledger sequence number");
+      return;
+    }
+
+    if (!isValidLedgerSequence(trimmed)) {
+      setSearchError("Invalid ledger sequence. Must be a positive number.");
+      return;
+    }
+
+    router.push(`/ledger/${trimmed}`);
+  };
 
   // Generate a list of recent ledger sequences
   const recentSequences = latestLedger
@@ -30,6 +58,41 @@ export default function LedgersPage() {
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />
+
+      {/* Search Form */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Search Ledger</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSearch} className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="Enter ledger sequence number..."
+                value={ledgerSequence}
+                onChange={(e) => {
+                  setLedgerSequence(e.target.value);
+                  setSearchError("");
+                }}
+                className="font-mono"
+              />
+              <Button type="submit">
+                <Search className="mr-2 size-4" />
+                Search
+              </Button>
+            </div>
+            {searchError && <p className="text-destructive text-sm">{searchError}</p>}
+            {latestLedger && (
+              <p className="text-muted-foreground text-sm">
+                Latest ledger: #{formatLedgerSequence(latestLedger.sequence)}
+              </p>
+            )}
+          </form>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

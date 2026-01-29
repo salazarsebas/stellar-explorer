@@ -20,7 +20,34 @@ export const metadata: Metadata = {
   },
   description:
     "Explore the Stellar network. View transactions, accounts, assets, and smart contracts.",
-  keywords: ["Stellar", "blockchain", "explorer", "XLM", "Soroban", "crypto"],
+  keywords: [
+    "Stellar",
+    "blockchain",
+    "explorer",
+    "XLM",
+    "Soroban",
+    "crypto",
+    "Lumens",
+    "Stellar Network",
+  ],
+  authors: [{ name: "Stellar Explorer" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Stellar Explorer",
+    title: "Stellar Explorer",
+    description:
+      "Explore the Stellar blockchain network. View transactions, accounts, assets, and smart contracts.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Stellar Explorer",
+    description: "Explore the Stellar blockchain network",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -86,6 +86,14 @@ export function isValidTransactionHash(hash: string): boolean {
 }
 
 /**
+ * Validate a ledger sequence number
+ */
+export function isValidLedgerSequence(sequence: string): boolean {
+  const num = parseInt(sequence, 10);
+  return !isNaN(num) && num > 0 && /^\d+$/.test(sequence);
+}
+
+/**
  * Get display name for entity type
  */
 export function getEntityTypeName(type: EntityType): string {
