@@ -10,6 +10,7 @@
     "accounts": "Cuentas",
     "assets": "Activos",
     "contracts": "Contratos",
+    "learn": "Aprender",
     "watchlist": "Favoritos",
     "collapse": "Colapsar",
     "toggleMenu": "Alternar menú"
@@ -318,6 +319,22 @@
     "collectingData": "Recopilando datos...",
     "chartWillPopulate": "El gráfico se llenará a medida que se procesen transacciones"
   },
+  "developerMode": {
+    "title": "Modo Desarrollador",
+    "enableDevMode": "Activar Modo Desarrollador",
+    "options": "Opciones de Visualización",
+    "showXdr": "Mostrar Datos XDR",
+    "showApiEndpoints": "Mostrar Endpoints de API",
+    "showInternalIds": "Mostrar IDs Internos",
+    "apiEndpoint": "Endpoint de API",
+    "horizonUrl": "API Horizon",
+    "rpcUrl": "RPC Soroban",
+    "xdrData": "Datos XDR",
+    "envelopeXdr": "XDR del Envelope",
+    "resultXdr": "XDR del Resultado",
+    "copyXdr": "Copiar XDR",
+    "copyEndpoint": "Copiar Endpoint"
+  },
   "transactionSearch": {
     "title": "Buscar Transacciones",
     "byHash": "Por Hash",
@@ -342,5 +359,37 @@
     "showSuccess": "Exitosas",
     "showFailed": "Fallidas",
     "noTransactionsFor": "No se encontraron transacciones para este {type}."
+  },
+  "streaming": {
+    "live": "En vivo",
+    "connecting": "Conectando",
+    "offline": "Sin conexión",
+    "reconnecting": "Reconectando",
+    "realTimeUpdates": "Actualizaciones en tiempo real habilitadas",
+    "connectionLost": "Conexión perdida, reconectando..."
+  },
+  "learn": {
+    "title": "Aprende Stellar",
+    "subtitle": "Glosario interactivo y recursos educativos para entender la red Stellar",
+    "totalTerms": "términos",
+    "beginnerTerms": "principiante",
+    "intermediateTerms": "intermedio",
+    "advancedTerms": "avanzado",
+    "searchPlaceholder": "Buscar términos, conceptos o palabras clave...",
+    "searchResults": "Resultados de búsqueda",
+    "clearSearch": "Limpiar búsqueda",
+    "noResults": "No se encontraron términos que coincidan con tu búsqueda.",
+    "byCategory": "Por Categoría",
+    "byLevel": "Por Nivel",
+    "beginner": "Principiante",
+    "beginnerDescription": "Comienza aquí - conceptos fundamentales para nuevos usuarios",
+    "intermediate": "Intermedio",
+    "intermediateDescription": "Comprensión más profunda para usuarios activos",
+    "advanced": "Avanzado",
+    "advancedDescription": "Detalles técnicos para desarrolladores y expertos",
+    "moreResources": "Más Recursos de Aprendizaje",
+    "showLess": "Mostrar menos",
+    "readMore": "Leer más",
+    "related": "Relacionados"
   }
 }

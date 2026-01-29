@@ -7,7 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
 import { LiveIndicator } from "@/components/common/live-indicator";
-import { useLatestLedger, useRecentTransactions, useFeeStats } from "@/lib/hooks";
+import {
+  useLatestLedger,
+  useRecentTransactions,
+  useFeeStats,
+  useLedgerStream,
+  useTransactionStream,
+} from "@/lib/hooks";
 import { formatLedgerSequence, stroopsToXLM } from "@/lib/utils";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
@@ -19,6 +25,9 @@ function NetworkStats() {
   const { network } = useNetwork();
   const { data: ledger, isLoading: ledgerLoading } = useLatestLedger();
   const { data: feeStats, isLoading: feeLoading } = useFeeStats();
+
+  // Enable real-time ledger streaming
+  useLedgerStream({ enabled: true });
 
   const avgFee = feeStats?.fee_charged?.mode ? stroopsToXLM(feeStats.fee_charged.mode) : "100";
 
@@ -92,6 +101,9 @@ function NetworkStats() {
 function RecentTransactions() {
   const { data, isLoading } = useRecentTransactions(8);
 
+  // Enable real-time transaction streaming
+  useTransactionStream({ enabled: true });
+
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -141,6 +153,10 @@ function RecentLedgers() {
 
 export default function HomePage() {
   const { network } = useNetwork();
+  const { isConnected: ledgerConnected } = useLedgerStream({ enabled: true });
+
+  // Determine streaming status
+  const streamingStatus = ledgerConnected ? "connected" : "connecting";
 
   return (
     <div className="space-y-10">
@@ -169,7 +185,7 @@ export default function HomePage() {
 
           <div className="flex items-center justify-center gap-3">
             <NetworkBadge network={network} />
-            <LiveIndicator />
+            <LiveIndicator status={streamingStatus} />
           </div>
         </div>
       </section>

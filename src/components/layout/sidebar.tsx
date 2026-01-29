@@ -12,6 +12,7 @@ import {
   Star,
   ChevronLeft,
   ChevronRight,
+  GraduationCap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,10 @@ export function Sidebar() {
     { href: "/contracts", icon: FileCode, label: t("contracts") },
   ];
 
-  const bottomItems = [{ href: "/watchlist", icon: Star, label: t("watchlist") }];
+  const bottomItems = [
+    { href: "/learn", icon: GraduationCap, label: t("learn") },
+    { href: "/watchlist", icon: Star, label: t("watchlist") },
+  ];
 
   return (
     <aside

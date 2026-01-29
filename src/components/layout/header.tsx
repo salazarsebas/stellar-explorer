@@ -8,6 +8,7 @@ import { MobileNav } from "./mobile-nav";
 import { StellarLogo } from "./stellar-icon";
 import { GlobalSearch } from "@/components/search/global-search";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
+import { DeveloperModeToggle } from "@/components/common/developer-mode-toggle";
 import { useTheme } from "@/lib/providers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -52,6 +53,9 @@ export function Header() {
         <div className="flex items-center gap-1">
           {/* Network Selector */}
           <NetworkSelector />
+
+          {/* Developer Mode */}
+          <DeveloperModeToggle />
 
           {/* Refresh */}
           <Button

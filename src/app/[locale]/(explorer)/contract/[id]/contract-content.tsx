@@ -266,7 +266,10 @@ function ContractStorage({ contractId }: { contractId: string }) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground text-xs">{t("key")}</span>
-                    <Badge variant="outline" className={`text-[10px] ${getTypeColor(entry.key.type)}`}>
+                    <Badge
+                      variant="outline"
+                      className={`text-[10px] ${getTypeColor(entry.key.type)}`}
+                    >
                       {entry.key.type.replace("scv", "")}
                     </Badge>
                   </div>

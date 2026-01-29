@@ -10,6 +10,7 @@
     "accounts": "Accounts",
     "assets": "Assets",
     "contracts": "Contracts",
+    "learn": "Learn",
     "watchlist": "Watchlist",
     "collapse": "Collapse",
     "toggleMenu": "Toggle menu"
@@ -318,6 +319,22 @@
     "collectingData": "Collecting data...",
     "chartWillPopulate": "Chart will populate as transactions are processed"
   },
+  "developerMode": {
+    "title": "Developer Mode",
+    "enableDevMode": "Enable Developer Mode",
+    "options": "Display Options",
+    "showXdr": "Show Raw XDR Data",
+    "showApiEndpoints": "Show API Endpoints",
+    "showInternalIds": "Show Internal IDs",
+    "apiEndpoint": "API Endpoint",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDR Data",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "Copy XDR",
+    "copyEndpoint": "Copy Endpoint"
+  },
   "transactionSearch": {
     "title": "Search Transactions",
     "byHash": "By Hash",
@@ -342,5 +359,37 @@
     "showSuccess": "Success",
     "showFailed": "Failed",
     "noTransactionsFor": "No transactions found for this {type}."
+  },
+  "streaming": {
+    "live": "Live",
+    "connecting": "Connecting",
+    "offline": "Offline",
+    "reconnecting": "Reconnecting",
+    "realTimeUpdates": "Real-time updates enabled",
+    "connectionLost": "Connection lost, reconnecting..."
+  },
+  "learn": {
+    "title": "Learn Stellar",
+    "subtitle": "Interactive glossary and educational resources for understanding the Stellar network",
+    "totalTerms": "terms",
+    "beginnerTerms": "beginner",
+    "intermediateTerms": "intermediate",
+    "advancedTerms": "advanced",
+    "searchPlaceholder": "Search terms, concepts, or keywords...",
+    "searchResults": "Search Results",
+    "clearSearch": "Clear search",
+    "noResults": "No terms found matching your search.",
+    "byCategory": "By Category",
+    "byLevel": "By Level",
+    "beginner": "Beginner",
+    "beginnerDescription": "Start here - fundamental concepts for new users",
+    "intermediate": "Intermediate",
+    "intermediateDescription": "Deeper understanding for active users",
+    "advanced": "Advanced",
+    "advancedDescription": "Technical details for developers and experts",
+    "moreResources": "More Learning Resources",
+    "showLess": "Show less",
+    "readMore": "Read more",
+    "related": "Related"
   }
 }

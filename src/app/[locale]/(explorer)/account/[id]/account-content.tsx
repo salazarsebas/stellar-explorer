@@ -15,8 +15,13 @@ import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
-import { useAccount, useAccountTransactions, useAccountOperations } from "@/lib/hooks";
-import { useWatchlist } from "@/lib/hooks";
+import {
+  useAccount,
+  useAccountTransactions,
+  useAccountOperations,
+  useAccountOperationsStream,
+  useWatchlist,
+} from "@/lib/hooks";
 import { formatNumber, truncateHash } from "@/lib/utils";
 import { Star, StarOff, Key, Coins } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
@@ -184,6 +189,9 @@ function AccountTransactions({ accountId }: { accountId: string }) {
 
 function AccountOperations({ accountId }: { accountId: string }) {
   const { data, isLoading, error, refetch } = useAccountOperations(accountId);
+
+  // Enable real-time streaming for account operations
+  useAccountOperationsStream(accountId, { enabled: true });
 
   if (isLoading) {
     return <LoadingCard rows={5} />;

@@ -12,7 +12,10 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { OperationBadge } from "@/components/common/operation-badge";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
+import { DeveloperPanel } from "@/components/common/developer-panel";
 import { useTransaction, useTransactionOperations, useTransactionEffects } from "@/lib/hooks";
+import { useNetwork } from "@/lib/providers";
+import { NETWORKS } from "@/lib/constants";
 import {
   formatDateTime,
   formatLedgerSequence,
@@ -337,6 +340,8 @@ function RawData({ transaction }: { transaction: Horizon.ServerApi.TransactionRe
 
 export function TransactionContent({ hash }: TransactionContentProps) {
   const { data: transaction, isLoading, error, refetch } = useTransaction(hash);
+  const { network } = useNetwork();
+  const networkConfig = NETWORKS[network];
 
   if (isLoading) {
     return (
@@ -392,6 +397,29 @@ export function TransactionContent({ hash }: TransactionContentProps) {
       />
 
       <TransactionSummary transaction={transaction} />
+
+      {/* Developer Panel */}
+      <DeveloperPanel
+        xdrData={{
+          envelope: transaction.envelope_xdr,
+          result: transaction.result_xdr,
+        }}
+        additionalEndpoints={[
+          {
+            label: "Transaction API",
+            url: `${networkConfig.horizonUrl}/transactions/${transaction.hash}`,
+          },
+          {
+            label: "Operations API",
+            url: `${networkConfig.horizonUrl}/transactions/${transaction.hash}/operations`,
+          },
+        ]}
+        internalIds={[
+          { label: "Ledger Sequence", value: transaction.ledger_attr },
+          { label: "Source Account Sequence", value: transaction.source_account_sequence },
+          { label: "Paging Token", value: transaction.paging_token },
+        ]}
+      />
 
       <Tabs defaultValue="operations" className="w-full">
         <TabsList>
