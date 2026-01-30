@@ -2,7 +2,17 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { Home, Layers, ArrowRightLeft, Users, Coins, FileCode, Star, Menu, GraduationCap } from "lucide-react";
+import {
+  Home,
+  Layers,
+  ArrowRightLeft,
+  Users,
+  Coins,
+  FileCode,
+  Star,
+  Menu,
+  GraduationCap,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";

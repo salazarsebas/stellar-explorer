@@ -82,8 +82,8 @@ export default function TransactionsChart() {
           <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="txGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={chartColors.success} stopOpacity={0.3} />
-                <stop offset="100%" stopColor={chartColors.success} stopOpacity={0.05} />
+                <stop offset="0%" stopColor={chartColors.success} stopOpacity={0.25} />
+                <stop offset="100%" stopColor={chartColors.success} stopOpacity={0.03} />
               </linearGradient>
             </defs>
             <XAxis

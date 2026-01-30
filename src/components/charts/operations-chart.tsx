@@ -1,28 +1,11 @@
 "use client";
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { Activity } from "lucide-react";
+import { Activity, CheckCircle2, XCircle } from "lucide-react";
 import { ChartWrapper } from "./chart-wrapper";
 import { useOperationsChartData } from "@/lib/hooks/use-chart-data";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-
-interface TooltipProps {
-  active?: boolean;
-  payload?: Array<{ name: string; value: number; payload: { color: string } }>;
-}
-
-function CustomTooltip({ active, payload }: TooltipProps) {
-  if (!active || !payload?.length) return null;
-
-  return (
-    <div className="bg-popover border-border rounded-lg border px-3 py-2 shadow-lg">
-      <p className="text-foreground text-sm font-medium">
-        {payload[0].name}: {payload[0].value}
-      </p>
-    </div>
-  );
-}
+import { chartColors } from "./chart-config";
 
 export default function OperationsChart() {
   const { data, total, successRate, isLoading } = useOperationsChartData();
@@ -30,6 +13,12 @@ export default function OperationsChart() {
   const tRoot = useTranslations();
 
   const hasData = data.length > 0 && total > 0;
+  const successful = data.find((d) => d.name === "Successful")?.value || 0;
+  const failed = data.find((d) => d.name === "Failed")?.value || 0;
+
+  // Calculate stroke dash for circular progress
+  const circumference = 2 * Math.PI * 45; // radius = 45
+  const strokeDashoffset = circumference - (successRate / 100) * circumference;
 
   return (
     <ChartWrapper
@@ -43,60 +32,84 @@ export default function OperationsChart() {
           <p className="text-muted-foreground text-sm">{tRoot("noTransactionData")}</p>
         </div>
       ) : (
-        <div className="flex items-center gap-4">
-          {/* Donut chart */}
-          <div className="relative h-[140px] w-[140px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  paddingAngle={2}
-                  dataKey="value"
-                  animationDuration={300}
-                >
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-            {/* Center text */}
+        <div className="flex items-center gap-6">
+          {/* Circular Progress */}
+          <div className="relative flex h-[120px] w-[120px] items-center justify-center">
+            <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
+              {/* Background circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="6"
+                className="text-muted/20"
+              />
+              {/* Progress circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke={
+                  successRate >= 95
+                    ? chartColors.success
+                    : successRate >= 80
+                      ? chartColors.warning
+                      : chartColors.red
+                }
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                className="transition-all duration-500"
+                style={{ opacity: 0.85 }}
+              />
+            </svg>
+            {/* Center content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span
                 className={cn(
-                  "text-2xl font-bold tabular-nums",
+                  "text-3xl font-bold tabular-nums",
                   successRate >= 95
-                    ? "text-chart-2"
+                    ? "text-emerald-400/90"
                     : successRate >= 80
-                      ? "text-chart-3"
-                      : "text-chart-5"
+                      ? "text-cyan-400/90"
+                      : "text-red-400/90"
                 )}
               >
-                {successRate}%
+                {successRate}
               </span>
+              <span className="text-muted-foreground text-xs">%</span>
             </div>
           </div>
 
-          {/* Legend */}
+          {/* Stats */}
           <div className="flex-1 space-y-3">
-            {data.map((item) => (
-              <div key={item.name} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-3 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-sm">{item.name}</span>
-                </div>
-                <span className="text-muted-foreground text-sm tabular-nums">{item.value}</span>
+            {/* Successful */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-emerald-400/80" />
+                <span className="text-muted-foreground text-sm">{t("successful")}</span>
               </div>
-            ))}
+              <span className="font-medium tabular-nums">{successful}</span>
+            </div>
+
+            {/* Failed */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <XCircle className="size-4 text-red-400/80" />
+                <span className="text-muted-foreground text-sm">Failed</span>
+              </div>
+              <span className="font-medium tabular-nums">{failed}</span>
+            </div>
+
+            {/* Divider */}
             <div className="border-border border-t pt-2">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground text-xs">{t("total")}</span>
-                <span className="text-sm font-medium tabular-nums">{total}</span>
+                <span className="text-sm font-semibold tabular-nums">{total}</span>
               </div>
             </div>
           </div>

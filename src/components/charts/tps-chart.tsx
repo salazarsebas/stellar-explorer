@@ -65,6 +65,12 @@ export default function TPSChart() {
       ) : (
         <ResponsiveContainer width="100%" height={140}>
           <LineChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="tpsGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={chartColors.primary} stopOpacity={0.2} />
+                <stop offset="100%" stopColor={chartColors.primary} stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
             <XAxis
               dataKey="timestamp"
               tickFormatter={formatTime}
@@ -88,7 +94,7 @@ export default function TPSChart() {
               stroke={chartColors.primary}
               strokeWidth={2}
               dot={false}
-              activeDot={{ r: 4, fill: chartColors.primary }}
+              activeDot={{ r: 4, fill: chartColors.primary, strokeWidth: 0 }}
               animationDuration={300}
             />
           </LineChart>

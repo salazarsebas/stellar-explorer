@@ -1,11 +1,12 @@
-// Chart configuration using CSS variables for theme consistency
+// Chart colors - hex values that work with Recharts SVG rendering
+// Softer, desaturated tones that work well in dark mode without being too aggressive
 export const chartColors = {
-  primary: "hsl(var(--chart-1))",
-  success: "hsl(var(--chart-2))",
-  warning: "hsl(var(--chart-3))",
-  purple: "hsl(var(--chart-4))",
-  red: "hsl(var(--chart-5))",
-  muted: "hsl(var(--muted-foreground))",
+  primary: "#7dd3fc", // Soft sky blue - for TPS chart
+  success: "#86efac", // Soft mint green - for transaction volume
+  warning: "#67e8f9", // Soft cyan - for fees
+  purple: "#d8b4fe", // Soft lavender - for contracts
+  red: "#fca5a5", // Soft coral - for failed transactions
+  muted: "#a1a1aa", // Zinc gray - for muted elements
 };
 
 export const chartConfig = {

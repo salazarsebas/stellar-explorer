@@ -26,7 +26,6 @@ function SearchResultsContent() {
   const query = searchParams.get("q") || "";
   const t = useTranslations("searchPage");
   const tEntity = useTranslations("entityTypes");
-  const tCommon = useTranslations("common");
 
   if (!query) {
     return <EmptyState title={t("noQuery")} description={t("noQueryHint")} icon="search" />;
