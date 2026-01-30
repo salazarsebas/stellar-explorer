@@ -39,6 +39,9 @@ export async function generateMetadata({
   };
 
   return {
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_BASE_URL || "https://stellar-explorer.acachete.xyz"
+    ),
     title: {
       default: titles[locale as Locale] || titles.en,
       template: `%s | ${titles[locale as Locale] || titles.en}`,
