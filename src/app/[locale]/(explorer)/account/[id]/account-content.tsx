@@ -26,12 +26,15 @@ import { formatNumber, truncateHash } from "@/lib/utils";
 import { Star, StarOff, Key, Coins } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
+import { useTranslations } from "next-intl";
 
 interface AccountContentProps {
   id: string;
 }
 
 function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord }) {
+  const t = useTranslations("account");
+
   // Find XLM balance
   const xlmBalance = account.balances.find((b) => b.asset_type === "native") as
     | Horizon.HorizonApi.BalanceLineNative
@@ -43,26 +46,26 @@ function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord 
   return (
     <Card variant="elevated" className="animate-fade-in-up border-0">
       <CardHeader>
-        <CardTitle className="text-base">Account Overview</CardTitle>
+        <CardTitle className="text-base">{t("overview")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Left column - Balances */}
           <div className="space-y-4">
             <div className="bg-primary/5 border-primary/10 rounded-xl border p-4">
-              <span className="text-muted-foreground text-sm">XLM Balance</span>
+              <span className="text-muted-foreground text-sm">{t("xlmBalance")}</span>
               <div className="mt-1 text-2xl font-semibold tabular-nums">
                 {xlmBalance ? formatNumber(xlmBalance.balance) : "0"} XLM
               </div>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Other Assets</span>
+              <span className="text-muted-foreground text-sm">{t("otherAssets")}</span>
               <Badge variant="secondary">{otherAssets.length}</Badge>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Subentries</span>
+              <span className="text-muted-foreground text-sm">{t("subentries")}</span>
               <span className="text-sm font-medium">{account.subentry_count}</span>
             </div>
           </div>
@@ -70,12 +73,12 @@ function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord 
           {/* Right column - Account info */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Sequence</span>
+              <span className="text-muted-foreground text-sm">{t("sequence")}</span>
               <span className="font-mono text-sm">{account.sequence}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Thresholds</span>
+              <span className="text-muted-foreground text-sm">{t("thresholds")}</span>
               <div className="space-x-2 text-sm">
                 <span>L:{account.thresholds.low_threshold}</span>
                 <span>M:{account.thresholds.med_threshold}</span>
@@ -84,12 +87,12 @@ function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord 
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Signers</span>
+              <span className="text-muted-foreground text-sm">{t("signers")}</span>
               <Badge variant="secondary">{account.signers.length}</Badge>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Home Domain</span>
+              <span className="text-muted-foreground text-sm">{t("homeDomain")}</span>
               <span className="text-sm">{account.home_domain || "-"}</span>
             </div>
           </div>
@@ -100,10 +103,14 @@ function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord 
 }
 
 function AccountBalances({ account }: { account: Horizon.ServerApi.AccountRecord }) {
+  const t = useTranslations("account");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Balances ({account.balances.length})</CardTitle>
+        <CardTitle className="text-base">
+          {t("balances")} ({account.balances.length})
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -152,6 +159,7 @@ function AccountBalances({ account }: { account: Horizon.ServerApi.AccountRecord
 
 function AccountTransactions({ accountId }: { accountId: string }) {
   const { data, isLoading, error, refetch } = useAccountTransactions(accountId);
+  const t = useTranslations("account");
 
   if (isLoading) {
     return (
@@ -164,18 +172,11 @@ function AccountTransactions({ accountId }: { accountId: string }) {
   }
 
   if (error) {
-    return (
-      <ErrorState title="Failed to load transactions" message={error.message} onRetry={refetch} />
-    );
+    return <ErrorState title={t("failedToLoadTx")} message={error.message} onRetry={refetch} />;
   }
 
   if (!data?.records?.length) {
-    return (
-      <EmptyState
-        title="No transactions"
-        description="This account hasn't made any transactions yet."
-      />
-    );
+    return <EmptyState title={t("noTransactions")} description={t("noTransactionsDesc")} />;
   }
 
   return (
@@ -189,6 +190,7 @@ function AccountTransactions({ accountId }: { accountId: string }) {
 
 function AccountOperations({ accountId }: { accountId: string }) {
   const { data, isLoading, error, refetch } = useAccountOperations(accountId);
+  const t = useTranslations("account");
 
   // Enable real-time streaming for account operations
   useAccountOperationsStream(accountId, { enabled: true });
@@ -198,18 +200,11 @@ function AccountOperations({ accountId }: { accountId: string }) {
   }
 
   if (error) {
-    return (
-      <ErrorState title="Failed to load operations" message={error.message} onRetry={refetch} />
-    );
+    return <ErrorState title={t("failedToLoadOps")} message={error.message} onRetry={refetch} />;
   }
 
   if (!data?.records?.length) {
-    return (
-      <EmptyState
-        title="No operations"
-        description="This account hasn't performed any operations yet."
-      />
-    );
+    return <EmptyState title={t("noOperations")} description={t("noOperationsDesc")} />;
   }
 
   return (
@@ -242,10 +237,14 @@ function AccountOperations({ accountId }: { accountId: string }) {
 }
 
 function AccountSigners({ account }: { account: Horizon.ServerApi.AccountRecord }) {
+  const t = useTranslations("account");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Signers ({account.signers.length})</CardTitle>
+        <CardTitle className="text-base">
+          {t("signers")} ({account.signers.length})
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -272,7 +271,7 @@ function AccountSigners({ account }: { account: Horizon.ServerApi.AccountRecord 
                   </span>
                 </div>
               </div>
-              <Badge variant="outline">Weight: {signer.weight}</Badge>
+              <Badge variant="outline">{t("weight", { weight: signer.weight })}</Badge>
             </div>
           ))}
         </div>
@@ -285,6 +284,9 @@ export function AccountContent({ id }: AccountContentProps) {
   const { data: account, isLoading, error, refetch } = useAccount(id);
   const { has, add, remove } = useWatchlist();
   const isWatched = has(id);
+  const t = useTranslations("account");
+  const tNav = useTranslations("navigation");
+  const tCommon = useTranslations("common");
 
   const toggleWatchlist = () => {
     if (isWatched) {
@@ -309,12 +311,13 @@ export function AccountContent({ id }: AccountContentProps) {
   if (error) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Account" subtitle="Account not found" backHref="/" backLabel="Home" />
-        <ErrorState
-          title="Account not found"
-          message="The account you're looking for doesn't exist or may have been removed."
-          onRetry={refetch}
+        <PageHeader
+          title={t("title")}
+          subtitle={t("notFound")}
+          backHref="/"
+          backLabel={tCommon("home")}
         />
+        <ErrorState title={t("notFound")} message={t("notFoundMessage")} onRetry={refetch} />
       </div>
     );
   }
@@ -327,16 +330,16 @@ export function AccountContent({ id }: AccountContentProps) {
     <div className="space-y-6">
       <Breadcrumbs
         items={[
-          { label: "Accounts", href: "/accounts" },
+          { label: tNav("accounts"), href: "/accounts" },
           { label: truncateHash(id, 6, 6), href: `/account/${id}` },
         ]}
       />
 
       <PageHeader
-        title="Account"
+        title={t("title")}
         hash={id}
         backHref="/accounts"
-        backLabel="Accounts"
+        backLabel={tNav("accounts")}
         showQr
         actions={
           <Button
@@ -348,12 +351,12 @@ export function AccountContent({ id }: AccountContentProps) {
             {isWatched ? (
               <>
                 <StarOff className="mr-2 size-4" />
-                Remove
+                {tCommon("remove")}
               </>
             ) : (
               <>
                 <Star className="mr-2 size-4" />
-                Watch
+                {tCommon("watch")}
               </>
             )}
           </Button>
@@ -364,10 +367,10 @@ export function AccountContent({ id }: AccountContentProps) {
 
       <Tabs defaultValue="activity" className="w-full">
         <TabsList>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="operations">Operations</TabsTrigger>
-          <TabsTrigger value="balances">Balances</TabsTrigger>
-          <TabsTrigger value="signers">Signers</TabsTrigger>
+          <TabsTrigger value="activity">{t("activity")}</TabsTrigger>
+          <TabsTrigger value="operations">{t("operations")}</TabsTrigger>
+          <TabsTrigger value="balances">{t("balances")}</TabsTrigger>
+          <TabsTrigger value="signers">{t("signers")}</TabsTrigger>
         </TabsList>
         <TabsContent value="activity" className="mt-4">
           <AccountTransactions accountId={id} />

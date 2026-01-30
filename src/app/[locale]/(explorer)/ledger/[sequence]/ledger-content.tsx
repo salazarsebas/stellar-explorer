@@ -14,23 +14,26 @@ import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/tra
 import { useLedger, useLedgerTransactions } from "@/lib/hooks";
 import { formatDateTime, formatLedgerSequence, stroopsToXLM } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Clock, Activity, Wallet, Hash } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface LedgerContentProps {
   sequence: number;
 }
 
 function LedgerNavigation({ sequence }: { sequence: number }) {
+  const t = useTranslations("ledgerDetails");
+
   return (
     <div className="flex items-center gap-2">
       <Button variant="outline" size="sm" asChild>
         <Link href={`/ledger/${sequence - 1}`}>
           <ChevronLeft className="mr-1 size-4" />
-          Prev
+          {t("prev")}
         </Link>
       </Button>
       <Button variant="outline" size="sm" asChild>
         <Link href={`/ledger/${sequence + 1}`}>
-          Next
+          {t("next")}
           <ChevronRight className="ml-1 size-4" />
         </Link>
       </Button>
@@ -43,10 +46,12 @@ function LedgerSummary({
 }: {
   ledger: import("@stellar/stellar-sdk").Horizon.ServerApi.LedgerRecord;
 }) {
+  const t = useTranslations("ledgerDetails");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Ledger Details</CardTitle>
+        <CardTitle className="text-base">{t("details")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -55,7 +60,7 @@ function LedgerSummary({
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Clock className="size-4" />
-                Close Time
+                {t("closeTime")}
               </span>
               <span className="text-sm">{formatDateTime(ledger.closed_at)}</span>
             </div>
@@ -63,21 +68,21 @@ function LedgerSummary({
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Activity className="size-4" />
-                Transactions
+                {t("transactions")}
               </span>
               <span className="text-sm font-medium">
-                {ledger.successful_transaction_count} successful / {ledger.failed_transaction_count}{" "}
-                failed
+                {ledger.successful_transaction_count} {t("successful")} /{" "}
+                {ledger.failed_transaction_count} {t("failed")}
               </span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Operations</span>
+              <span className="text-muted-foreground text-sm">{t("operations")}</span>
               <span className="text-sm font-medium">{ledger.operation_count}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Protocol Version</span>
+              <span className="text-muted-foreground text-sm">{t("protocolVersion")}</span>
               <span className="text-sm font-medium">{ledger.protocol_version}</span>
             </div>
           </div>
@@ -87,20 +92,20 @@ function LedgerSummary({
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Wallet className="size-4" />
-                Total Fees
+                {t("totalFees")}
               </span>
               <span className="font-mono text-sm">{stroopsToXLM(ledger.total_coins)} XLM</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Base Fee</span>
+              <span className="text-muted-foreground text-sm">{t("baseFee")}</span>
               <span className="font-mono text-sm">{ledger.base_fee_in_stroops} stroops</span>
             </div>
             <Separator />
             <div className="flex items-start justify-between">
               <span className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Hash className="size-4" />
-                Hash
+                {t("hash")}
               </span>
               <HashDisplay
                 hash={ledger.hash}
@@ -112,7 +117,7 @@ function LedgerSummary({
             </div>
             <Separator />
             <div className="flex items-start justify-between">
-              <span className="text-muted-foreground text-sm">Prev Hash</span>
+              <span className="text-muted-foreground text-sm">{t("prevHash")}</span>
               <HashDisplay
                 hash={ledger.prev_hash}
                 truncate
@@ -131,6 +136,7 @@ function LedgerSummary({
 
 function LedgerTransactions({ sequence }: { sequence: number }) {
   const { data, isLoading, error, refetch } = useLedgerTransactions(sequence);
+  const t = useTranslations("ledgerDetails");
 
   if (isLoading) {
     return (
@@ -143,18 +149,11 @@ function LedgerTransactions({ sequence }: { sequence: number }) {
   }
 
   if (error) {
-    return (
-      <ErrorState title="Failed to load transactions" message={error.message} onRetry={refetch} />
-    );
+    return <ErrorState title={t("failedToLoadTx")} message={error.message} onRetry={refetch} />;
   }
 
   if (!data?.records?.length) {
-    return (
-      <EmptyState
-        title="No transactions"
-        description="This ledger doesn't contain any transactions."
-      />
-    );
+    return <EmptyState title={t("noTransactions")} description={t("noTransactionsDesc")} />;
   }
 
   return (
@@ -170,6 +169,8 @@ function LedgerTransactions({ sequence }: { sequence: number }) {
 
 export function LedgerContent({ sequence }: LedgerContentProps) {
   const { data: ledger, isLoading, error, refetch } = useLedger(sequence);
+  const t = useTranslations("ledgerDetails");
+  const tCommon = useTranslations("common");
 
   if (isNaN(sequence) || sequence <= 0) {
     return notFound();
@@ -191,15 +192,11 @@ export function LedgerContent({ sequence }: LedgerContentProps) {
     return (
       <div className="space-y-6">
         <PageHeader
-          title={`Ledger #${formatLedgerSequence(sequence)}`}
+          title={`${t("title")} #${formatLedgerSequence(sequence)}`}
           backHref="/"
-          backLabel="Home"
+          backLabel={tCommon("home")}
         />
-        <ErrorState
-          title="Ledger not found"
-          message="The ledger you're looking for doesn't exist or may not have been created yet."
-          onRetry={refetch}
-        />
+        <ErrorState title={t("notFound")} message={t("notFoundMessage")} onRetry={refetch} />
       </div>
     );
   }
@@ -211,9 +208,9 @@ export function LedgerContent({ sequence }: LedgerContentProps) {
   return (
     <div className="space-y-6">
       <PageHeader
-        title={`Ledger #${formatLedgerSequence(sequence)}`}
+        title={`${t("title")} #${formatLedgerSequence(sequence)}`}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         actions={<LedgerNavigation sequence={sequence} />}
       />
@@ -223,7 +220,7 @@ export function LedgerContent({ sequence }: LedgerContentProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Transactions in this Ledger ({ledger.successful_transaction_count})
+            {t("transactionsInLedger")} ({ledger.successful_transaction_count})
           </CardTitle>
         </CardHeader>
         <CardContent>

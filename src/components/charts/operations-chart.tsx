@@ -5,6 +5,7 @@ import { Activity } from "lucide-react";
 import { ChartWrapper } from "./chart-wrapper";
 import { useOperationsChartData } from "@/lib/hooks/use-chart-data";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface TooltipProps {
   active?: boolean;
@@ -25,19 +26,21 @@ function CustomTooltip({ active, payload }: TooltipProps) {
 
 export default function OperationsChart() {
   const { data, total, successRate, isLoading } = useOperationsChartData();
+  const t = useTranslations("charts");
+  const tRoot = useTranslations();
 
   const hasData = data.length > 0 && total > 0;
 
   return (
     <ChartWrapper
-      title="Transaction Success Rate"
-      subtitle="Last 100 transactions"
+      title={t("successRate")}
+      subtitle={t("last100")}
       icon={Activity}
       loading={isLoading}
     >
       {!hasData ? (
         <div className="flex h-[140px] items-center justify-center">
-          <p className="text-muted-foreground text-sm">No transaction data</p>
+          <p className="text-muted-foreground text-sm">{tRoot("noTransactionData")}</p>
         </div>
       ) : (
         <div className="flex items-center gap-4">
@@ -92,7 +95,7 @@ export default function OperationsChart() {
             ))}
             <div className="border-border border-t pt-2">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground text-xs">Total</span>
+                <span className="text-muted-foreground text-xs">{t("total")}</span>
                 <span className="text-sm font-medium tabular-nums">{total}</span>
               </div>
             </div>

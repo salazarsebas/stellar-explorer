@@ -24,6 +24,7 @@ type SearchMode = "recent" | "account" | "ledger";
 export default function TransactionsPage() {
   const t = useTranslations("transactions");
   const tSearch = useTranslations("transactionSearch");
+  const tCommon = useTranslations("common");
   const { network } = useNetwork();
 
   // Search state
@@ -131,7 +132,7 @@ export default function TransactionsPage() {
       <PageHeader
         title={t("title")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />

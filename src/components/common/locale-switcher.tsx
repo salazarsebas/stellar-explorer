@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("accessibility");
 
   const switchLocale = (newLocale: Locale) => {
     router.replace(pathname, { locale: newLocale });
@@ -31,7 +32,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
           className={cn("transition-colors hover:bg-white/10", className)}
         >
           <Globe className="size-4" />
-          <span className="sr-only">Change language</span>
+          <span className="sr-only">{t("changeLanguage")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

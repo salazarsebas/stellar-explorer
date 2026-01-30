@@ -4,9 +4,11 @@ import { Wallet } from "lucide-react";
 import { ChartWrapper } from "./chart-wrapper";
 import { useFeeStats } from "@/lib/hooks";
 import { stroopsToXLM } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function FeeChart() {
   const { data: feeStats, isLoading } = useFeeStats();
+  const t = useTranslations("charts");
 
   const fees = feeStats
     ? {
@@ -20,8 +22,8 @@ export default function FeeChart() {
 
   return (
     <ChartWrapper
-      title="Network Fees"
-      subtitle="Current fee statistics"
+      title={t("networkFees")}
+      subtitle={t("feeStats")}
       icon={Wallet}
       loading={isLoading}
     >
@@ -29,7 +31,7 @@ export default function FeeChart() {
         <div className="space-y-4">
           {/* Main fee display */}
           <div className="bg-primary/5 rounded-lg p-3 text-center">
-            <p className="text-muted-foreground text-xs">Average Fee</p>
+            <p className="text-muted-foreground text-xs">{t("averageFee")}</p>
             <p className="text-chart-3 text-2xl font-bold tabular-nums">
               {fees.mode} <span className="text-sm font-normal">XLM</span>
             </p>
@@ -38,8 +40,8 @@ export default function FeeChart() {
           {/* Fee range visualization */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground">Min</span>
-              <span className="text-muted-foreground">Max</span>
+              <span className="text-muted-foreground">{t("min")}</span>
+              <span className="text-muted-foreground">{t("max")}</span>
             </div>
             <div className="bg-muted relative h-2 rounded-full">
               <div
@@ -70,7 +72,7 @@ export default function FeeChart() {
         </div>
       ) : (
         <div className="flex h-[140px] items-center justify-center">
-          <p className="text-muted-foreground text-sm">No fee data available</p>
+          <p className="text-muted-foreground text-sm">{t("collectingData")}</p>
         </div>
       )}
     </ChartWrapper>

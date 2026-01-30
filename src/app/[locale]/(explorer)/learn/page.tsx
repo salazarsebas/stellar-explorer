@@ -9,11 +9,11 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  glossaryTerms,
-  glossaryCategories,
-  getTermsByCategory,
-  getTermsByLevel,
-  searchTerms,
+  glossaryTermsMeta,
+  glossaryCategoryMeta,
+  getTermIdsByCategory,
+  getTermIdsByLevel,
+  getAllTermIds,
   type GlossaryEntry,
   type GlossaryLevel,
 } from "@/lib/glossary";
@@ -57,14 +57,67 @@ const levelColors: Record<GlossaryLevel, string> = {
   advanced: "bg-purple-500/10 text-purple-500 border-purple-500/20",
 };
 
-const levelLabels: Record<GlossaryLevel, string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
-};
+// Hook to get translated glossary entries
+function useTranslatedGlossary() {
+  const tGlossary = useTranslations("glossary");
+
+  const getEntry = (id: string): GlossaryEntry | null => {
+    const meta = glossaryTermsMeta[id];
+    if (!meta) return null;
+
+    return {
+      ...meta,
+      term: tGlossary(`terms.${id}.term`),
+      shortDefinition: tGlossary(`terms.${id}.short`),
+      fullDefinition: tGlossary(`terms.${id}.full`),
+    };
+  };
+
+  const getAllEntries = (): GlossaryEntry[] => {
+    return getAllTermIds()
+      .map(getEntry)
+      .filter((entry): entry is GlossaryEntry => entry !== null);
+  };
+
+  const getEntriesByCategory = (category: string): GlossaryEntry[] => {
+    return getTermIdsByCategory(category)
+      .map(getEntry)
+      .filter((entry): entry is GlossaryEntry => entry !== null);
+  };
+
+  const getEntriesByLevel = (level: GlossaryLevel): GlossaryEntry[] => {
+    return getTermIdsByLevel(level)
+      .map(getEntry)
+      .filter((entry): entry is GlossaryEntry => entry !== null);
+  };
+
+  const searchEntries = (query: string): GlossaryEntry[] => {
+    const lowerQuery = query.toLowerCase();
+    return getAllEntries().filter(
+      (entry) =>
+        entry.term.toLowerCase().includes(lowerQuery) ||
+        entry.shortDefinition.toLowerCase().includes(lowerQuery)
+    );
+  };
+
+  const getCategoryLabel = (categoryId: string): string => {
+    return tGlossary(`categories.${categoryId}`);
+  };
+
+  return {
+    getEntry,
+    getAllEntries,
+    getEntriesByCategory,
+    getEntriesByLevel,
+    searchEntries,
+    getCategoryLabel,
+  };
+}
 
 function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const t = useTranslations("learn");
+  const { getEntry } = useTranslatedGlossary();
 
   return (
     <Card id={entry.id} className="group hover:border-primary/20 scroll-mt-20 transition-colors">
@@ -72,7 +125,7 @@ function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-base font-semibold">{entry.term}</CardTitle>
           <Badge variant="outline" className={cn("shrink-0 text-[10px]", levelColors[entry.level])}>
-            {levelLabels[entry.level]}
+            {t(entry.level)}
           </Badge>
         </div>
       </CardHeader>
@@ -91,12 +144,12 @@ function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
             {isExpanded ? (
               <>
                 <ChevronUp className="mr-1 size-3" />
-                Show less
+                {t("showLess")}
               </>
             ) : (
               <>
                 <ChevronDown className="mr-1 size-3" />
-                Read more
+                {t("readMore")}
               </>
             )}
           </Button>
@@ -105,7 +158,7 @@ function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
             <Button variant="ghost" size="sm" className="h-7 text-xs" asChild>
               <a href={entry.learnMoreUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-1 size-3" />
-                Official Docs
+                {t("officialDocs")}
               </a>
             </Button>
           )}
@@ -115,9 +168,9 @@ function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
           <>
             <Separator />
             <div className="flex flex-wrap gap-1.5">
-              <span className="text-muted-foreground mr-1 text-xs">Related:</span>
+              <span className="text-muted-foreground mr-1 text-xs">{t("related")}:</span>
               {entry.relatedTerms.map((termId) => {
-                const relatedTerm = glossaryTerms[termId];
+                const relatedTerm = getEntry(termId);
                 if (!relatedTerm) return null;
                 return (
                   <Link key={termId} href={`#${termId}`}>
@@ -139,9 +192,12 @@ function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
 }
 
 function CategorySection({ categoryId }: { categoryId: string }) {
-  const category = glossaryCategories.find((c) => c.id === categoryId);
-  const terms = getTermsByCategory(categoryId);
+  const { getEntriesByCategory, getCategoryLabel } = useTranslatedGlossary();
+  const t = useTranslations("learn");
+  const category = glossaryCategoryMeta.find((c) => c.id === categoryId);
+  const terms = getEntriesByCategory(categoryId);
   const Icon = category ? iconMap[category.icon] : Sparkles;
+  const categoryLabel = getCategoryLabel(categoryId);
 
   if (!category || terms.length === 0) return null;
 
@@ -149,9 +205,9 @@ function CategorySection({ categoryId }: { categoryId: string }) {
     <section className="space-y-4">
       <div className="flex items-center gap-2">
         {Icon && <Icon className="text-primary size-5" />}
-        <h2 className="text-lg font-semibold">{category.label}</h2>
+        <h2 className="text-lg font-semibold">{categoryLabel}</h2>
         <Badge variant="secondary" className="text-xs">
-          {terms.length} terms
+          {terms.length} {t("totalTerms")}
         </Badge>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -164,7 +220,8 @@ function CategorySection({ categoryId }: { categoryId: string }) {
 }
 
 function LevelSection({ level }: { level: GlossaryLevel }) {
-  const terms = getTermsByLevel(level);
+  const { getEntriesByLevel } = useTranslatedGlossary();
+  const terms = getEntriesByLevel(level);
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -177,18 +234,19 @@ function LevelSection({ level }: { level: GlossaryLevel }) {
 
 export default function LearnPage() {
   const t = useTranslations("learn");
+  const { getAllEntries, getEntriesByLevel, searchEntries } = useTranslatedGlossary();
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"category" | "level">("category");
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
-    return searchTerms(searchQuery);
-  }, [searchQuery]);
+    return searchEntries(searchQuery);
+  }, [searchQuery, searchEntries]);
 
-  const allTerms = Object.values(glossaryTerms);
-  const beginnerCount = getTermsByLevel("beginner").length;
-  const intermediateCount = getTermsByLevel("intermediate").length;
-  const advancedCount = getTermsByLevel("advanced").length;
+  const allTerms = getAllEntries();
+  const beginnerCount = getEntriesByLevel("beginner").length;
+  const intermediateCount = getEntriesByLevel("intermediate").length;
+  const advancedCount = getEntriesByLevel("advanced").length;
 
   return (
     <div className="space-y-8">
@@ -273,7 +331,7 @@ export default function LearnPage() {
             </TabsList>
 
             <TabsContent value="category" className="mt-6 space-y-8">
-              {glossaryCategories.map((category) => (
+              {glossaryCategoryMeta.map((category) => (
                 <CategorySection key={category.id} categoryId={category.id} />
               ))}
             </TabsContent>
@@ -332,7 +390,7 @@ export default function LearnPage() {
                 <Sparkles className="text-primary size-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">Stellar Learn</div>
+                <div className="text-sm font-medium">{t("stellarLearn")}</div>
                 <div className="text-muted-foreground truncate text-xs">stellar.org/learn</div>
               </div>
               <ExternalLink className="text-muted-foreground group-hover:text-foreground size-4" />
@@ -348,7 +406,7 @@ export default function LearnPage() {
                 <Code className="text-chart-1 size-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">Developer Docs</div>
+                <div className="text-sm font-medium">{t("developerDocs")}</div>
                 <div className="text-muted-foreground truncate text-xs">developers.stellar.org</div>
               </div>
               <ExternalLink className="text-muted-foreground group-hover:text-foreground size-4" />
@@ -364,7 +422,7 @@ export default function LearnPage() {
                 <Terminal className="text-chart-2 size-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">Soroban Docs</div>
+                <div className="text-sm font-medium">{t("sorobanDocs")}</div>
                 <div className="text-muted-foreground truncate text-xs">soroban.stellar.org</div>
               </div>
               <ExternalLink className="text-muted-foreground group-hover:text-foreground size-4" />

@@ -13,11 +13,13 @@ import { useTheme } from "@/lib/providers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export function Header() {
   const { setTheme, resolvedTheme } = useTheme();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const t = useTranslations("header");
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -66,7 +68,7 @@ export function Header() {
             className="transition-colors hover:bg-white/10"
           >
             <RefreshCw className={cn("size-4", isRefreshing && "animate-spin")} />
-            <span className="sr-only">Refresh data</span>
+            <span className="sr-only">{t("refreshData")}</span>
           </Button>
 
           {/* Theme toggle */}
@@ -77,7 +79,7 @@ export function Header() {
             className="transition-colors hover:bg-white/10"
           >
             {resolvedTheme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">{t("toggleTheme")}</span>
           </Button>
 
           {/* Language switcher */}

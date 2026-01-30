@@ -15,6 +15,7 @@ import {
   Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface StatItemProps {
   label: string;
@@ -77,6 +78,7 @@ function NetworkStatsCardSkeleton() {
 
 export function NetworkStatsCard() {
   const { data: stats, isLoading, error } = useNetworkStats();
+  const t = useTranslations("networkStats");
 
   if (isLoading) {
     return <NetworkStatsCardSkeleton />;
@@ -88,7 +90,7 @@ export function NetworkStatsCard() {
   }
 
   const formatLargeNumber = (num: number | undefined | null): string => {
-    if (num === undefined || num === null) return "N/A";
+    if (num === undefined || num === null) return t("notAvailable");
     if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
     if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
     if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
@@ -107,44 +109,52 @@ export function NetworkStatsCard() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-base">
             <BarChart3 className="text-primary size-4" />
-            Network Statistics
+            {t("title")}
           </CardTitle>
           <Badge variant="outline" className="text-[10px]">
-            Stellar Expert
+            {t("source")}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <StatItem label="Total Ledgers" value={formatLargeNumber(stats.ledgers)} icon={Layers} />
           <StatItem
-            label="Total Accounts"
+            label={t("totalLedgers")}
+            value={formatLargeNumber(stats.ledgers)}
+            icon={Layers}
+          />
+          <StatItem
+            label={t("totalAccounts")}
             value={formatLargeNumber(stats.accounts?.total)}
             icon={Users}
           />
           <StatItem
-            label="Funded Accounts"
+            label={t("fundedAccounts")}
             value={formatLargeNumber(stats.accounts?.funded)}
             icon={Wallet}
           />
-          <StatItem label="Total Assets" value={formatLargeNumber(stats.assets)} icon={Coins} />
+          <StatItem label={t("totalAssets")} value={formatLargeNumber(stats.assets)} icon={Coins} />
           <StatItem
-            label="Total Operations"
+            label={t("totalOperations")}
             value={formatLargeNumber(stats.operations)}
             icon={Activity}
           />
           <StatItem
-            label="Total Transactions"
+            label={t("totalTransactions")}
             value={formatLargeNumber(stats.transactions)}
             icon={ArrowLeftRight}
           />
           <StatItem
-            label="Total Trades"
+            label={t("totalTrades")}
             value={formatLargeNumber(stats.trades)}
             icon={TrendingUp}
           />
-          <StatItem label="Trustlines" value={formatLargeNumber(stats.trustlines)} icon={Coins} />
-          <StatItem label="Success Rate" value={`${successRate.toFixed(2)}%`} icon={Activity} />
+          <StatItem
+            label={t("trustlines")}
+            value={formatLargeNumber(stats.trustlines)}
+            icon={Coins}
+          />
+          <StatItem label={t("successRate")} value={`${successRate.toFixed(2)}%`} icon={Activity} />
         </div>
       </CardContent>
     </Card>

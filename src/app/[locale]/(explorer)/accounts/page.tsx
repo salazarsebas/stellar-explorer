@@ -10,21 +10,24 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { isValidPublicKey } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function AccountsPage() {
   const { network } = useNetwork();
   const router = useRouter();
   const [accountId, setAccountId] = useState("");
   const [error, setError] = useState("");
+  const t = useTranslations("accounts");
+  const tCommon = useTranslations("common");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!accountId.trim()) {
-      setError("Please enter an account address");
+      setError(t("enterAddressError"));
       return;
     }
     if (!isValidPublicKey(accountId.trim())) {
-      setError("Invalid account address. Must start with G and be 56 characters.");
+      setError(t("invalidAddress"));
       return;
     }
     router.push(`/account/${accountId.trim()}`);
@@ -33,10 +36,10 @@ export default function AccountsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Accounts"
-        subtitle="Search and explore Stellar accounts"
+        title={t("title")}
+        subtitle={t("subtitle")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />
@@ -44,13 +47,13 @@ export default function AccountsPage() {
       {/* Search for an account */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Find an Account</CardTitle>
+          <CardTitle className="text-base">{t("findAccount")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="space-y-4">
             <div className="flex gap-2">
               <Input
-                placeholder="Enter account address (G...)"
+                placeholder={t("enterAddress")}
                 value={accountId}
                 onChange={(e) => {
                   setAccountId(e.target.value);
@@ -60,7 +63,7 @@ export default function AccountsPage() {
               />
               <Button type="submit">
                 <Search className="mr-2 size-4" />
-                Search
+                {tCommon("search")}
               </Button>
             </div>
             {error && <p className="text-destructive text-sm">{error}</p>}
@@ -78,10 +81,9 @@ export default function AccountsPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Stellar Accounts</h3>
+              <h3 className="text-lg font-semibold">{t("stellarAccounts")}</h3>
               <p className="text-muted-foreground mx-auto mt-2 max-w-md">
-                Enter a Stellar address to view account details, balances, transactions, and signing
-                information.
+                {t("accountsDescription")}
               </p>
             </div>
           </div>

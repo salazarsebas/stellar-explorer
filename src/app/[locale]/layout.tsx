@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Providers } from "@/lib/providers";
 import { locales, type Locale } from "@/i18n/config";
@@ -27,26 +27,20 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
 
-  const titles: Record<Locale, string> = {
-    en: "Stellar Explorer",
-    es: "Explorador Stellar",
-  };
-
-  const descriptions: Record<Locale, string> = {
-    en: "Explore the Stellar network. View transactions, accounts, assets, and smart contracts.",
-    es: "Explora la red Stellar. Ve transacciones, cuentas, activos y contratos inteligentes.",
-  };
+  const title = t("title");
+  const description = t("description");
 
   return {
     metadataBase: new URL(
       process.env.NEXT_PUBLIC_BASE_URL || "https://stellar-explorer.acachete.xyz"
     ),
     title: {
-      default: titles[locale as Locale] || titles.en,
-      template: `%s | ${titles[locale as Locale] || titles.en}`,
+      default: title,
+      template: `%s | ${title}`,
     },
-    description: descriptions[locale as Locale] || descriptions.en,
+    description: description,
     keywords: [
       "Stellar",
       "blockchain",
@@ -61,14 +55,14 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       locale: locale === "es" ? "es_ES" : "en_US",
-      siteName: titles[locale as Locale] || titles.en,
-      title: titles[locale as Locale] || titles.en,
-      description: descriptions[locale as Locale] || descriptions.en,
+      siteName: title,
+      title: title,
+      description: description,
     },
     twitter: {
       card: "summary_large_image",
-      title: titles[locale as Locale] || titles.en,
-      description: descriptions[locale as Locale] || descriptions.en,
+      title: title,
+      description: description,
     },
     robots: {
       index: true,

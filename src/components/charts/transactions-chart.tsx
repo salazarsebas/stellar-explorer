@@ -6,6 +6,7 @@ import { ChartWrapper } from "./chart-wrapper";
 import { chartColors, chartAxisStyle } from "./chart-config";
 import { useTxChartData } from "@/lib/hooks/use-chart-data";
 import { formatCompactNumber } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 function formatHour(timestamp: number): string {
   return new Date(timestamp).toLocaleTimeString("en-US", {
@@ -18,9 +19,10 @@ function formatHour(timestamp: number): string {
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{ value: number; payload: { timestamp: number } }>;
+  transactionsLabel?: string;
 }
 
-function CustomTooltip({ active, payload }: TooltipProps) {
+function CustomTooltip({ active, payload, transactionsLabel = "transactions" }: TooltipProps) {
   if (!active || !payload?.length) return null;
 
   const date = new Date(payload[0].payload.timestamp);
@@ -33,7 +35,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   return (
     <div className="bg-popover border-border rounded-lg border px-3 py-2 shadow-lg">
       <p className="text-foreground text-sm font-medium">
-        {formatCompactNumber(payload[0].value)} transactions
+        {formatCompactNumber(payload[0].value)} {transactionsLabel}
       </p>
       <p className="text-muted-foreground text-xs">
         {dateStr} {timeStr}
@@ -44,14 +46,16 @@ function CustomTooltip({ active, payload }: TooltipProps) {
 
 export default function TransactionsChart() {
   const { data, isLoading, isCollecting } = useTxChartData();
+  const t = useTranslations("charts");
+  const tRoot = useTranslations();
 
   // Calculate total transactions
   const totalTx = data.reduce((sum, d) => sum + d.count, 0);
 
   return (
     <ChartWrapper
-      title="Transaction Volume"
-      subtitle={isCollecting ? "Accumulating data..." : "Hourly activity"}
+      title={t("transactionVolume")}
+      subtitle={isCollecting ? tRoot("accumulatingData") : t("hourlyActivity")}
       icon={TrendingUp}
       loading={isLoading}
       headerRight={
@@ -60,7 +64,7 @@ export default function TransactionsChart() {
             <span className="text-chart-2 text-lg font-bold tabular-nums">
               {formatCompactNumber(totalTx)}
             </span>
-            <span className="text-muted-foreground ml-1 text-xs">total</span>
+            <span className="text-muted-foreground ml-1 text-xs">{t("total")}</span>
           </div>
         ) : null
       }
@@ -70,10 +74,8 @@ export default function TransactionsChart() {
           <div className="bg-primary/10 text-primary rounded-full p-3">
             <TrendingUp className="size-5" />
           </div>
-          <p className="text-muted-foreground text-sm">Collecting data...</p>
-          <p className="text-muted-foreground text-xs">
-            Chart will populate as transactions are processed
-          </p>
+          <p className="text-muted-foreground text-sm">{t("collectingData")}</p>
+          <p className="text-muted-foreground text-xs">{t("chartWillPopulate")}</p>
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={140}>
@@ -100,7 +102,7 @@ export default function TransactionsChart() {
               tickFormatter={(v) => formatCompactNumber(v)}
               domain={[0, "auto"]}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip transactionsLabel={tRoot("transactions_word")} />} />
             <Area
               type="monotone"
               dataKey="count"

@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 export function MobileNav() {
   const pathname = usePathname();
   const t = useTranslations("navigation");
+  const tMobile = useTranslations("mobileNav");
   const [open, setOpen] = useState(false);
 
   const navItems = [
@@ -38,7 +39,7 @@ export function MobileNav() {
         <SheetHeader className="border-border border-b p-4">
           <SheetTitle className="flex items-center gap-3">
             <StellarLogo className="size-8" />
-            <span>Stellar Explorer</span>
+            <span>{tMobile("stellarExplorer")}</span>
           </SheetTitle>
         </SheetHeader>
 

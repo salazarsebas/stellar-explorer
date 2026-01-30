@@ -585,6 +585,7 @@ function ContractCode({ contractId }: { contractId: string }) {
 
 export function ContractContent({ id }: ContractContentProps) {
   const t = useTranslations("contract");
+  const tCommon = useTranslations("common");
   const { data: verification, isLoading: verificationLoading } = useContractVerification(id);
 
   if (!isValidContractId(id)) {
@@ -614,7 +615,7 @@ export function ContractContent({ id }: ContractContentProps) {
         title={t("title")}
         hash={id}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showQr={false}
         badge={headerBadge}
       />

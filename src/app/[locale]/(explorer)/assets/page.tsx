@@ -242,6 +242,7 @@ function QuickAccessAssets() {
 
 export default function AssetsPage() {
   const t = useTranslations("assets");
+  const tCommon = useTranslations("common");
   const { network } = useNetwork();
 
   return (
@@ -250,7 +251,7 @@ export default function AssetsPage() {
         title={t("title")}
         subtitle={t("subtitle")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />

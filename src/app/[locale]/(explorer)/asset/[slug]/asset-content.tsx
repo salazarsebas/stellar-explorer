@@ -24,6 +24,7 @@ import {
   XCircle,
   Building2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AssetContentProps {
   slug: string;
@@ -60,6 +61,8 @@ function FlagBadge({
   enabledIcon?: typeof CheckCircle2;
   disabledIcon?: typeof XCircle;
 }) {
+  const t = useTranslations("assetDetails");
+
   return (
     <div className="bg-card/50 flex items-center justify-between rounded-lg p-3">
       <span className="text-sm">{label}</span>
@@ -76,17 +79,19 @@ function FlagBadge({
         ) : (
           <DisabledIcon className="mr-1 size-3" />
         )}
-        {enabled ? "Enabled" : "Disabled"}
+        {enabled ? t("enabled") : t("disabled")}
       </Badge>
     </div>
   );
 }
 
 function AssetSummary({ asset }: { asset: StellarAsset }) {
+  const t = useTranslations("assetDetails");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Asset Information</CardTitle>
+        <CardTitle className="text-base">{t("information")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -95,7 +100,7 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
             <div className="bg-primary/5 border-primary/10 rounded-lg border p-4">
               <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
                 <Coins className="size-4" />
-                Total Supply
+                {t("totalSupply")}
               </div>
               <div className="text-2xl font-semibold tabular-nums">
                 {formatNumber(asset.amount)}
@@ -106,7 +111,7 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
               <div className="bg-card/50 rounded-lg p-4">
                 <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
                   <Users className="size-4" />
-                  Accounts
+                  {t("accounts")}
                 </div>
                 <div className="text-xl font-semibold tabular-nums">
                   {formatCompactNumber(asset.num_accounts)}
@@ -116,7 +121,7 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
               <div className="bg-card/50 rounded-lg p-4">
                 <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
                   <TrendingUp className="size-4" />
-                  Claimable Balances
+                  {t("claimableBalances")}
                 </div>
                 <div className="text-xl font-semibold tabular-nums">
                   {formatCompactNumber(asset.claimable_balances_amount || "0")}
@@ -128,12 +133,12 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
           {/* Right column - Details */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Asset Code</span>
+              <span className="text-muted-foreground text-sm">{t("assetCode")}</span>
               <span className="font-medium">{asset.asset_code}</span>
             </div>
             <Separator />
             <div className="flex items-start justify-between">
-              <span className="text-muted-foreground text-sm">Issuer</span>
+              <span className="text-muted-foreground text-sm">{t("issuer")}</span>
               <HashDisplay
                 hash={asset.asset_issuer}
                 truncate
@@ -143,12 +148,12 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Asset Type</span>
+              <span className="text-muted-foreground text-sm">{t("assetType")}</span>
               <Badge variant="secondary">{asset.asset_type}</Badge>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Liquidity Pools</span>
+              <span className="text-muted-foreground text-sm">{t("liquidityPools")}</span>
               <span className="text-sm font-medium">{asset.num_liquidity_pools || 0}</span>
             </div>
           </div>
@@ -160,45 +165,48 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
 
 function AssetFlags({ asset }: { asset: StellarAsset }) {
   const flags = asset.flags;
+  const t = useTranslations("assetDetails");
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <Shield className="size-4" />
-          Asset Flags
+          {t("flags")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         <FlagBadge
           enabled={flags.auth_required}
-          label="Authorization Required"
+          label={t("authRequired")}
           enabledIcon={Lock}
           disabledIcon={Unlock}
         />
         <FlagBadge
           enabled={flags.auth_revocable}
-          label="Authorization Revocable"
+          label={t("authRevocable")}
           enabledIcon={Lock}
           disabledIcon={Unlock}
         />
         <FlagBadge
           enabled={flags.auth_immutable}
-          label="Authorization Immutable"
+          label={t("authImmutable")}
           enabledIcon={Lock}
           disabledIcon={Unlock}
         />
-        <FlagBadge enabled={flags.auth_clawback_enabled} label="Clawback Enabled" />
+        <FlagBadge enabled={flags.auth_clawback_enabled} label={t("clawbackEnabled")} />
       </CardContent>
     </Card>
   );
 }
 
 function AssetStats({ asset }: { asset: StellarAsset }) {
+  const t = useTranslations("assetDetails");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Statistics</CardTitle>
+        <CardTitle className="text-base">{t("statistics")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
@@ -206,25 +214,25 @@ function AssetStats({ asset }: { asset: StellarAsset }) {
             <div className="text-2xl font-semibold tabular-nums">
               {formatCompactNumber(asset.num_accounts)}
             </div>
-            <div className="text-muted-foreground mt-1 text-xs">Total Holders</div>
+            <div className="text-muted-foreground mt-1 text-xs">{t("totalHolders")}</div>
           </div>
           <div className="bg-card/50 rounded-lg p-4 text-center">
             <div className="text-2xl font-semibold tabular-nums">
               {formatCompactNumber(asset.amount)}
             </div>
-            <div className="text-muted-foreground mt-1 text-xs">Circulating</div>
+            <div className="text-muted-foreground mt-1 text-xs">{t("circulating")}</div>
           </div>
           <div className="bg-card/50 rounded-lg p-4 text-center">
             <div className="text-2xl font-semibold tabular-nums">
               {formatCompactNumber(asset.num_liquidity_pools || 0)}
             </div>
-            <div className="text-muted-foreground mt-1 text-xs">Liquidity Pools</div>
+            <div className="text-muted-foreground mt-1 text-xs">{t("liquidityPools")}</div>
           </div>
           <div className="bg-card/50 rounded-lg p-4 text-center">
             <div className="text-2xl font-semibold tabular-nums">
               {formatCompactNumber(asset.accounts?.authorized || 0)}
             </div>
-            <div className="text-muted-foreground mt-1 text-xs">Authorized</div>
+            <div className="text-muted-foreground mt-1 text-xs">{t("authorized")}</div>
           </div>
         </div>
       </CardContent>
@@ -234,6 +242,8 @@ function AssetStats({ asset }: { asset: StellarAsset }) {
 
 export function AssetContent({ slug }: AssetContentProps) {
   const parsed = parseAssetSlug(decodeURIComponent(slug));
+  const t = useTranslations("assetDetails");
+  const tCommon = useTranslations("common");
 
   // Handle native XLM separately
   const isNative = parsed?.issuer === "native";
@@ -260,25 +270,22 @@ export function AssetContent({ slug }: AssetContentProps) {
         <div className="flex items-center gap-4">
           <AssetLogo code="XLM" size="xl" />
           <div>
-            <h1 className="text-2xl font-bold">Stellar Lumens</h1>
-            <p className="text-muted-foreground">XLM - Native Stellar Asset</p>
+            <h1 className="text-2xl font-bold">{t("xlmTitle")}</h1>
+            <p className="text-muted-foreground">{t("xlmSubtitle")}</p>
           </div>
         </div>
 
         <Card variant="elevated" className="border-0">
           <CardHeader>
-            <CardTitle className="text-base">About XLM</CardTitle>
+            <CardTitle className="text-base">{t("aboutXlm")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              XLM (Stellar Lumens) is the native asset of the Stellar network. It serves multiple
-              purposes:
-            </p>
+            <p className="text-muted-foreground">{t("xlmDescription")}</p>
             <ul className="text-muted-foreground list-inside list-disc space-y-2">
-              <li>Pay transaction fees (typically 0.00001 XLM per operation)</li>
-              <li>Maintain minimum account balances (base reserve)</li>
-              <li>Prevent spam by requiring small amounts for account creation</li>
-              <li>Bridge currency for cross-asset transactions via the DEX</li>
+              <li>{t("xlmPurpose1")}</li>
+              <li>{t("xlmPurpose2")}</li>
+              <li>{t("xlmPurpose3")}</li>
+              <li>{t("xlmPurpose4")}</li>
             </ul>
           </CardContent>
         </Card>
@@ -301,12 +308,13 @@ export function AssetContent({ slug }: AssetContentProps) {
   if (error || !asset) {
     return (
       <div className="space-y-6">
-        <PageHeader title={parsed.code} subtitle="Asset not found" backHref="/" backLabel="Home" />
-        <ErrorState
-          title="Asset not found"
-          message="The asset you're looking for doesn't exist or may have been removed."
-          onRetry={refetch}
+        <PageHeader
+          title={parsed.code}
+          subtitle={t("notFound")}
+          backHref="/"
+          backLabel={tCommon("home")}
         />
+        <ErrorState title={t("notFound")} message={t("notFoundMessage")} onRetry={refetch} />
       </div>
     );
   }
@@ -327,7 +335,7 @@ export function AssetContent({ slug }: AssetContentProps) {
             {!asset.flags.auth_required && !asset.flags.auth_revocable && (
               <Badge className="bg-success/15 text-success border-success/25">
                 <CheckCircle2 className="mr-1 size-3" />
-                Verified
+                {t("verified")}
               </Badge>
             )}
           </div>
@@ -342,7 +350,9 @@ export function AssetContent({ slug }: AssetContentProps) {
           {metadata?.orgName && (
             <div className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
               <Building2 className="size-4" />
-              <span>Issued by {metadata.orgName}</span>
+              <span>
+                {t("issuer")} {metadata.orgName}
+              </span>
             </div>
           )}
         </div>
@@ -352,8 +362,8 @@ export function AssetContent({ slug }: AssetContentProps) {
 
       <Tabs defaultValue="stats" className="w-full">
         <TabsList>
-          <TabsTrigger value="stats">Statistics</TabsTrigger>
-          <TabsTrigger value="flags">Flags</TabsTrigger>
+          <TabsTrigger value="stats">{t("statistics")}</TabsTrigger>
+          <TabsTrigger value="flags">{t("flags")}</TabsTrigger>
         </TabsList>
         <TabsContent value="stats" className="mt-4">
           <AssetStats asset={asset as unknown as StellarAsset} />

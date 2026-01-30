@@ -1,6 +1,9 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { NetworkKey } from "@/types";
+import { useTranslations } from "next-intl";
 
 interface NetworkBadgeProps {
   network: NetworkKey;
@@ -13,16 +16,18 @@ const networkStyles: Record<NetworkKey, string> = {
   futurenet: "bg-primary/15 text-primary border-primary/25",
 };
 
-const networkLabels: Record<NetworkKey, string> = {
-  public: "Mainnet",
-  testnet: "Testnet",
-  futurenet: "Futurenet",
+const networkLabelKeys: Record<NetworkKey, "mainnet" | "testnet" | "futurenet"> = {
+  public: "mainnet",
+  testnet: "testnet",
+  futurenet: "futurenet",
 };
 
 export function NetworkBadge({ network, className }: NetworkBadgeProps) {
+  const t = useTranslations("network");
+
   return (
     <Badge variant="outline" className={cn(networkStyles[network], "font-medium", className)}>
-      {networkLabels[network]}
+      {t(networkLabelKeys[network])}
     </Badge>
   );
 }

@@ -36,6 +36,7 @@ interface DeveloperPanelProps {
 
 export function DeveloperPanel({ xdrData, additionalEndpoints, internalIds }: DeveloperPanelProps) {
   const t = useTranslations("developerMode");
+  const tCommon = useTranslations("common");
   const { isDevMode, settings } = useDeveloperMode();
   const { network } = useNetwork();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -186,7 +187,7 @@ export function DeveloperPanel({ xdrData, additionalEndpoints, internalIds }: De
               <div className="space-y-2">
                 <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
                   <Terminal className="size-3.5" />
-                  Internal IDs
+                  {t("showInternalIds")}
                 </div>
                 <div className="grid gap-1.5 sm:grid-cols-2">
                   {internalIds.map((item, index) => (
@@ -243,7 +244,7 @@ export function DeveloperPanel({ xdrData, additionalEndpoints, internalIds }: De
                         {copiedItem === "envelope" ? (
                           <>
                             <Check className="size-3 text-green-500" />
-                            Copied!
+                            {tCommon("copied")}!
                           </>
                         ) : (
                           <>
@@ -274,7 +275,7 @@ export function DeveloperPanel({ xdrData, additionalEndpoints, internalIds }: De
                         {copiedItem === "result" ? (
                           <>
                             <Check className="size-3 text-green-500" />
-                            Copied!
+                            {tCommon("copied")}!
                           </>
                         ) : (
                           <>

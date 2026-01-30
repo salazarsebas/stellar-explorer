@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Home, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export interface BreadcrumbItem {
   label: string;
@@ -16,9 +17,12 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+  const t = useTranslations("common");
+  const tComponents = useTranslations("components.breadcrumb");
+
   return (
     <nav
-      aria-label="Breadcrumb"
+      aria-label={tComponents("ariaLabel")}
       className={cn("text-muted-foreground mb-6 flex items-center gap-1.5 text-sm", className)}
     >
       <Link
@@ -26,7 +30,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
         className="hover:text-foreground flex items-center rounded p-1 transition-colors hover:bg-white/5"
       >
         <Home className="size-4" />
-        <span className="sr-only">Home</span>
+        <span className="sr-only">{t("home")}</span>
       </Link>
 
       {items.map((item, index) => {

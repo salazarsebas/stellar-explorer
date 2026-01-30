@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type ConnectionStatus = "connected" | "connecting" | "disconnected";
 
@@ -19,23 +20,24 @@ export function LiveIndicator({
   status = "connected",
   label,
 }: LiveIndicatorProps) {
+  const t = useTranslations("streaming");
   const dotSize = size === "sm" ? "h-1.5 w-1.5" : "h-2 w-2";
 
   const statusConfig = {
     connected: {
       color: "bg-success",
       animate: true,
-      label: label || "Live",
+      labelKey: "live" as const,
     },
     connecting: {
       color: "bg-warning",
       animate: true,
-      label: label || "Connecting",
+      labelKey: "connecting" as const,
     },
     disconnected: {
       color: "bg-muted-foreground",
       animate: false,
-      label: label || "Offline",
+      labelKey: "offline" as const,
     },
   };
 
@@ -61,7 +63,7 @@ export function LiveIndicator({
         )}
         <span className={cn("relative inline-flex rounded-full", config.color, dotSize)} />
       </span>
-      {showLabel && <span className="font-medium">{config.label}</span>}
+      {showLabel && <span className="font-medium">{label || t(config.labelKey)}</span>}
     </div>
   );
 }

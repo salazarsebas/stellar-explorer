@@ -7,6 +7,7 @@ import { formatLedgerSequence } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { Layers } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
+import { useTranslations } from "next-intl";
 
 interface LedgerCardProps {
   ledger: Horizon.ServerApi.LedgerRecord;
@@ -14,6 +15,8 @@ interface LedgerCardProps {
 }
 
 export function LedgerCard({ ledger, className }: LedgerCardProps) {
+  const t = useTranslations("cards.ledger");
+
   return (
     <Link href={`/ledger/${ledger.sequence}`}>
       <Card variant="elevated" interactive className={cn("group border-0 py-0", className)}>
@@ -28,9 +31,13 @@ export function LedgerCard({ ledger, className }: LedgerCardProps) {
                 #{formatLedgerSequence(ledger.sequence)}
               </span>
               <div className="text-muted-foreground mt-0.5 flex items-center gap-2 text-xs">
-                <span>{ledger.successful_transaction_count} txs</span>
+                <span>
+                  {ledger.successful_transaction_count} {t("txs")}
+                </span>
                 <span className="opacity-30">|</span>
-                <span>{ledger.operation_count} ops</span>
+                <span>
+                  {ledger.operation_count} {t("ops")}
+                </span>
               </div>
             </div>
           </div>

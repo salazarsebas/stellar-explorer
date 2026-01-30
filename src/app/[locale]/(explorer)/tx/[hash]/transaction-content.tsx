@@ -26,27 +26,30 @@ import {
 import { ArrowRight, Code } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
+import { useTranslations } from "next-intl";
 
 interface TransactionContentProps {
   hash: string;
 }
 
 function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
+  const t = useTranslations("transaction");
+
   return (
     <Card variant="elevated" className="animate-fade-in-up border-0">
       <CardHeader>
-        <CardTitle className="text-base">Transaction Details</CardTitle>
+        <CardTitle className="text-base">{t("details")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Status</span>
+              <span className="text-muted-foreground text-sm">{t("status")}</span>
               <StatusBadge status={transaction.successful ? "success" : "failed"} />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Ledger</span>
+              <span className="text-muted-foreground text-sm">{t("ledger")}</span>
               <Link
                 href={`/ledger/${transaction.ledger_attr}`}
                 className="text-primary text-sm font-medium hover:underline"
@@ -56,28 +59,28 @@ function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.Tr
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Timestamp</span>
+              <span className="text-muted-foreground text-sm">{t("timestamp")}</span>
               <span className="text-sm">{formatDateTime(transaction.created_at)}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Operations</span>
+              <span className="text-muted-foreground text-sm">{t("operationsCount")}</span>
               <span className="text-sm font-medium">{transaction.operation_count}</span>
             </div>
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Fee Paid</span>
+              <span className="text-muted-foreground text-sm">{t("feePaid")}</span>
               <span className="font-mono text-sm">{stroopsToXLM(transaction.fee_charged)} XLM</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Max Fee</span>
+              <span className="text-muted-foreground text-sm">{t("maxFee")}</span>
               <span className="font-mono text-sm">{stroopsToXLM(transaction.max_fee)} XLM</span>
             </div>
             <Separator />
             <div className="flex items-start justify-between">
-              <span className="text-muted-foreground text-sm">Source</span>
+              <span className="text-muted-foreground text-sm">{t("source")}</span>
               <HashDisplay
                 hash={transaction.source_account}
                 truncate
@@ -87,7 +90,7 @@ function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.Tr
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">Memo</span>
+              <span className="text-muted-foreground text-sm">{t("memo")}</span>
               <span className="font-mono text-sm">{transaction.memo || "-"}</span>
             </div>
           </div>
@@ -99,22 +102,21 @@ function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.Tr
 
 function OperationsTimeline({ hash }: { hash: string }) {
   const { data, isLoading, error, refetch } = useTransactionOperations(hash);
+  const t = useTranslations("transaction");
 
   if (isLoading) {
     return <LoadingCard rows={5} />;
   }
 
   if (error) {
-    return (
-      <ErrorState title="Failed to load operations" message={error.message} onRetry={refetch} />
-    );
+    return <ErrorState title={t("failedToLoadOps")} message={error.message} onRetry={refetch} />;
   }
 
   if (!data?.records?.length) {
     return (
       <Card>
         <CardContent className="text-muted-foreground py-8 text-center">
-          No operations found
+          {t("noOperations")}
         </CardContent>
       </Card>
     );
@@ -123,7 +125,9 @@ function OperationsTimeline({ hash }: { hash: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Operations ({data.records.length})</CardTitle>
+        <CardTitle className="text-base">
+          {t("operations")} ({data.records.length})
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -160,6 +164,7 @@ function OperationsTimeline({ hash }: { hash: string }) {
 function OperationDetails({ operation }: { operation: Horizon.ServerApi.OperationRecord }) {
   // Type assertion for dynamic properties - Horizon SDK types vary by operation type
   const op = operation as Horizon.ServerApi.OperationRecord & Record<string, unknown>;
+  const t = useTranslations("account");
 
   switch (operation.type) {
     case "payment":
@@ -193,11 +198,11 @@ function OperationDetails({ operation }: { operation: Horizon.ServerApi.Operatio
       return (
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">New Account:</span>
+            <span className="text-muted-foreground">{t("newAccount")}</span>
             <HashDisplay hash={op.account as string} truncate linkTo={`/account/${op.account}`} />
           </div>
           <div className="text-foreground font-mono">
-            Starting Balance: {formatNumber(op.starting_balance as string)} XLM
+            {t("startingBalance", { amount: formatNumber(op.starting_balance as string) })}
           </div>
         </div>
       );
@@ -206,7 +211,7 @@ function OperationDetails({ operation }: { operation: Horizon.ServerApi.Operatio
       return (
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Asset:</span>
+            <span className="text-muted-foreground">{t("asset")}</span>
             <span className="font-medium">
               {op.asset_type === "native" ? "XLM" : (op.asset_code as string)}
             </span>
@@ -216,7 +221,7 @@ function OperationDetails({ operation }: { operation: Horizon.ServerApi.Operatio
           </div>
           {typeof op.limit === "string" && (
             <div className="text-muted-foreground">
-              Limit: {op.limit === "922337203685.4775807" ? "Max" : formatNumber(op.limit)}
+              {t("limit")} {op.limit === "922337203685.4775807" ? t("max") : formatNumber(op.limit)}
             </div>
           )}
         </div>
@@ -227,7 +232,7 @@ function OperationDetails({ operation }: { operation: Horizon.ServerApi.Operatio
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
             <Code className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">Soroban Contract Call</span>
+            <span className="text-muted-foreground">{t("sorobanCall")}</span>
           </div>
           {typeof op.function === "string" && (
             <div className="bg-muted/50 rounded p-2 font-mono text-xs">{op.function}</div>
@@ -244,20 +249,23 @@ function OperationDetails({ operation }: { operation: Horizon.ServerApi.Operatio
 
 function TransactionEffects({ hash }: { hash: string }) {
   const { data, isLoading, error, refetch } = useTransactionEffects(hash);
+  const t = useTranslations("transaction");
 
   if (isLoading) {
     return <LoadingCard rows={5} />;
   }
 
   if (error) {
-    return <ErrorState title="Failed to load effects" message={error.message} onRetry={refetch} />;
+    return (
+      <ErrorState title={t("failedToLoadEffects")} message={error.message} onRetry={refetch} />
+    );
   }
 
   if (!data?.records?.length) {
     return (
       <Card>
         <CardContent className="text-muted-foreground py-8 text-center">
-          No effects found
+          {t("noEffects")}
         </CardContent>
       </Card>
     );
@@ -266,7 +274,9 @@ function TransactionEffects({ hash }: { hash: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Effects ({data.records.length})</CardTitle>
+        <CardTitle className="text-base">
+          {t("effects")} ({data.records.length})
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -313,21 +323,23 @@ function TransactionEffects({ hash }: { hash: string }) {
 }
 
 function RawData({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
+  const t = useTranslations("transaction");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Raw Transaction Data</CardTitle>
+        <CardTitle className="text-base">{t("rawData")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div>
-            <h4 className="mb-2 text-sm font-medium">Envelope XDR</h4>
+            <h4 className="mb-2 text-sm font-medium">{t("envelopeXdr")}</h4>
             <pre className="bg-muted/50 overflow-x-auto rounded-lg p-3 font-mono text-xs break-all whitespace-pre-wrap">
               {transaction.envelope_xdr}
             </pre>
           </div>
           <div>
-            <h4 className="mb-2 text-sm font-medium">Result XDR</h4>
+            <h4 className="mb-2 text-sm font-medium">{t("resultXdr")}</h4>
             <pre className="bg-muted/50 overflow-x-auto rounded-lg p-3 font-mono text-xs break-all whitespace-pre-wrap">
               {transaction.result_xdr}
             </pre>
@@ -342,6 +354,9 @@ export function TransactionContent({ hash }: TransactionContentProps) {
   const { data: transaction, isLoading, error, refetch } = useTransaction(hash);
   const { network } = useNetwork();
   const networkConfig = NETWORKS[network];
+  const t = useTranslations("transaction");
+  const tNav = useTranslations("navigation");
+  const tCommon = useTranslations("common");
 
   if (isLoading) {
     return (
@@ -360,16 +375,12 @@ export function TransactionContent({ hash }: TransactionContentProps) {
     return (
       <div className="space-y-6">
         <PageHeader
-          title="Transaction"
-          subtitle="Transaction not found"
+          title={t("title")}
+          subtitle={t("notFound")}
           backHref="/"
-          backLabel="Home"
+          backLabel={tCommon("home")}
         />
-        <ErrorState
-          title="Transaction not found"
-          message="The transaction you're looking for doesn't exist or may have been removed."
-          onRetry={refetch}
-        />
+        <ErrorState title={t("notFound")} message={t("notFoundMessage")} onRetry={refetch} />
       </div>
     );
   }
@@ -382,16 +393,16 @@ export function TransactionContent({ hash }: TransactionContentProps) {
     <div className="space-y-6">
       <Breadcrumbs
         items={[
-          { label: "Transactions", href: "/transactions" },
+          { label: tNav("transactions"), href: "/transactions" },
           { label: truncateHash(transaction.hash, 8, 8), href: `/tx/${transaction.hash}` },
         ]}
       />
 
       <PageHeader
-        title="Transaction"
+        title={t("title")}
         hash={transaction.hash}
         backHref="/transactions"
-        backLabel="Transactions"
+        backLabel={tNav("transactions")}
         showQr={false}
         badge={<StatusBadge status={transaction.successful ? "success" : "failed"} />}
       />
@@ -423,9 +434,9 @@ export function TransactionContent({ hash }: TransactionContentProps) {
 
       <Tabs defaultValue="operations" className="w-full">
         <TabsList>
-          <TabsTrigger value="operations">Operations</TabsTrigger>
-          <TabsTrigger value="effects">Effects</TabsTrigger>
-          <TabsTrigger value="raw">Raw Data</TabsTrigger>
+          <TabsTrigger value="operations">{t("operations")}</TabsTrigger>
+          <TabsTrigger value="effects">{t("effects")}</TabsTrigger>
+          <TabsTrigger value="raw">{t("rawData")}</TabsTrigger>
         </TabsList>
         <TabsContent value="operations" className="mt-4">
           <OperationsTimeline hash={hash} />

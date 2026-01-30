@@ -5,10 +5,11 @@ import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { EmptyState } from "@/components/common/empty-state";
-import { detectEntityType, getEntityRoute, getEntityTypeName } from "@/lib/utils";
+import { detectEntityType, getEntityRoute } from "@/lib/utils";
 import { Search, ArrowRightLeft, Users, FileCode, Coins, Layers, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { EntityType } from "@/types";
+import { useTranslations } from "next-intl";
 
 const entityIcons: Record<EntityType, typeof Search> = {
   transaction: ArrowRightLeft,
@@ -23,15 +24,12 @@ function SearchResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get("q") || "";
+  const t = useTranslations("searchPage");
+  const tEntity = useTranslations("entityTypes");
+  const tCommon = useTranslations("common");
 
   if (!query) {
-    return (
-      <EmptyState
-        title="No search query"
-        description="Enter a transaction hash, account address, or ledger number to search."
-        icon="search"
-      />
-    );
+    return <EmptyState title={t("noQuery")} description={t("noQueryHint")} icon="search" />;
   }
 
   const detectedType = detectEntityType(query);
@@ -44,7 +42,7 @@ function SearchResultsContent() {
       <Card>
         <CardContent className="py-12 text-center">
           <div className="animate-pulse">
-            <p className="text-muted-foreground">Redirecting...</p>
+            <p className="text-muted-foreground">{t("redirecting")}</p>
           </div>
         </CardContent>
       </Card>
@@ -58,7 +56,7 @@ function SearchResultsContent() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Search Results</CardTitle>
+          <CardTitle className="text-base">{t("title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -67,14 +65,14 @@ function SearchResultsContent() {
               <div className="min-w-0 flex-1">
                 <p className="font-mono text-sm break-all">{query}</p>
                 <p className="text-muted-foreground mt-1 text-xs">
-                  Detected as: {getEntityTypeName(detectedType)}
+                  {t("detectedAs")} {tEntity(detectedType)}
                 </p>
               </div>
             </div>
 
             {/* Possible interpretations */}
             <div className="space-y-2">
-              <p className="text-sm font-medium">Try searching as:</p>
+              <p className="text-sm font-medium">{t("trySearchingAs")}</p>
 
               {/* Transaction */}
               {query.length === 64 && (
@@ -84,7 +82,7 @@ function SearchResultsContent() {
                 >
                   <div className="flex items-center gap-3">
                     <ArrowRightLeft className="text-primary size-4" />
-                    <span className="text-sm">Transaction</span>
+                    <span className="text-sm">{tEntity("transaction")}</span>
                   </div>
                   <ArrowRight className="text-muted-foreground size-4" />
                 </Link>
@@ -98,7 +96,7 @@ function SearchResultsContent() {
                 >
                   <div className="flex items-center gap-3">
                     <Users className="text-chart-2 size-4" />
-                    <span className="text-sm">Account</span>
+                    <span className="text-sm">{tEntity("account")}</span>
                   </div>
                   <ArrowRight className="text-muted-foreground size-4" />
                 </Link>
@@ -112,7 +110,7 @@ function SearchResultsContent() {
                 >
                   <div className="flex items-center gap-3">
                     <FileCode className="text-chart-4 size-4" />
-                    <span className="text-sm">Contract</span>
+                    <span className="text-sm">{tEntity("contract")}</span>
                   </div>
                   <ArrowRight className="text-muted-foreground size-4" />
                 </Link>
@@ -126,7 +124,7 @@ function SearchResultsContent() {
                 >
                   <div className="flex items-center gap-3">
                     <Layers className="text-chart-1 size-4" />
-                    <span className="text-sm">Ledger</span>
+                    <span className="text-sm">{tEntity("ledger")}</span>
                   </div>
                   <ArrowRight className="text-muted-foreground size-4" />
                 </Link>
@@ -140,8 +138,8 @@ function SearchResultsContent() {
         <Card>
           <CardContent className="py-8">
             <EmptyState
-              title="Couldn't identify query type"
-              description="The search query doesn't match any known Stellar entity format. Please check your input."
+              title={t("couldntIdentify")}
+              description={t("couldntIdentifyMessage")}
               icon="search"
             />
           </CardContent>
@@ -152,16 +150,19 @@ function SearchResultsContent() {
 }
 
 export default function SearchPage() {
+  const t = useTranslations("searchPage");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="space-y-6">
-      <PageHeader title="Search Results" backHref="/" backLabel="Home" showCopy={false} />
+      <PageHeader title={t("title")} backHref="/" backLabel={tCommon("home")} showCopy={false} />
 
       <Suspense
         fallback={
           <Card>
             <CardContent className="py-12 text-center">
               <div className="animate-pulse">
-                <p className="text-muted-foreground">Searching...</p>
+                <p className="text-muted-foreground">{tCommon("loading")}</p>
               </div>
             </CardContent>
           </Card>

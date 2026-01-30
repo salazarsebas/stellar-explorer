@@ -1,6 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { FileQuestion, Search, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface EmptyStateProps {
   title?: string;
@@ -20,12 +23,13 @@ const icons = {
 };
 
 export function EmptyState({
-  title = "No results found",
+  title,
   description,
   icon = "file",
   action,
   className,
 }: EmptyStateProps) {
+  const t = useTranslations("empty");
   const Icon = icons[icon];
 
   return (
@@ -35,7 +39,7 @@ export function EmptyState({
       <div className="bg-muted mb-4 rounded-full p-4">
         <Icon className="text-muted-foreground size-8" />
       </div>
-      <h3 className="text-foreground mb-1 font-medium">{title}</h3>
+      <h3 className="text-foreground mb-1 font-medium">{title ?? t("noResults")}</h3>
       {description && <p className="text-muted-foreground max-w-sm text-sm">{description}</p>}
       {action && (
         <Button variant="outline" onClick={action.onClick} className="mt-4">

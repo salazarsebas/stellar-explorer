@@ -11,21 +11,24 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { isValidContractId } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function ContractsPage() {
   const { network } = useNetwork();
   const router = useRouter();
   const [contractId, setContractId] = useState("");
   const [error, setError] = useState("");
+  const t = useTranslations("contracts");
+  const tCommon = useTranslations("common");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!contractId.trim()) {
-      setError("Please enter a contract ID");
+      setError(t("enterContractIdError"));
       return;
     }
     if (!isValidContractId(contractId.trim())) {
-      setError("Invalid contract ID format. Must start with C and be 56 characters.");
+      setError(t("invalidContractId"));
       return;
     }
     router.push(`/contract/${contractId.trim()}`);
@@ -34,10 +37,10 @@ export default function ContractsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Smart Contracts"
-        subtitle="Explore Soroban smart contracts on the Stellar network"
+        title={t("title")}
+        subtitle={t("subtitle")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />
@@ -45,13 +48,13 @@ export default function ContractsPage() {
       {/* Search for a contract */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Find a Contract</CardTitle>
+          <CardTitle className="text-base">{t("findContract")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="space-y-4">
             <div className="flex gap-2">
               <Input
-                placeholder="Enter contract ID (C...)"
+                placeholder={t("enterContractId")}
                 value={contractId}
                 onChange={(e) => {
                   setContractId(e.target.value);
@@ -61,7 +64,7 @@ export default function ContractsPage() {
               />
               <Button type="submit">
                 <Search className="mr-2 size-4" />
-                Search
+                {tCommon("search")}
               </Button>
             </div>
             {error && <p className="text-destructive text-sm">{error}</p>}
@@ -79,16 +82,15 @@ export default function ContractsPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Soroban Smart Contracts</h3>
+              <h3 className="text-lg font-semibold">{t("sorobanContracts")}</h3>
               <p className="text-muted-foreground mx-auto mt-2 max-w-md">
-                Soroban is Stellar&apos;s smart contract platform. Search for a contract by its ID
-                to view events, storage, and invocations.
+                {t("contractsDescription")}
               </p>
             </div>
             <div className="flex justify-center gap-4">
               <Button variant="outline" asChild>
                 <a href="https://soroban.stellar.org/" target="_blank" rel="noopener noreferrer">
-                  Learn about Soroban
+                  {t("learnSoroban")}
                   <ExternalLink className="ml-2 size-4" />
                 </a>
               </Button>
@@ -100,12 +102,12 @@ export default function ContractsPage() {
       {/* Popular contracts placeholder */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Popular Contracts</CardTitle>
+          <CardTitle className="text-base">{t("popularContracts")}</CardTitle>
         </CardHeader>
         <CardContent>
           <EmptyState
-            title="Coming soon"
-            description="A curated list of popular Soroban contracts will be available here."
+            title={t("comingSoon")}
+            description={t("popularContractsDescription")}
             icon="file"
           />
         </CardContent>

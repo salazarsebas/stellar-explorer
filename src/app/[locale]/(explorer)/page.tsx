@@ -21,44 +21,53 @@ import { NetworkBadge } from "@/components/common/network-badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function NetworkStats() {
   const { network } = useNetwork();
   const { data: ledger, isLoading: ledgerLoading } = useLatestLedger();
   const { data: feeStats, isLoading: feeLoading } = useFeeStats();
+  const t = useTranslations("stats");
+  const tNetwork = useTranslations("network");
 
   // Enable real-time ledger streaming
   useLedgerStream({ enabled: true });
 
   const avgFee = feeStats?.fee_charged?.mode ? stroopsToXLM(feeStats.fee_charged.mode) : "100";
 
+  const networkLabels = {
+    public: tNetwork("mainnet"),
+    testnet: tNetwork("testnet"),
+    futurenet: tNetwork("futurenet"),
+  };
+
   const stats = [
     {
-      title: "Latest Ledger",
+      title: t("latestLedger"),
       value: ledger ? formatLedgerSequence(ledger.sequence) : "-",
-      subtitle: ledger ? `${ledger.successful_transaction_count} txs` : undefined,
+      subtitle: ledger ? t("txs", { count: ledger.successful_transaction_count }) : undefined,
       icon: Layers,
       loading: ledgerLoading,
       color: "primary",
     },
     {
-      title: "Protocol Version",
+      title: t("protocolVersion"),
       value: ledger?.protocol_version?.toString() || "-",
       icon: Activity,
       loading: ledgerLoading,
       color: "chart-2",
     },
     {
-      title: "Base Fee",
+      title: t("baseFee"),
       value: `${avgFee} XLM`,
-      subtitle: "per operation",
+      subtitle: t("perOperation"),
       icon: Wallet,
       loading: feeLoading,
       color: "chart-3",
     },
     {
-      title: "Network",
-      value: network === "public" ? "Mainnet" : network === "testnet" ? "Testnet" : "Futurenet",
+      title: tNetwork("label"),
+      value: networkLabels[network],
       icon: TrendingUp,
       loading: false,
       color: "chart-4",
@@ -101,6 +110,7 @@ function NetworkStats() {
 
 function RecentTransactions() {
   const { data, isLoading } = useRecentTransactions(8);
+  const t = useTranslations("home");
 
   // Enable real-time transaction streaming
   useTransactionStream({ enabled: true });
@@ -116,7 +126,9 @@ function RecentTransactions() {
   }
 
   if (!data?.records?.length) {
-    return <div className="text-muted-foreground py-8 text-center">No recent transactions</div>;
+    return (
+      <div className="text-muted-foreground py-8 text-center">{t("noRecentTransactions")}</div>
+    );
   }
 
   return (
@@ -130,6 +142,7 @@ function RecentTransactions() {
 
 function RecentLedgers() {
   const { data: latestLedger, isLoading } = useLatestLedger();
+  const t = useTranslations("home");
 
   if (isLoading || !latestLedger) {
     return (
@@ -145,9 +158,7 @@ function RecentLedgers() {
   return (
     <div className="space-y-2">
       <LedgerCard ledger={latestLedger} />
-      <div className="text-muted-foreground py-4 text-center text-sm">
-        View all ledgers for more history
-      </div>
+      <div className="text-muted-foreground py-4 text-center text-sm">{t("viewAllLedgers")}</div>
     </div>
   );
 }
@@ -155,6 +166,9 @@ function RecentLedgers() {
 export default function HomePage() {
   const { network } = useNetwork();
   const { isConnected: ledgerConnected } = useLedgerStream({ enabled: true });
+  const t = useTranslations("home");
+  const tCommon = useTranslations("common");
+  const tExplore = useTranslations("exploreCards");
 
   // Determine streaming status
   const streamingStatus = ledgerConnected ? "connected" : "connecting";
@@ -170,19 +184,16 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-2xl space-y-6 text-center">
           <div className="bg-primary/10 border-primary/20 text-primary mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm">
             <Sparkles className="size-3.5" />
-            <span>Real-time blockchain data</span>
+            <span>{t("badge")}</span>
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             <span className="from-foreground via-foreground to-foreground/60 bg-gradient-to-r bg-clip-text text-transparent">
-              Explore the Stellar Network
+              {t("title")}
             </span>
           </h1>
 
-          <p className="text-muted-foreground mx-auto max-w-lg text-lg">
-            Discover transactions, accounts, assets, and smart contracts with a premium explorer
-            experience.
-          </p>
+          <p className="text-muted-foreground mx-auto max-w-lg text-lg">{t("subtitle")}</p>
 
           <div className="flex items-center justify-center gap-3">
             <NetworkBadge network={network} />
@@ -194,7 +205,7 @@ export default function HomePage() {
       {/* Network Stats */}
       <section>
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Network Overview</h2>
+          <h2 className="text-lg font-semibold">{t("networkOverview")}</h2>
         </div>
         <Suspense
           fallback={
@@ -221,7 +232,7 @@ export default function HomePage() {
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BarChart3 className="text-muted-foreground size-5" />
-            <h2 className="text-lg font-semibold">Network Activity</h2>
+            <h2 className="text-lg font-semibold">{t("networkActivity")}</h2>
           </div>
         </div>
         <DashboardCharts />
@@ -241,11 +252,11 @@ export default function HomePage() {
               <div className="bg-primary/10 flex size-8 items-center justify-center rounded-lg">
                 <Activity className="text-primary size-4" />
               </div>
-              <CardTitle className="text-base font-semibold">Recent Transactions</CardTitle>
+              <CardTitle className="text-base font-semibold">{t("recentTransactions")}</CardTitle>
             </div>
             <Button variant="ghost" size="sm" asChild className="hover:bg-white/10">
               <Link href="/transactions">
-                View all
+                {tCommon("viewAll")}
                 <ArrowRight className="ml-1 size-4" />
               </Link>
             </Button>
@@ -272,11 +283,11 @@ export default function HomePage() {
               <div className="bg-chart-1/10 flex size-8 items-center justify-center rounded-lg">
                 <Layers className="text-chart-1 size-4" />
               </div>
-              <CardTitle className="text-base font-semibold">Latest Ledger</CardTitle>
+              <CardTitle className="text-base font-semibold">{t("latestLedger")}</CardTitle>
             </div>
             <Button variant="ghost" size="sm" asChild className="hover:bg-white/10">
               <Link href="/ledgers">
-                View all
+                {tCommon("viewAll")}
                 <ArrowRight className="ml-1 size-4" />
               </Link>
             </Button>
@@ -299,14 +310,14 @@ export default function HomePage() {
 
       {/* Quick links */}
       <section>
-        <h2 className="mb-5 text-lg font-semibold">Explore</h2>
+        <h2 className="mb-5 text-lg font-semibold">{t("explore")}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {[
             {
               href: "/transactions",
               icon: Activity,
-              label: "Transactions",
-              description: "View all network activity",
+              label: tExplore("transactions"),
+              description: tExplore("transactionsDesc"),
               color: "primary",
               bgClass: "bg-primary/10",
               textClass: "text-primary",
@@ -314,8 +325,8 @@ export default function HomePage() {
             {
               href: "/ledgers",
               icon: Layers,
-              label: "Ledgers",
-              description: "Browse ledger history",
+              label: tExplore("ledgers"),
+              description: tExplore("ledgersDesc"),
               color: "chart-1",
               bgClass: "bg-chart-1/10",
               textClass: "text-chart-1",
@@ -323,8 +334,8 @@ export default function HomePage() {
             {
               href: "/assets",
               icon: Wallet,
-              label: "Assets",
-              description: "Discover tokens",
+              label: tExplore("assets"),
+              description: tExplore("assetsDesc"),
               color: "chart-3",
               bgClass: "bg-chart-3/10",
               textClass: "text-chart-3",
@@ -332,8 +343,8 @@ export default function HomePage() {
             {
               href: "/contracts",
               icon: TrendingUp,
-              label: "Contracts",
-              description: "Explore Soroban",
+              label: tExplore("contracts"),
+              description: tExplore("contractsDesc"),
               color: "chart-4",
               bgClass: "bg-chart-4/10",
               textClass: "text-chart-4",

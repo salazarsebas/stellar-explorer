@@ -6,6 +6,7 @@ import { ChartWrapper } from "./chart-wrapper";
 import { chartColors, chartAxisStyle } from "./chart-config";
 import { useTPSChartData } from "@/lib/hooks/use-chart-data";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 function formatTime(timestamp: number): string {
   return new Date(timestamp).toLocaleTimeString("en-US", {
@@ -34,12 +35,13 @@ function CustomTooltip({ active, payload }: TooltipProps) {
 
 export default function TPSChart() {
   const { data, currentTPS, isLoading } = useTPSChartData();
+  const t = useTranslations("charts");
 
   const hasData = data.length > 1;
 
   return (
     <ChartWrapper
-      title="Transactions Per Second"
+      title={t("tps")}
       icon={Zap}
       loading={isLoading}
       headerRight={
@@ -52,13 +54,13 @@ export default function TPSChart() {
           >
             {currentTPS.toFixed(1)}
           </span>
-          <span className="text-muted-foreground ml-1 text-xs">TPS</span>
+          <span className="text-muted-foreground ml-1 text-xs">{t("tpsLabel")}</span>
         </div>
       }
     >
       {!hasData ? (
         <div className="flex h-[140px] items-center justify-center">
-          <p className="text-muted-foreground text-sm">Collecting data...</p>
+          <p className="text-muted-foreground text-sm">{t("collectingData")}</p>
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={140}>

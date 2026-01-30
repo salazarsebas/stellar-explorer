@@ -7,6 +7,7 @@ import { CopyButton } from "@/components/common/copy-button";
 import { QrDialog } from "@/components/common/qr-dialog";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 interface PageHeaderProps {
   title: string;
@@ -27,7 +28,7 @@ export function PageHeader({
   subtitle,
   hash,
   backHref,
-  backLabel = "Back",
+  backLabel,
   showQr = false,
   showCopy = true,
   copyValue,
@@ -35,6 +36,9 @@ export function PageHeader({
   actions,
   className,
 }: PageHeaderProps) {
+  const t = useTranslations("common");
+  const tQr = useTranslations("components.qrDialog");
+
   return (
     <div className={cn("mb-6", className)}>
       {/* Back link */}
@@ -44,7 +48,7 @@ export function PageHeader({
           className="text-muted-foreground hover:text-foreground mb-2 inline-flex items-center gap-1 text-sm transition-colors"
         >
           <ChevronLeft className="size-4" />
-          {backLabel}
+          {backLabel ?? t("back")}
         </Link>
       )}
 
@@ -59,17 +63,17 @@ export function PageHeader({
         {(actions || showCopy || showQr) && (
           <div className="flex items-center gap-2">
             {showCopy && (copyValue || hash) && (
-              <CopyButton value={copyValue || hash || ""} variant="text" label="Copy" />
+              <CopyButton value={copyValue || hash || ""} variant="text" label={t("copy")} />
             )}
             {showCopy && typeof window !== "undefined" && (copyValue || hash) && (
               <CopyButton
                 value={`${window.location.origin}${window.location.pathname}`}
                 variant="text"
-                label="Copy Link"
+                label={t("copyLink")}
                 isLink
               />
             )}
-            {showQr && hash && <QrDialog value={hash} title="Account QR Code" />}
+            {showQr && hash && <QrDialog value={hash} title={tQr("accountQrCode")} />}
             {actions}
           </div>
         )}

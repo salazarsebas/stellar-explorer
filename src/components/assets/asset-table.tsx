@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -83,6 +84,8 @@ export function AssetTableSkeleton({ rows = 5 }: { rows?: number }) {
 }
 
 export function AssetTable({ assets, isLoading, showRank = true, title }: AssetTableProps) {
+  const t = useTranslations("components.assetTable");
+
   if (isLoading) {
     return <AssetTableSkeleton rows={assets?.length || 6} />;
   }
@@ -91,7 +94,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
     return (
       <Card>
         <CardContent className="text-muted-foreground py-8 text-center">
-          No assets found
+          {t("noAssetsFound")}
         </CardContent>
       </Card>
     );
@@ -107,12 +110,12 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
       <CardContent className={title ? "pt-0" : ""}>
         {/* Header */}
         <div className="text-muted-foreground mb-3 hidden gap-4 border-b pb-3 text-xs font-medium md:grid md:grid-cols-12">
-          {showRank && <div className="col-span-1">#</div>}
-          <div className={showRank ? "col-span-3" : "col-span-4"}>Asset</div>
-          <div className="col-span-2 text-right">Price (XLM)</div>
-          <div className="col-span-2 text-right">24h Change</div>
-          <div className="col-span-2 text-right">24h Volume</div>
-          <div className="col-span-2 text-right">Holders</div>
+          {showRank && <div className="col-span-1">{t("rank")}</div>}
+          <div className={showRank ? "col-span-3" : "col-span-4"}>{t("asset")}</div>
+          <div className="col-span-2 text-right">{t("priceXlm")}</div>
+          <div className="col-span-2 text-right">{t("change24h")}</div>
+          <div className="col-span-2 text-right">{t("volume24h")}</div>
+          <div className="col-span-2 text-right">{t("holders")}</div>
         </div>
 
         {/* Rows */}
@@ -144,7 +147,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
                       <span className="font-semibold">{asset.code}</span>
                       {asset.flags?.auth_required && (
                         <Badge variant="outline" className="px-1 text-[10px]">
-                          Auth
+                          {t("auth")}
                         </Badge>
                       )}
                     </div>

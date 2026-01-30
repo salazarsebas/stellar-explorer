@@ -1,10 +1,11 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { glossaryTerms, type GlossaryLevel } from "@/lib/glossary";
+import { glossaryTermsMeta, type GlossaryLevel } from "@/lib/glossary";
 import { ExternalLink, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -28,12 +29,6 @@ const levelColors: Record<GlossaryLevel, string> = {
   advanced: "bg-purple-500/10 text-purple-500 border-purple-500/20",
 };
 
-const levelLabels: Record<GlossaryLevel, string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
-};
-
 export function GlossaryTerm({
   term,
   children,
@@ -41,14 +36,21 @@ export function GlossaryTerm({
   variant = "inline",
   showFull = false,
 }: GlossaryTermProps) {
-  const entry = glossaryTerms[term];
+  const t = useTranslations("learn");
+  const tGlossary = useTranslations("glossary");
+  const meta = glossaryTermsMeta[term];
 
-  if (!entry) {
+  if (!meta) {
     // If term not found, just render children or term name without tooltip
     return <span className={className}>{children || term}</span>;
   }
 
-  const triggerContent = children || entry.term;
+  // Get translated content
+  const termName = tGlossary(`terms.${term}.term`);
+  const shortDefinition = tGlossary(`terms.${term}.short`);
+  const fullDefinition = tGlossary(`terms.${term}.full`);
+
+  const triggerContent = children || termName;
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -79,29 +81,29 @@ export function GlossaryTerm({
         <TooltipContent side="top" align="start" className="max-w-sm p-0" sideOffset={8}>
           <div className="space-y-2 p-3">
             <div className="flex items-start justify-between gap-2">
-              <h4 className="text-sm font-semibold">{entry.term}</h4>
+              <h4 className="text-sm font-semibold">{termName}</h4>
               <Badge
                 variant="outline"
-                className={cn("px-1.5 py-0 text-[10px]", levelColors[entry.level])}
+                className={cn("px-1.5 py-0 text-[10px]", levelColors[meta.level])}
               >
-                {levelLabels[entry.level]}
+                {t(meta.level)}
               </Badge>
             </div>
             <p className="text-muted-foreground text-xs leading-relaxed">
-              {showFull ? entry.fullDefinition : entry.shortDefinition}
+              {showFull ? fullDefinition : shortDefinition}
             </p>
             <div className="flex items-center gap-2 pt-1">
               <Button variant="ghost" size="sm" className="h-6 text-xs" asChild>
-                <Link href={`/learn#${entry.id}`}>
+                <Link href={`/learn#${meta.id}`}>
                   <BookOpen className="mr-1 size-3" />
-                  Learn more
+                  {t("learnMore")}
                 </Link>
               </Button>
-              {entry.learnMoreUrl && (
+              {meta.learnMoreUrl && (
                 <Button variant="ghost" size="sm" className="h-6 text-xs" asChild>
-                  <a href={entry.learnMoreUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={meta.learnMoreUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="mr-1 size-3" />
-                    Docs
+                    {t("docs")}
                   </a>
                 </Button>
               )}

@@ -10,6 +10,7 @@ import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { Star, Trash2, Users, FileCode, Coins } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const typeIcons = {
   account: Users,
@@ -32,14 +33,18 @@ const typeRoutes = {
 export default function WatchlistPage() {
   const { network } = useNetwork();
   const { items, remove, clear, isHydrated } = useWatchlist();
+  const t = useTranslations("watchlist");
+  const tCommon = useTranslations("common");
 
   if (!isHydrated) {
     return (
       <div className="space-y-6">
-        <PageHeader title="Watchlist" backHref="/" backLabel="Home" showCopy={false} />
+        <PageHeader title={t("title")} backHref="/" backLabel={tCommon("home")} showCopy={false} />
         <Card>
           <CardContent className="py-12">
-            <div className="text-muted-foreground animate-pulse text-center">Loading...</div>
+            <div className="text-muted-foreground animate-pulse text-center">
+              {tCommon("loading")}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -49,17 +54,17 @@ export default function WatchlistPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Watchlist"
-        subtitle="Track your favorite accounts, contracts, and assets"
+        title={t("title")}
+        subtitle={t("subtitle")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
         actions={
           items.length > 0 ? (
             <Button variant="outline" size="sm" onClick={clear}>
               <Trash2 className="mr-2 size-4" />
-              Clear All
+              {tCommon("clearAll")}
             </Button>
           ) : null
         }
@@ -69,16 +74,12 @@ export default function WatchlistPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Star className="size-4" />
-            Saved Items ({items.length})
+            {t("savedItems", { count: items.length })}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {items.length === 0 ? (
-            <EmptyState
-              title="Your watchlist is empty"
-              description="Add accounts, contracts, or assets to your watchlist to quickly access them later."
-              icon="file"
-            />
+            <EmptyState title={t("emptyTitle")} description={t("emptyDescription")} icon="file" />
           ) : (
             <div className="space-y-2">
               {items.map((item) => {

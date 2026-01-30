@@ -16,11 +16,14 @@ import { formatLedgerSequence } from "@/lib/utils";
 import { isValidLedgerSequence } from "@/lib/utils/entity";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function LedgersPage() {
   const router = useRouter();
   const { network } = useNetwork();
   const { data: latestLedger, isLoading, error, refetch } = useLatestLedger();
+  const t = useTranslations("ledgers");
+  const tCommon = useTranslations("common");
 
   const [ledgerSequence, setLedgerSequence] = useState("");
   const [searchError, setSearchError] = useState("");
@@ -32,12 +35,12 @@ export default function LedgersPage() {
     const trimmed = ledgerSequence.trim();
 
     if (!trimmed) {
-      setSearchError("Please enter a ledger sequence number");
+      setSearchError(t("enterSequenceError"));
       return;
     }
 
     if (!isValidLedgerSequence(trimmed)) {
-      setSearchError("Invalid ledger sequence. Must be a positive number.");
+      setSearchError(t("invalidSequence"));
       return;
     }
 
@@ -52,9 +55,9 @@ export default function LedgersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Ledgers"
+        title={t("title")}
         backHref="/"
-        backLabel="Home"
+        backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
       />
@@ -62,7 +65,7 @@ export default function LedgersPage() {
       {/* Search Form */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Search Ledger</CardTitle>
+          <CardTitle className="text-base">{t("searchLedger")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="space-y-4">
@@ -71,7 +74,7 @@ export default function LedgersPage() {
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                placeholder="Enter ledger sequence number..."
+                placeholder={t("enterSequence")}
                 value={ledgerSequence}
                 onChange={(e) => {
                   setLedgerSequence(e.target.value);
@@ -81,13 +84,13 @@ export default function LedgersPage() {
               />
               <Button type="submit">
                 <Search className="mr-2 size-4" />
-                Search
+                {tCommon("search")}
               </Button>
             </div>
             {searchError && <p className="text-destructive text-sm">{searchError}</p>}
             {latestLedger && (
               <p className="text-muted-foreground text-sm">
-                Latest ledger: #{formatLedgerSequence(latestLedger.sequence)}
+                {t("latestLedger", { sequence: formatLedgerSequence(latestLedger.sequence) })}
               </p>
             )}
           </form>
@@ -96,7 +99,7 @@ export default function LedgersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Recent Ledgers</CardTitle>
+          <CardTitle className="text-base">{t("recentLedgers")}</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -106,9 +109,9 @@ export default function LedgersPage() {
               ))}
             </div>
           ) : error ? (
-            <ErrorState title="Failed to load ledgers" message={error.message} onRetry={refetch} />
+            <ErrorState title={t("failedToLoad")} message={error.message} onRetry={refetch} />
           ) : !latestLedger ? (
-            <EmptyState title="No ledgers" description="No ledgers found on this network." />
+            <EmptyState title={t("noLedgers")} description={t("noLedgersFound")} />
           ) : (
             <div className="space-y-2">
               {/* Show the latest ledger with full data */}
