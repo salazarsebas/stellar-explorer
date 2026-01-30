@@ -10,6 +10,7 @@
     "accounts": "Konten",
     "assets": "Assets",
     "contracts": "Verträge",
+    "analytics": "Analytik",
     "learn": "Lernen",
     "watchlist": "Merkliste",
     "collapse": "Einklappen",
@@ -599,5 +600,84 @@
     "noTransactionsFor": "Keine Transaktionen für diesen {type} gefunden."
   },
   "transactions_word": "Transaktionen",
-  "xlm": "XLM"
+  "xlm": "XLM",
+  "analyticsMode": {
+    "title": "Analysemodus",
+    "enableAnalyticsMode": "Analysemodus aktivieren",
+    "features": "Funktionen",
+    "showStatistics": "Statistiken anzeigen",
+    "showTrendlines": "Trendlinien anzeigen",
+    "enableExport": "Export aktivieren",
+    "chartDensity": "Diagrammdichte",
+    "compact": "Kompakt",
+    "normal": "Normal",
+    "expanded": "Erweitert"
+  },
+  "analytics": {
+    "title": "Netzwerk-Analytik",
+    "subtitle": "Erweiterte Statistiken und Datenanalyse für das Stellar-Netzwerk",
+    "keyMetrics": "Hauptkennzahlen",
+    "funded": "finanziert",
+    "tabs": {
+      "overview": "Übersicht",
+      "transactions": "Transaktionen",
+      "network": "Netzwerk"
+    },
+    "timeRange": {
+      "1h": "1 Stunde",
+      "24h": "24 Stunden",
+      "7d": "7 Tage",
+      "30d": "30 Tage"
+    },
+    "enableBanner": {
+      "title": "Aktivieren Sie den Analysemodus für erweiterte Funktionen",
+      "description": "Erhalten Sie Zugang zu detaillierten Statistiken, Trendlinien und Datenexportfunktionen."
+    },
+    "metrics": {
+      "totalLedgers": "Gesamt Ledgers",
+      "totalAccounts": "Gesamt Konten",
+      "totalTransactions": "Gesamt Transaktionen",
+      "totalAssets": "Gesamt Vermögenswerte"
+    },
+    "statistics": {
+      "operationsPerTx": "Operationen pro Transaktion",
+      "feesStroops": "Gebühren (Stroops)",
+      "summary": "Statistische Zusammenfassung"
+    },
+    "stats": {
+      "mean": "Mittelwert",
+      "median": "Median",
+      "stdDev": "Standardabweichung",
+      "min": "Minimum",
+      "max": "Maximum",
+      "total": "Gesamt",
+      "range": "Bereich"
+    },
+    "tx": {
+      "sampleSize": "Stichprobengröße",
+      "recentTransactions": "aktuelle Transaktionen",
+      "successRate": "Erfolgsrate",
+      "successful": "Erfolgreich",
+      "failed": "Fehlgeschlagen",
+      "totalOperations": "Gesamt Operationen",
+      "avgOpsPerTx": "Durchschn. Ops/TX"
+    },
+    "network": {
+      "accountStats": "Kontostatistiken",
+      "activityStats": "Aktivitätsstatistiken",
+      "latestLedger": "Neueste Ledger-Info",
+      "totalAccounts": "Gesamt Konten",
+      "fundedAccounts": "Finanzierte Konten",
+      "deletedAccounts": "Gelöschte Konten",
+      "fundedRatio": "Finanzierungsquote",
+      "totalOperations": "Gesamt Operationen",
+      "totalTrades": "Gesamt Trades",
+      "totalPayments": "Gesamt Zahlungen",
+      "trustlines": "Vertrauenslinien",
+      "sequence": "Sequenz",
+      "transactions": "Transaktionen",
+      "operations": "Operationen",
+      "protocolVersion": "Protokollversion"
+    }
+  }
 }

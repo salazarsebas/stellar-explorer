@@ -9,6 +9,7 @@ import { StellarLogo } from "./stellar-icon";
 import { GlobalSearch } from "@/components/search/global-search";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
 import { DeveloperModeToggle } from "@/components/common/developer-mode-toggle";
+import { AnalyticsModeToggle } from "@/components/common/analytics-mode-toggle";
 import { useTheme } from "@/lib/providers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -58,6 +59,9 @@ export function Header() {
 
           {/* Developer Mode */}
           <DeveloperModeToggle />
+
+          {/* Analytics Mode */}
+          <AnalyticsModeToggle />
 
           {/* Refresh */}
           <Button

@@ -10,6 +10,7 @@
     "accounts": "アカウント",
     "assets": "アセット",
     "contracts": "コントラクト",
+    "analytics": "分析",
     "learn": "学ぶ",
     "watchlist": "ウォッチリスト",
     "collapse": "折りたたむ",
@@ -599,5 +600,84 @@
     "noTransactionsFor": "この{type}のトランザクションが見つかりませんでした。"
   },
   "transactions_word": "トランザクション",
-  "xlm": "XLM"
+  "xlm": "XLM",
+  "analyticsMode": {
+    "title": "分析モード",
+    "enableAnalyticsMode": "分析モードを有効化",
+    "features": "機能",
+    "showStatistics": "統計を表示",
+    "showTrendlines": "トレンドラインを表示",
+    "enableExport": "データエクスポートを有効化",
+    "chartDensity": "チャート密度",
+    "compact": "コンパクト",
+    "normal": "標準",
+    "expanded": "拡張"
+  },
+  "analytics": {
+    "title": "ネットワーク分析",
+    "subtitle": "Stellarネットワークの高度な統計とデータ分析",
+    "keyMetrics": "主要指標",
+    "funded": "資金調達済み",
+    "tabs": {
+      "overview": "概要",
+      "transactions": "トランザクション",
+      "network": "ネットワーク"
+    },
+    "timeRange": {
+      "1h": "1時間",
+      "24h": "24時間",
+      "7d": "7日間",
+      "30d": "30日間"
+    },
+    "enableBanner": {
+      "title": "高度な機能のために分析モードを有効化",
+      "description": "詳細な統計、トレンドライン、データエクスポート機能にアクセスできます。"
+    },
+    "metrics": {
+      "totalLedgers": "総レジャー数",
+      "totalAccounts": "総アカウント数",
+      "totalTransactions": "総トランザクション数",
+      "totalAssets": "総資産数"
+    },
+    "statistics": {
+      "operationsPerTx": "トランザクションあたりの操作数",
+      "feesStroops": "手数料 (stroops)",
+      "summary": "統計サマリー"
+    },
+    "stats": {
+      "mean": "平均",
+      "median": "中央値",
+      "stdDev": "標準偏差",
+      "min": "最小",
+      "max": "最大",
+      "total": "合計",
+      "range": "範囲"
+    },
+    "tx": {
+      "sampleSize": "サンプルサイズ",
+      "recentTransactions": "最近のトランザクション",
+      "successRate": "成功率",
+      "successful": "成功",
+      "failed": "失敗",
+      "totalOperations": "総操作数",
+      "avgOpsPerTx": "平均操作/TX"
+    },
+    "network": {
+      "accountStats": "アカウント統計",
+      "activityStats": "活動統計",
+      "latestLedger": "最新レジャー情報",
+      "totalAccounts": "総アカウント数",
+      "fundedAccounts": "資金調達済みアカウント",
+      "deletedAccounts": "削除済みアカウント",
+      "fundedRatio": "資金調達率",
+      "totalOperations": "総操作数",
+      "totalTrades": "総取引数",
+      "totalPayments": "総支払い数",
+      "trustlines": "トラストライン",
+      "sequence": "シーケンス",
+      "transactions": "トランザクション",
+      "operations": "操作",
+      "protocolVersion": "プロトコルバージョン"
+    }
+  }
 }

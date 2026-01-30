@@ -10,6 +10,7 @@
     "accounts": "Cuentas",
     "assets": "Activos",
     "contracts": "Contratos",
+    "analytics": "Analíticas",
     "learn": "Aprender",
     "watchlist": "Favoritos",
     "collapse": "Colapsar",
@@ -756,6 +757,85 @@
         "short": "Balance mínimo de XLM requerido para mantener cuenta y datos.",
         "full": "La reserva es el balance mínimo de XLM que una cuenta debe mantener. La reserva base (actualmente 0.5 XLM) más 0.5 XLM por subentrada (líneas de confianza, ofertas, firmantes, entradas de datos). Esto previene la inflación del libro mayor y asegura que las cuentas siempre puedan pagar tarifas. Las reservas pueden ser patrocinadas."
       }
+    }
+  },
+  "analyticsMode": {
+    "title": "Modo Analítico",
+    "enableAnalyticsMode": "Activar Modo Analítico",
+    "features": "Características",
+    "showStatistics": "Mostrar Estadísticas",
+    "showTrendlines": "Mostrar Tendencias",
+    "enableExport": "Habilitar Exportación",
+    "chartDensity": "Densidad de Gráficos",
+    "compact": "Compacto",
+    "normal": "Normal",
+    "expanded": "Expandido"
+  },
+  "analytics": {
+    "title": "Analíticas de Red",
+    "subtitle": "Estadísticas avanzadas y análisis de datos para la red Stellar",
+    "keyMetrics": "Métricas Clave",
+    "funded": "financiadas",
+    "tabs": {
+      "overview": "Resumen",
+      "transactions": "Transacciones",
+      "network": "Red"
+    },
+    "timeRange": {
+      "1h": "1 Hora",
+      "24h": "24 Horas",
+      "7d": "7 Días",
+      "30d": "30 Días"
+    },
+    "enableBanner": {
+      "title": "Activa el Modo Analítico para funciones avanzadas",
+      "description": "Obtén acceso a estadísticas detalladas, líneas de tendencia y capacidades de exportación de datos."
+    },
+    "metrics": {
+      "totalLedgers": "Total de Ledgers",
+      "totalAccounts": "Total de Cuentas",
+      "totalTransactions": "Total de Transacciones",
+      "totalAssets": "Total de Activos"
+    },
+    "statistics": {
+      "operationsPerTx": "Operaciones por Transacción",
+      "feesStroops": "Comisiones (stroops)",
+      "summary": "Resumen Estadístico"
+    },
+    "stats": {
+      "mean": "Media",
+      "median": "Mediana",
+      "stdDev": "Desviación Estándar",
+      "min": "Mínimo",
+      "max": "Máximo",
+      "total": "Total",
+      "range": "Rango"
+    },
+    "tx": {
+      "sampleSize": "Tamaño de Muestra",
+      "recentTransactions": "transacciones recientes",
+      "successRate": "Tasa de Éxito",
+      "successful": "Exitosas",
+      "failed": "Fallidas",
+      "totalOperations": "Total de Operaciones",
+      "avgOpsPerTx": "Ops/TX Promedio"
+    },
+    "network": {
+      "accountStats": "Estadísticas de Cuentas",
+      "activityStats": "Estadísticas de Actividad",
+      "latestLedger": "Información del Último Ledger",
+      "totalAccounts": "Total de Cuentas",
+      "fundedAccounts": "Cuentas Financiadas",
+      "deletedAccounts": "Cuentas Eliminadas",
+      "fundedRatio": "Ratio de Financiación",
+      "totalOperations": "Total de Operaciones",
+      "totalTrades": "Total de Intercambios",
+      "totalPayments": "Total de Pagos",
+      "trustlines": "Líneas de Confianza",
+      "sequence": "Secuencia",
+      "transactions": "Transacciones",
+      "operations": "Operaciones",
+      "protocolVersion": "Versión del Protocolo"
     }
   }
 }

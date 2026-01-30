@@ -10,6 +10,7 @@
     "accounts": "계정",
     "assets": "자산",
     "contracts": "컨트랙트",
+    "analytics": "분석",
     "learn": "학습",
     "watchlist": "관심목록",
     "collapse": "접기",
@@ -756,6 +757,85 @@
         "short": "계정 및 데이터를 유지하는 데 필요한 최소 XLM 잔액.",
         "full": "준비금은 계정이 유지해야 하는 최소 XLM 잔액입니다. 기본 준비금(현재 0.5 XLM)에 서브엔트리당(신뢰선, 주문, 서명자, 데이터 항목) 0.5 XLM을 더합니다. 이는 원장 비대화를 방지하고 계정이 항상 수수료를 지불할 수 있도록 합니다. 준비금은 후원될 수 있습니다."
       }
+    }
+  },
+  "analyticsMode": {
+    "title": "분석 모드",
+    "enableAnalyticsMode": "분석 모드 활성화",
+    "features": "기능",
+    "showStatistics": "통계 표시",
+    "showTrendlines": "추세선 표시",
+    "enableExport": "데이터 내보내기 활성화",
+    "chartDensity": "차트 밀도",
+    "compact": "간결",
+    "normal": "보통",
+    "expanded": "확장"
+  },
+  "analytics": {
+    "title": "네트워크 분석",
+    "subtitle": "Stellar 네트워크를 위한 고급 통계 및 데이터 분석",
+    "keyMetrics": "주요 지표",
+    "funded": "펀딩됨",
+    "tabs": {
+      "overview": "개요",
+      "transactions": "트랜잭션",
+      "network": "네트워크"
+    },
+    "timeRange": {
+      "1h": "1시간",
+      "24h": "24시간",
+      "7d": "7일",
+      "30d": "30일"
+    },
+    "enableBanner": {
+      "title": "고급 기능을 위해 분석 모드를 활성화하세요",
+      "description": "상세한 통계, 추세선 및 데이터 내보내기 기능에 액세스할 수 있습니다."
+    },
+    "metrics": {
+      "totalLedgers": "총 원장 수",
+      "totalAccounts": "총 계정 수",
+      "totalTransactions": "총 트랜잭션 수",
+      "totalAssets": "총 자산 수"
+    },
+    "statistics": {
+      "operationsPerTx": "트랜잭션당 오퍼레이션",
+      "feesStroops": "수수료 (stroops)",
+      "summary": "통계 요약"
+    },
+    "stats": {
+      "mean": "평균",
+      "median": "중앙값",
+      "stdDev": "표준편차",
+      "min": "최소",
+      "max": "최대",
+      "total": "총계",
+      "range": "범위"
+    },
+    "tx": {
+      "sampleSize": "샘플 크기",
+      "recentTransactions": "최근 트랜잭션",
+      "successRate": "성공률",
+      "successful": "성공",
+      "failed": "실패",
+      "totalOperations": "총 오퍼레이션",
+      "avgOpsPerTx": "평균 Ops/TX"
+    },
+    "network": {
+      "accountStats": "계정 통계",
+      "activityStats": "활동 통계",
+      "latestLedger": "최신 원장 정보",
+      "totalAccounts": "총 계정",
+      "fundedAccounts": "펀딩된 계정",
+      "deletedAccounts": "삭제된 계정",
+      "fundedRatio": "펀딩 비율",
+      "totalOperations": "총 오퍼레이션",
+      "totalTrades": "총 거래",
+      "totalPayments": "총 결제",
+      "trustlines": "신뢰선",
+      "sequence": "시퀀스",
+      "transactions": "트랜잭션",
+      "operations": "오퍼레이션",
+      "protocolVersion": "프로토콜 버전"
     }
   }
 }

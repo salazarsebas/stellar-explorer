@@ -10,6 +10,7 @@
     "accounts": "账户",
     "assets": "资产",
     "contracts": "合约",
+    "analytics": "分析",
     "learn": "学习",
     "watchlist": "关注列表",
     "collapse": "收起",
@@ -599,5 +600,84 @@
     "noTransactionsFor": "未找到此{type}的交易。"
   },
   "transactions_word": "交易",
-  "xlm": "XLM"
+  "xlm": "XLM",
+  "analyticsMode": {
+    "title": "分析模式",
+    "enableAnalyticsMode": "启用分析模式",
+    "features": "功能",
+    "showStatistics": "显示统计",
+    "showTrendlines": "显示趋势线",
+    "enableExport": "启用数据导出",
+    "chartDensity": "图表密度",
+    "compact": "紧凑",
+    "normal": "正常",
+    "expanded": "展开"
+  },
+  "analytics": {
+    "title": "网络分析",
+    "subtitle": "Stellar 网络的高级统计和数据分析",
+    "keyMetrics": "关键指标",
+    "funded": "已资助",
+    "tabs": {
+      "overview": "概览",
+      "transactions": "交易",
+      "network": "网络"
+    },
+    "timeRange": {
+      "1h": "1 小时",
+      "24h": "24 小时",
+      "7d": "7 天",
+      "30d": "30 天"
+    },
+    "enableBanner": {
+      "title": "启用分析模式以获取高级功能",
+      "description": "获取详细统计、趋势线和数据导出功能。"
+    },
+    "metrics": {
+      "totalLedgers": "总账本数",
+      "totalAccounts": "总账户数",
+      "totalTransactions": "总交易数",
+      "totalAssets": "总资产数"
+    },
+    "statistics": {
+      "operationsPerTx": "每笔交易的操作数",
+      "feesStroops": "交易费用 (stroops)",
+      "summary": "统计摘要"
+    },
+    "stats": {
+      "mean": "平均值",
+      "median": "中位数",
+      "stdDev": "标准差",
+      "min": "最小值",
+      "max": "最大值",
+      "total": "总计",
+      "range": "范围"
+    },
+    "tx": {
+      "sampleSize": "样本大小",
+      "recentTransactions": "最近交易",
+      "successRate": "成功率",
+      "successful": "成功",
+      "failed": "失败",
+      "totalOperations": "总操作数",
+      "avgOpsPerTx": "平均操作/交易"
+    },
+    "network": {
+      "accountStats": "账户统计",
+      "activityStats": "活动统计",
+      "latestLedger": "最新账本信息",
+      "totalAccounts": "总账户数",
+      "fundedAccounts": "已资助账户",
+      "deletedAccounts": "已删除账户",
+      "fundedRatio": "资助比例",
+      "totalOperations": "总操作数",
+      "totalTrades": "总交易数",
+      "totalPayments": "总支付数",
+      "trustlines": "信任线",
+      "sequence": "序列",
+      "transactions": "交易",
+      "operations": "操作",
+      "protocolVersion": "协议版本"
+    }
+  }
 }

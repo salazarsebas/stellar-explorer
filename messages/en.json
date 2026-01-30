@@ -10,6 +10,7 @@
     "accounts": "Accounts",
     "assets": "Assets",
     "contracts": "Contracts",
+    "analytics": "Analytics",
     "learn": "Learn",
     "watchlist": "Watchlist",
     "collapse": "Collapse",
@@ -756,6 +757,85 @@
         "short": "Minimum XLM balance required to maintain account and data.",
         "full": "The reserve is the minimum XLM balance an account must maintain. The base reserve (currently 0.5 XLM) plus 0.5 XLM per subentry (trustlines, offers, signers, data entries). This prevents ledger bloat and ensures accounts can always pay fees. Reserves can be sponsored."
       }
+    }
+  },
+  "analyticsMode": {
+    "title": "Analytics Mode",
+    "enableAnalyticsMode": "Enable Analytics Mode",
+    "features": "Features",
+    "showStatistics": "Show Statistics",
+    "showTrendlines": "Show Trendlines",
+    "enableExport": "Enable Data Export",
+    "chartDensity": "Chart Density",
+    "compact": "Compact",
+    "normal": "Normal",
+    "expanded": "Expanded"
+  },
+  "analytics": {
+    "title": "Network Analytics",
+    "subtitle": "Advanced statistics and data analysis for the Stellar network",
+    "keyMetrics": "Key Metrics",
+    "funded": "funded",
+    "tabs": {
+      "overview": "Overview",
+      "transactions": "Transactions",
+      "network": "Network"
+    },
+    "timeRange": {
+      "1h": "1 Hour",
+      "24h": "24 Hours",
+      "7d": "7 Days",
+      "30d": "30 Days"
+    },
+    "enableBanner": {
+      "title": "Enable Analytics Mode for advanced features",
+      "description": "Get access to detailed statistics, trendlines, and data export capabilities."
+    },
+    "metrics": {
+      "totalLedgers": "Total Ledgers",
+      "totalAccounts": "Total Accounts",
+      "totalTransactions": "Total Transactions",
+      "totalAssets": "Total Assets"
+    },
+    "statistics": {
+      "operationsPerTx": "Operations per Transaction",
+      "feesStroops": "Transaction Fees (stroops)",
+      "summary": "Summary Statistics"
+    },
+    "stats": {
+      "mean": "Mean",
+      "median": "Median",
+      "stdDev": "Std Deviation",
+      "min": "Minimum",
+      "max": "Maximum",
+      "total": "Total",
+      "range": "Range"
+    },
+    "tx": {
+      "sampleSize": "Sample Size",
+      "recentTransactions": "recent transactions",
+      "successRate": "Success Rate",
+      "successful": "Successful",
+      "failed": "Failed",
+      "totalOperations": "Total Operations",
+      "avgOpsPerTx": "Avg Ops/TX"
+    },
+    "network": {
+      "accountStats": "Account Statistics",
+      "activityStats": "Activity Statistics",
+      "latestLedger": "Latest Ledger Info",
+      "totalAccounts": "Total Accounts",
+      "fundedAccounts": "Funded Accounts",
+      "deletedAccounts": "Deleted Accounts",
+      "fundedRatio": "Funded Ratio",
+      "totalOperations": "Total Operations",
+      "totalTrades": "Total Trades",
+      "totalPayments": "Total Payments",
+      "trustlines": "Trustlines",
+      "sequence": "Sequence",
+      "transactions": "Transactions",
+      "operations": "Operations",
+      "protocolVersion": "Protocol Version"
     }
   }
 }

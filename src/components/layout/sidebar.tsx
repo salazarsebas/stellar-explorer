@@ -9,6 +9,7 @@ import {
   Users,
   Coins,
   FileCode,
+  BarChart3,
   Star,
   ChevronLeft,
   ChevronRight,
@@ -34,6 +35,7 @@ export function Sidebar() {
     { href: "/accounts", icon: Users, label: t("accounts") },
     { href: "/assets", icon: Coins, label: t("assets") },
     { href: "/contracts", icon: FileCode, label: t("contracts") },
+    { href: "/analytics", icon: BarChart3, label: t("analytics") },
   ];
 
   const bottomItems = [
