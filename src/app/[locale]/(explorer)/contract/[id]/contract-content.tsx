@@ -13,7 +13,12 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
-import { useContractEvents, useContractCode, useContractStorage } from "@/lib/hooks";
+import {
+  useContractEvents,
+  useContractCode,
+  useContractStorage,
+  useContractVerification,
+} from "@/lib/hooks";
 import { isValidContractId, formatCompactNumber } from "@/lib/utils";
 import {
   Activity,
@@ -30,6 +35,10 @@ import {
   HardDrive,
   ChevronDown,
   ChevronUp,
+  ShieldCheck,
+  ExternalLink,
+  Github,
+  Loader2,
 } from "lucide-react";
 
 interface ContractContentProps {
@@ -38,6 +47,8 @@ interface ContractContentProps {
 
 function ContractSummary({ contractId }: { contractId: string }) {
   const t = useTranslations("contract");
+  const { data: verification, isLoading: verificationLoading } =
+    useContractVerification(contractId);
 
   return (
     <Card>
@@ -73,17 +84,58 @@ function ContractSummary({ contractId }: { contractId: string }) {
             </div>
           </div>
 
-          {/* Right column */}
+          {/* Right column - Verification Status */}
           <div className="space-y-4">
-            <div className="bg-warning/10 border-warning/20 rounded-lg border p-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="text-warning mt-0.5 size-5 shrink-0" />
-                <div>
-                  <p className="text-warning text-sm font-medium">{t("unverified")}</p>
-                  <p className="text-muted-foreground mt-1 text-xs">{t("unverifiedDescription")}</p>
+            {verificationLoading ? (
+              <div className="bg-muted/30 rounded-lg border p-4">
+                <div className="flex items-center gap-3">
+                  <Loader2 className="text-muted-foreground size-5 animate-spin" />
+                  <span className="text-muted-foreground text-sm">{t("checkingVerification")}</span>
                 </div>
               </div>
-            </div>
+            ) : verification?.isVerified ? (
+              <div className="bg-success/10 border-success/20 rounded-lg border p-4">
+                <div className="flex items-start gap-3">
+                  <ShieldCheck className="text-success mt-0.5 size-5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-success text-sm font-medium">{t("verified")}</p>
+                    <p className="text-muted-foreground mt-1 text-xs">{t("verifiedDescription")}</p>
+                    {verification.repository && (
+                      <a
+                        href={verification.repository}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary mt-2 inline-flex items-center gap-1.5 text-xs hover:underline"
+                      >
+                        <Github className="size-3" />
+                        {t("viewSource")}
+                        <ExternalLink className="size-3" />
+                      </a>
+                    )}
+                    {verification.wasmHash && (
+                      <div className="mt-2">
+                        <span className="text-muted-foreground text-xs">{t("wasmHash")}: </span>
+                        <code className="font-mono text-xs">
+                          {verification.wasmHash.slice(0, 8)}...{verification.wasmHash.slice(-8)}
+                        </code>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-warning/10 border-warning/20 rounded-lg border p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="text-warning mt-0.5 size-5 shrink-0" />
+                  <div>
+                    <p className="text-warning text-sm font-medium">{t("unverified")}</p>
+                    <p className="text-muted-foreground mt-1 text-xs">
+                      {t("unverifiedDescription")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
@@ -533,10 +585,28 @@ function ContractCode({ contractId }: { contractId: string }) {
 
 export function ContractContent({ id }: ContractContentProps) {
   const t = useTranslations("contract");
+  const { data: verification, isLoading: verificationLoading } = useContractVerification(id);
 
   if (!isValidContractId(id)) {
     return notFound();
   }
+
+  const headerBadge = verificationLoading ? (
+    <Badge variant="outline" className="bg-muted/50">
+      <Loader2 className="mr-1 size-3 animate-spin" />
+      {t("checking")}
+    </Badge>
+  ) : verification?.isVerified ? (
+    <Badge variant="outline" className="bg-success/15 text-success border-success/25">
+      <ShieldCheck className="mr-1 size-3" />
+      {t("verified")}
+    </Badge>
+  ) : (
+    <Badge variant="outline" className="bg-warning/15 text-warning border-warning/25">
+      <AlertTriangle className="mr-1 size-3" />
+      {t("unverified")}
+    </Badge>
+  );
 
   return (
     <div className="space-y-6">
@@ -546,12 +616,7 @@ export function ContractContent({ id }: ContractContentProps) {
         backHref="/"
         backLabel="Home"
         showQr={false}
-        badge={
-          <Badge variant="outline" className="bg-warning/15 text-warning border-warning/25">
-            <AlertTriangle className="mr-1 size-3" />
-            {t("unverified")}
-          </Badge>
-        }
+        badge={headerBadge}
       />
 
       <ContractSummary contractId={id} />

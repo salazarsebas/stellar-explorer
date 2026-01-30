@@ -14,7 +14,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { useTopAssets, useAssetsList } from "@/lib/hooks";
-import { Coins, Search, TrendingUp, Users, BarChart3, Sparkles, ArrowRight } from "lucide-react";
+import { Coins, Search, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -28,27 +28,34 @@ const XLM_ASSET = {
 };
 
 // Known popular assets with metadata
-const POPULAR_ASSETS_META: Record<string, { name: string; description: string; tomlUrl?: string }> = {
-  USDC: { name: "USD Coin", description: "Circle", tomlUrl: "https://www.centre.io/.well-known/stellar.toml" },
-  yXLM: { name: "Ultra Stellar", description: "Liquid Staking", tomlUrl: "https://ultrastellar.com/.well-known/stellar.toml" },
-  AQUA: { name: "Aquarius", description: "Liquidity Rewards", tomlUrl: "https://aqua.network/.well-known/stellar.toml" },
-  SHX: { name: "Stronghold", description: "Asset Platform" },
-  EURC: { name: "Euro Coin", description: "Circle" },
-  BTC: { name: "Bitcoin", description: "Wrapped BTC" },
-};
+const POPULAR_ASSETS_META: Record<string, { name: string; description: string; tomlUrl?: string }> =
+  {
+    USDC: {
+      name: "USD Coin",
+      description: "Circle",
+      tomlUrl: "https://www.centre.io/.well-known/stellar.toml",
+    },
+    yXLM: {
+      name: "Ultra Stellar",
+      description: "Liquid Staking",
+      tomlUrl: "https://ultrastellar.com/.well-known/stellar.toml",
+    },
+    AQUA: {
+      name: "Aquarius",
+      description: "Liquidity Rewards",
+      tomlUrl: "https://aqua.network/.well-known/stellar.toml",
+    },
+    SHX: { name: "Stronghold", description: "Asset Platform" },
+    EURC: { name: "Euro Coin", description: "Circle" },
+    BTC: { name: "Bitcoin", description: "Wrapped BTC" },
+  };
 
 function TopAssetsSection() {
   const t = useTranslations("assets");
   const { data: topAssets, isLoading, error, refetch } = useTopAssets();
 
   if (error) {
-    return (
-      <ErrorState
-        title={t("failedToLoad")}
-        message={error.message}
-        onRetry={refetch}
-      />
-    );
+    return <ErrorState title={t("failedToLoad")} message={error.message} onRetry={refetch} />;
   }
 
   if (isLoading) {
@@ -70,13 +77,7 @@ function TopAssetsSection() {
       flags: asset.flags,
     }));
 
-  return (
-    <AssetTable
-      assets={assetsData}
-      showRank={true}
-      title={t("topAssets")}
-    />
-  );
+  return <AssetTable assets={assetsData} showRank={true} title={t("topAssets")} />;
 }
 
 function AllAssetsList() {
@@ -84,13 +85,7 @@ function AllAssetsList() {
   const { data, isLoading, error, refetch } = useAssetsList();
 
   if (error) {
-    return (
-      <ErrorState
-        title={t("failedToLoad")}
-        message={error.message}
-        onRetry={refetch}
-      />
-    );
+    return <ErrorState title={t("failedToLoad")} message={error.message} onRetry={refetch} />;
   }
 
   if (isLoading) {
@@ -109,13 +104,9 @@ function AllAssetsList() {
 
   return (
     <div className="space-y-4">
-      <AssetTable
-        assets={assetsData}
-        showRank={false}
-        title={t("allAssets")}
-      />
+      <AssetTable assets={assetsData} showRank={false} title={t("allAssets")} />
       {data?.records && data.records.length >= 20 && (
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm">
           {t("showingFirst")} 20 {t("assetsNote")}
         </p>
       )}
@@ -206,38 +197,43 @@ function QuickAccessAssets() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className="font-semibold">{XLM_ASSET.name}</span>
-                <Badge variant="secondary" className="text-[10px]">Native</Badge>
+                <Badge variant="secondary" className="text-[10px]">
+                  Native
+                </Badge>
               </div>
               <p className="text-muted-foreground text-xs">{XLM_ASSET.code}</p>
             </div>
-            <ArrowRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <ArrowRight className="text-muted-foreground group-hover:text-foreground size-4 transition-colors" />
           </Link>
 
           {/* Top 3 popular assets */}
-          {Object.entries(POPULAR_ASSETS_META).slice(0, 3).map(([code, meta]) => {
-            const issuer = code === "USDC"
-              ? "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
-              : code === "yXLM"
-              ? "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55"
-              : "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA";
+          {Object.entries(POPULAR_ASSETS_META)
+            .slice(0, 3)
+            .map(([code, meta]) => {
+              const issuer =
+                code === "USDC"
+                  ? "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+                  : code === "yXLM"
+                    ? "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55"
+                    : "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA";
 
-            return (
-              <Link
-                key={code}
-                href={`/asset/${code}-${issuer}`}
-                className="bg-card/50 hover:bg-card-hover group flex items-center gap-3 rounded-xl p-4 transition-all hover:-translate-y-0.5"
-              >
-                <div className="relative">
-                  <AssetLogo code={code} issuer={issuer} tomlUrl={meta.tomlUrl} size="md" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium">{meta.name}</p>
-                  <p className="text-muted-foreground text-xs">{meta.description}</p>
-                </div>
-                <ArrowRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={code}
+                  href={`/asset/${code}-${issuer}`}
+                  className="bg-card/50 hover:bg-card-hover group flex items-center gap-3 rounded-xl p-4 transition-all hover:-translate-y-0.5"
+                >
+                  <div className="relative">
+                    <AssetLogo code={code} issuer={issuer} tomlUrl={meta.tomlUrl} size="md" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium">{meta.name}</p>
+                    <p className="text-muted-foreground text-xs">{meta.description}</p>
+                  </div>
+                  <ArrowRight className="text-muted-foreground group-hover:text-foreground size-4 transition-colors" />
+                </Link>
+              );
+            })}
         </div>
       </CardContent>
     </Card>
@@ -302,9 +298,7 @@ export default function AssetsPage() {
                 {t("assetsDescription")}
               </p>
             </div>
-            <p className="text-muted-foreground text-xs">
-              {t("assetsHint")}
-            </p>
+            <p className="text-muted-foreground text-xs">{t("assetsHint")}</p>
           </div>
         </CardContent>
       </Card>

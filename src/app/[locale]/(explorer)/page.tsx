@@ -6,6 +6,7 @@ import { DashboardCharts } from "@/components/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
+import { NetworkStatsCard } from "@/components/stats";
 import { LiveIndicator } from "@/components/common/live-indicator";
 import {
   useLatestLedger,
@@ -224,6 +225,11 @@ export default function HomePage() {
           </div>
         </div>
         <DashboardCharts />
+      </section>
+
+      {/* Network Statistics from Stellar Expert */}
+      <section>
+        <NetworkStatsCard />
       </section>
 
       {/* Two-column layout for transactions and ledgers */}

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AssetLogo } from "@/components/common/asset-logo";
-import { TrendingUp, TrendingDown, Users, Coins, BarChart3, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Minus } from "lucide-react";
 import { formatNumber, truncateHash, cn } from "@/lib/utils";
 
 export interface AssetData {
@@ -90,7 +90,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
   if (!assets || assets.length === 0) {
     return (
       <Card>
-        <CardContent className="py-8 text-center text-muted-foreground">
+        <CardContent className="text-muted-foreground py-8 text-center">
           No assets found
         </CardContent>
       </Card>
@@ -106,7 +106,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
       )}
       <CardContent className={title ? "pt-0" : ""}>
         {/* Header */}
-        <div className="hidden md:grid md:grid-cols-12 gap-4 pb-3 text-xs text-muted-foreground font-medium border-b mb-3">
+        <div className="text-muted-foreground mb-3 hidden gap-4 border-b pb-3 text-xs font-medium md:grid md:grid-cols-12">
           {showRank && <div className="col-span-1">#</div>}
           <div className={showRank ? "col-span-3" : "col-span-4"}>Asset</div>
           <div className="col-span-2 text-right">Price (XLM)</div>
@@ -123,34 +123,39 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
               href={`/asset/${asset.code}-${asset.issuer}`}
               className="group block"
             >
-              <div className="grid grid-cols-2 md:grid-cols-12 gap-4 items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+              <div className="hover:bg-muted/50 grid grid-cols-2 items-center gap-4 rounded-lg p-3 transition-colors md:grid-cols-12">
                 {/* Rank */}
                 {showRank && (
-                  <div className="hidden md:block col-span-1 text-muted-foreground font-medium">
+                  <div className="text-muted-foreground col-span-1 hidden font-medium md:block">
                     {index + 1}
                   </div>
                 )}
 
                 {/* Asset Info */}
-                <div className={cn("flex items-center gap-3", showRank ? "md:col-span-3" : "md:col-span-4")}>
+                <div
+                  className={cn(
+                    "flex items-center gap-3",
+                    showRank ? "md:col-span-3" : "md:col-span-4"
+                  )}
+                >
                   <AssetLogo code={asset.code} issuer={asset.issuer} size="md" />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{asset.code}</span>
                       {asset.flags?.auth_required && (
-                        <Badge variant="outline" className="text-[10px] px-1">
+                        <Badge variant="outline" className="px-1 text-[10px]">
                           Auth
                         </Badge>
                       )}
                     </div>
-                    <div className="text-xs text-muted-foreground truncate">
+                    <div className="text-muted-foreground truncate text-xs">
                       {truncateHash(asset.issuer, 4, 4)}
                     </div>
                   </div>
                 </div>
 
                 {/* Price */}
-                <div className="hidden md:block col-span-2 text-right">
+                <div className="col-span-2 hidden text-right md:block">
                   {asset.currentPrice ? (
                     <span className="font-mono text-sm">
                       {asset.currentPrice < 0.0001
@@ -163,7 +168,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
                 </div>
 
                 {/* 24h Change */}
-                <div className="hidden md:flex col-span-2 justify-end">
+                <div className="col-span-2 hidden justify-end md:flex">
                   {asset.priceChange24h !== undefined ? (
                     <PriceChange change={asset.priceChange24h} />
                   ) : (
@@ -172,7 +177,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
                 </div>
 
                 {/* Volume */}
-                <div className="hidden md:block col-span-2 text-right">
+                <div className="col-span-2 hidden text-right md:block">
                   {asset.volume24h ? (
                     <span className="font-mono text-sm">
                       {formatNumber(asset.volume24h.toFixed(0))} XLM
@@ -185,7 +190,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
                 {/* Holders */}
                 <div className="text-right md:col-span-2">
                   <div className="flex items-center justify-end gap-1.5">
-                    <Users className="size-3 text-muted-foreground" />
+                    <Users className="text-muted-foreground size-3" />
                     <span className="font-mono text-sm">
                       {formatNumber(asset.numAccounts.toString())}
                     </span>
@@ -193,7 +198,7 @@ export function AssetTable({ assets, isLoading, showRank = true, title }: AssetT
                 </div>
 
                 {/* Mobile: Price Change */}
-                <div className="md:hidden flex justify-end">
+                <div className="flex justify-end md:hidden">
                   {asset.priceChange24h !== undefined ? (
                     <PriceChange change={asset.priceChange24h} />
                   ) : (
@@ -227,12 +232,12 @@ export function AssetStatsCard({
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <p className="text-xs text-muted-foreground">{title}</p>
+            <p className="text-muted-foreground text-xs">{title}</p>
             <p className="text-2xl font-bold">{value}</p>
-            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+            {subtitle && <p className="text-muted-foreground text-xs">{subtitle}</p>}
           </div>
-          <div className="bg-primary/10 p-2 rounded-lg">
-            <Icon className="size-4 text-primary" />
+          <div className="bg-primary/10 rounded-lg p-2">
+            <Icon className="text-primary size-4" />
           </div>
         </div>
         {trend !== undefined && (

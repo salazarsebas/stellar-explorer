@@ -1,6 +1,7 @@
 import type { NetworkKey } from "@/types";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { getHorizonClient, getRpcClient } from "./client";
+import { getStellarExpertClient } from "./stellar-expert";
 import { LIVE_LEDGER_POLL_INTERVAL, DEFAULT_PAGE_SIZE, STALE_TIME } from "@/lib/constants";
 
 // Query key factory for consistent cache keys
@@ -59,6 +60,14 @@ export const stellarKeys = {
 
   // Fee stats
   feeStats: (network: NetworkKey) => [...stellarKeys.network(network), "feeStats"] as const,
+
+  // Stellar Expert (enriched data)
+  networkStats: (network: NetworkKey) => [...stellarKeys.network(network), "networkStats"] as const,
+  enrichedAsset: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.asset(network, code, issuer), "enriched"] as const,
+  topAssetsExpert: (network: NetworkKey) => [...stellarKeys.assets(network), "topExpert"] as const,
+  contractVerification: (network: NetworkKey, contractId: string) =>
+    [...stellarKeys.contract(network, contractId), "verification"] as const,
 };
 
 // Query option factories for TanStack Query
@@ -235,8 +244,7 @@ export const stellarQueries = {
       const horizon = getHorizonClient(network);
       const { Asset } = await import("@stellar/stellar-sdk");
 
-      const baseAsset =
-        baseCode === "XLM" ? Asset.native() : new Asset(baseCode, baseIssuer);
+      const baseAsset = baseCode === "XLM" ? Asset.native() : new Asset(baseCode, baseIssuer);
       const counterAsset =
         counterCode === "XLM" ? Asset.native() : new Asset(counterCode, counterIssuer!);
 
@@ -280,7 +288,8 @@ export const stellarQueries = {
         close24h: close24h || null,
         priceChange24h,
         tradeCount: response.records.reduce(
-          (acc, r) => acc + (typeof r.trade_count === 'string' ? parseInt(r.trade_count, 10) : r.trade_count),
+          (acc, r) =>
+            acc + (typeof r.trade_count === "string" ? parseInt(r.trade_count, 10) : r.trade_count),
           0
         ),
       };
@@ -306,10 +315,7 @@ export const stellarQueries = {
       const buyingAsset =
         buyingCode === "XLM" ? Asset.native() : new Asset(buyingCode, buyingIssuer!);
 
-      const response = await horizon
-        .orderbook(sellingAsset, buyingAsset)
-        .limit(10)
-        .call();
+      const response = await horizon.orderbook(sellingAsset, buyingAsset).limit(10).call();
 
       // Calculate spread and mid price
       const bestBid = response.bids[0] ? parseFloat(response.bids[0].price) : null;
@@ -616,5 +622,56 @@ export const stellarQueries = {
       };
     },
     staleTime: STALE_TIME,
+  }),
+
+  // ============================================
+  // Stellar Expert API Queries (Enriched Data)
+  // ============================================
+
+  // Network statistics from Stellar Expert
+  networkStats: (network: NetworkKey) => ({
+    queryKey: stellarKeys.networkStats(network),
+    queryFn: async () => {
+      const client = getStellarExpertClient(network);
+      return client.getNetworkStats();
+    },
+    staleTime: 60000, // 1 minute
+  }),
+
+  // Enriched asset data from Stellar Expert
+  enrichedAsset: (network: NetworkKey, code: string, issuer: string) => ({
+    queryKey: stellarKeys.enrichedAsset(network, code, issuer),
+    queryFn: async () => {
+      const client = getStellarExpertClient(network);
+      return client.getAsset(code, issuer);
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  }),
+
+  // Top assets list from Stellar Expert (with ratings)
+  topAssetsExpert: (
+    network: NetworkKey,
+    options?: { sort?: "rating" | "trustlines" | "volume" | "trades"; limit?: number }
+  ) => ({
+    queryKey: stellarKeys.topAssetsExpert(network),
+    queryFn: async () => {
+      const client = getStellarExpertClient(network);
+      return client.getAssetList({
+        sort: options?.sort || "rating",
+        order: "desc",
+        limit: options?.limit || 20,
+      });
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  }),
+
+  // Contract verification status from Stellar Expert
+  contractVerification: (network: NetworkKey, contractId: string) => ({
+    queryKey: stellarKeys.contractVerification(network, contractId),
+    queryFn: async () => {
+      const client = getStellarExpertClient(network);
+      return client.isContractVerified(contractId);
+    },
+    staleTime: 10 * 60 * 1000, // 10 minutes
   }),
 };
