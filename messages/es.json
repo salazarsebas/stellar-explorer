@@ -217,7 +217,19 @@
     "liveUntilLedger": "Vigente Hasta el Libro",
     "failedToLoadStorage": "Error al cargar el almacenamiento",
     "noStorage": "Sin Entradas de Almacenamiento",
-    "noStorageDescription": "Este contrato no tiene datos de almacenamiento de instancia."
+    "noStorageDescription": "Este contrato no tiene datos de almacenamiento de instancia.",
+    "verificationDetails": "Detalles de Verificación",
+    "verificationTimestamp": "Verificado el",
+    "verificationMethod": "Método de Verificación",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "Ver Repositorio",
+    "viewCommit": "Ver Commit",
+    "verifyOnStellarExpert": "Verificar en Stellar Expert",
+    "whyVerify": "¿Por qué verificar?",
+    "verifyGuidance": "La verificación de contratos permite a los usuarios revisar el código fuente original y confirmar que coincide con el bytecode desplegado. Esto genera confianza y transparencia.",
+    "learnToVerify": "Aprende a verificar",
+    "totalInvocations": "Total de Invocaciones",
+    "creator": "Creador"
   },
   "watchlist": {
     "title": "Favoritos",

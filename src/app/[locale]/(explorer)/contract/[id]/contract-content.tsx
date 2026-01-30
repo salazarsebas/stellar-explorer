@@ -19,6 +19,7 @@ import {
   useContractStorage,
   useContractVerification,
 } from "@/lib/hooks";
+import { ContractVerification } from "@/components/contracts";
 import { isValidContractId, formatCompactNumber } from "@/lib/utils";
 import {
   Activity,
@@ -36,8 +37,6 @@ import {
   ChevronDown,
   ChevronUp,
   ShieldCheck,
-  ExternalLink,
-  Github,
   Loader2,
 } from "lucide-react";
 
@@ -47,8 +46,6 @@ interface ContractContentProps {
 
 function ContractSummary({ contractId }: { contractId: string }) {
   const t = useTranslations("contract");
-  const { data: verification, isLoading: verificationLoading } =
-    useContractVerification(contractId);
 
   return (
     <Card>
@@ -84,58 +81,9 @@ function ContractSummary({ contractId }: { contractId: string }) {
             </div>
           </div>
 
-          {/* Right column - Verification Status */}
+          {/* Right column - Enhanced Verification Status */}
           <div className="space-y-4">
-            {verificationLoading ? (
-              <div className="bg-muted/30 rounded-lg border p-4">
-                <div className="flex items-center gap-3">
-                  <Loader2 className="text-muted-foreground size-5 animate-spin" />
-                  <span className="text-muted-foreground text-sm">{t("checkingVerification")}</span>
-                </div>
-              </div>
-            ) : verification?.isVerified ? (
-              <div className="bg-success/10 border-success/20 rounded-lg border p-4">
-                <div className="flex items-start gap-3">
-                  <ShieldCheck className="text-success mt-0.5 size-5 shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-success text-sm font-medium">{t("verified")}</p>
-                    <p className="text-muted-foreground mt-1 text-xs">{t("verifiedDescription")}</p>
-                    {verification.repository && (
-                      <a
-                        href={verification.repository}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary mt-2 inline-flex items-center gap-1.5 text-xs hover:underline"
-                      >
-                        <Github className="size-3" />
-                        {t("viewSource")}
-                        <ExternalLink className="size-3" />
-                      </a>
-                    )}
-                    {verification.wasmHash && (
-                      <div className="mt-2">
-                        <span className="text-muted-foreground text-xs">{t("wasmHash")}: </span>
-                        <code className="font-mono text-xs">
-                          {verification.wasmHash.slice(0, 8)}...{verification.wasmHash.slice(-8)}
-                        </code>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-warning/10 border-warning/20 rounded-lg border p-4">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="text-warning mt-0.5 size-5 shrink-0" />
-                  <div>
-                    <p className="text-warning text-sm font-medium">{t("unverified")}</p>
-                    <p className="text-muted-foreground mt-1 text-xs">
-                      {t("unverifiedDescription")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+            <ContractVerification contractId={contractId} />
           </div>
         </div>
       </CardContent>

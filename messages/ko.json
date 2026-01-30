@@ -217,7 +217,19 @@
     "liveUntilLedger": "유효 원장",
     "failedToLoadStorage": "저장소를 불러오는데 실패했습니다",
     "noStorage": "저장소 항목 없음",
-    "noStorageDescription": "이 컨트랙트에는 인스턴스 저장소 데이터가 없습니다."
+    "noStorageDescription": "이 컨트랙트에는 인스턴스 저장소 데이터가 없습니다.",
+    "verificationDetails": "검증 세부정보",
+    "verificationTimestamp": "검증 날짜",
+    "verificationMethod": "검증 방법",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "저장소 보기",
+    "viewCommit": "커밋 보기",
+    "verifyOnStellarExpert": "Stellar Expert에서 검증",
+    "whyVerify": "왜 검증해야 하나요?",
+    "verifyGuidance": "컨트랙트 검증을 통해 사용자는 원본 소스 코드를 검토하고 배포된 바이트코드와 일치하는지 확인할 수 있습니다. 이는 신뢰와 투명성을 높입니다.",
+    "learnToVerify": "검증 방법 알아보기",
+    "totalInvocations": "총 호출 횟수",
+    "creator": "생성자"
   },
   "watchlist": {
     "title": "관심목록",

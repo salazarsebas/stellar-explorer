@@ -217,7 +217,19 @@
     "liveUntilLedger": "Live Until Ledger",
     "failedToLoadStorage": "Failed to load storage",
     "noStorage": "No Storage Entries",
-    "noStorageDescription": "This contract doesn't have any instance storage data."
+    "noStorageDescription": "This contract doesn't have any instance storage data.",
+    "verificationDetails": "Verification Details",
+    "verificationTimestamp": "Verified on",
+    "verificationMethod": "Verification Method",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "View Repository",
+    "viewCommit": "View Commit",
+    "verifyOnStellarExpert": "Verify on Stellar Expert",
+    "whyVerify": "Why Verify?",
+    "verifyGuidance": "Contract verification allows users to review the original source code and confirm it matches the deployed bytecode. This builds trust and transparency.",
+    "learnToVerify": "Learn how to verify",
+    "totalInvocations": "Total Invocations",
+    "creator": "Creator"
   },
   "watchlist": {
     "title": "Watchlist",

@@ -63,14 +63,24 @@ export function useLedgerStream(options: StreamingOptions = {}) {
             }));
           },
           onerror: (event: MessageEvent) => {
-            const error = new Error(event.data?.message || "Stream error");
-            console.error("Ledger stream error:", event);
-            onError?.(error);
-            setState((prev) => ({
-              ...prev,
-              isConnected: false,
-              error,
-            }));
+            // Only treat as error if there's actual error data
+            // Empty events are normal disconnections (SSE reconnect behavior)
+            const hasErrorData = event?.data?.message || event?.data?.error;
+            if (hasErrorData) {
+              const error = new Error(event.data?.message || "Stream error");
+              onError?.(error);
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+                error,
+              }));
+            } else {
+              // Silent reconnection - just update connection state
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+              }));
+            }
           },
         });
 
@@ -158,14 +168,21 @@ export function useTransactionStream(options: StreamingOptions = {}) {
             }));
           },
           onerror: (event: MessageEvent) => {
-            const error = new Error(event.data?.message || "Stream error");
-            console.error("Transaction stream error:", event);
-            onError?.(error);
-            setState((prev) => ({
-              ...prev,
-              isConnected: false,
-              error,
-            }));
+            const hasErrorData = event?.data?.message || event?.data?.error;
+            if (hasErrorData) {
+              const error = new Error(event.data?.message || "Stream error");
+              onError?.(error);
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+                error,
+              }));
+            } else {
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+              }));
+            }
           },
         });
 
@@ -260,14 +277,21 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
             }));
           },
           onerror: (event: MessageEvent) => {
-            const error = new Error(event.data?.message || "Stream error");
-            console.error("Account operations stream error:", event);
-            onError?.(error);
-            setState((prev) => ({
-              ...prev,
-              isConnected: false,
-              error,
-            }));
+            const hasErrorData = event?.data?.message || event?.data?.error;
+            if (hasErrorData) {
+              const error = new Error(event.data?.message || "Stream error");
+              onError?.(error);
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+                error,
+              }));
+            } else {
+              setState((prev) => ({
+                ...prev,
+                isConnected: false,
+              }));
+            }
           },
         });
 

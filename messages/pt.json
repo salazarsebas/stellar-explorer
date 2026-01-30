@@ -217,7 +217,19 @@
     "noStorage": "Sem Entradas de Armazenamento",
     "noStorageDescription": "Este contrato não possui dados de armazenamento de instância.",
     "storageComingSoon": "Em breve",
-    "storageComingSoonDescription": "O explorador de armazenamento de contratos estará disponível em breve."
+    "storageComingSoonDescription": "O explorador de armazenamento de contratos estará disponível em breve.",
+    "verificationDetails": "Detalhes da Verificação",
+    "verificationTimestamp": "Verificado em",
+    "verificationMethod": "Método de Verificação",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "Ver Repositório",
+    "viewCommit": "Ver Commit",
+    "verifyOnStellarExpert": "Verificar no Stellar Expert",
+    "whyVerify": "Por que verificar?",
+    "verifyGuidance": "A verificação de contratos permite aos usuários revisar o código-fonte original e confirmar que corresponde ao bytecode implantado. Isso gera confiança e transparência.",
+    "learnToVerify": "Aprenda a verificar",
+    "totalInvocations": "Total de Invocações",
+    "creator": "Criador"
   },
   "watchlist": {
     "title": "Favoritos",

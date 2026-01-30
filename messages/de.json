@@ -217,7 +217,19 @@
     "noStorage": "Keine Speichereinträge",
     "noStorageDescription": "Dieser Vertrag hat keine Instanz-Speicherdaten.",
     "storageComingSoon": "Demnächst verfügbar",
-    "storageComingSoonDescription": "Die Speicheransicht für diesen Vertrag wird in Kürze verfügbar sein."
+    "storageComingSoonDescription": "Die Speicheransicht für diesen Vertrag wird in Kürze verfügbar sein.",
+    "verificationDetails": "Verifizierungsdetails",
+    "verificationTimestamp": "Verifiziert am",
+    "verificationMethod": "Verifizierungsmethode",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "Repository anzeigen",
+    "viewCommit": "Commit anzeigen",
+    "verifyOnStellarExpert": "Bei Stellar Expert verifizieren",
+    "whyVerify": "Warum verifizieren?",
+    "verifyGuidance": "Die Vertragsverifizierung ermöglicht es Benutzern, den ursprünglichen Quellcode zu überprüfen und zu bestätigen, dass er mit dem bereitgestellten Bytecode übereinstimmt. Dies schafft Vertrauen und Transparenz.",
+    "learnToVerify": "Verifizierung lernen",
+    "totalInvocations": "Gesamte Aufrufe",
+    "creator": "Ersteller"
   },
   "watchlist": {
     "title": "Merkliste",

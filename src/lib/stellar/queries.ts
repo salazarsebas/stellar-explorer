@@ -68,6 +68,8 @@ export const stellarKeys = {
   topAssetsExpert: (network: NetworkKey) => [...stellarKeys.assets(network), "topExpert"] as const,
   contractVerification: (network: NetworkKey, contractId: string) =>
     [...stellarKeys.contract(network, contractId), "verification"] as const,
+  contractDetails: (network: NetworkKey, contractId: string) =>
+    [...stellarKeys.contract(network, contractId), "details"] as const,
 };
 
 // Query option factories for TanStack Query
@@ -347,7 +349,6 @@ export const stellarQueries = {
         { code: "USDC", issuer: "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN" },
         { code: "yXLM", issuer: "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55" },
         { code: "AQUA", issuer: "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA" },
-        { code: "SHX", issuer: "GDSTRSHXHGJ7ZIVRBXEYE5Q74XUVCUSEZ6XKRCLJKFX3VZC5ZCWHQC5C" },
         { code: "EURC", issuer: "GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2" },
         { code: "BTC", issuer: "GDPJALI4AZKUU2W426U5WKMAT6CN3AJRPIIRYR2YM54TL2GDWO5O2MZM" },
       ];
@@ -673,5 +674,15 @@ export const stellarQueries = {
       return client.isContractVerified(contractId);
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
+  }),
+
+  // Detailed contract information from Stellar Expert
+  contractDetails: (network: NetworkKey, contractId: string) => ({
+    queryKey: stellarKeys.contractDetails(network, contractId),
+    queryFn: async () => {
+      const client = getStellarExpertClient(network);
+      return client.getContractDetails(contractId);
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
   }),
 };

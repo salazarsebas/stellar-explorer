@@ -207,3 +207,12 @@ export function useContractVerification(contractId: string) {
     enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
   });
 }
+
+// Hook for detailed contract information (from Stellar Expert)
+export function useContractDetails(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractDetails(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}

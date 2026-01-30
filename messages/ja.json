@@ -217,7 +217,19 @@
     "noStorage": "ストレージエントリなし",
     "noStorageDescription": "このコントラクトにはインスタンスストレージデータがありません。",
     "storageComingSoon": "近日公開",
-    "storageComingSoonDescription": "コントラクトストレージエクスプローラーは近日公開予定です。"
+    "storageComingSoonDescription": "コントラクトストレージエクスプローラーは近日公開予定です。",
+    "verificationDetails": "検証詳細",
+    "verificationTimestamp": "検証日",
+    "verificationMethod": "検証方法",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "リポジトリを表示",
+    "viewCommit": "コミットを表示",
+    "verifyOnStellarExpert": "Stellar Expert で検証",
+    "whyVerify": "なぜ検証するのか？",
+    "verifyGuidance": "コントラクト検証により、ユーザーはオリジナルのソースコードを確認し、デプロイされたバイトコードと一致することを確認できます。これにより信頼性と透明性が向上します。",
+    "learnToVerify": "検証方法を学ぶ",
+    "totalInvocations": "総呼び出し回数",
+    "creator": "作成者"
   },
   "watchlist": {
     "title": "ウォッチリスト",

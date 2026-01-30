@@ -217,7 +217,19 @@
     "noStorage": "无存储条目",
     "noStorageDescription": "此合约没有实例存储数据。",
     "storageComingSoon": "即将推出",
-    "storageComingSoonDescription": "合约存储浏览器即将推出。"
+    "storageComingSoonDescription": "合约存储浏览器即将推出。",
+    "verificationDetails": "验证详情",
+    "verificationTimestamp": "验证于",
+    "verificationMethod": "验证方式",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "查看仓库",
+    "viewCommit": "查看提交",
+    "verifyOnStellarExpert": "在 Stellar Expert 上验证",
+    "whyVerify": "为什么要验证？",
+    "verifyGuidance": "合约验证允许用户查看原始源代码并确认其与部署的字节码匹配。这有助于建立信任和透明度。",
+    "learnToVerify": "了解如何验证",
+    "totalInvocations": "总调用次数",
+    "creator": "创建者"
   },
   "watchlist": {
     "title": "关注列表",

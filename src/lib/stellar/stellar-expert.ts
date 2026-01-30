@@ -103,6 +103,27 @@ export interface StellarExpertContract {
   validation?: {
     status: "verified" | "unverified" | "failed";
     timestamp?: number;
+    method?: "github-actions" | "manual" | "automatic";
+    commit?: string;
+  };
+  invocations?: number;
+  subinvocations?: number;
+}
+
+export interface ContractVerificationDetails {
+  contractId: string;
+  isVerified: boolean;
+  creator?: string;
+  created?: number;
+  createdDate?: string;
+  wasmHash?: string;
+  repository?: string;
+  validation?: {
+    status: "verified" | "unverified" | "failed";
+    timestamp?: number;
+    timestampDate?: string;
+    method?: "github-actions" | "manual" | "automatic";
+    commit?: string;
   };
   invocations?: number;
   subinvocations?: number;
@@ -199,6 +220,36 @@ class StellarExpertClient {
       isVerified: contract?.verified === true,
       repository: contract?.repository,
       wasmHash: contract?.wasm_hash,
+    };
+  }
+
+  /**
+   * Get detailed contract verification information
+   */
+  async getContractDetails(contractId: string): Promise<ContractVerificationDetails | null> {
+    const contract = await this.getContract(contractId);
+    if (!contract) {
+      return null;
+    }
+
+    return {
+      contractId: contract.contract,
+      isVerified: contract.verified === true,
+      creator: contract.creator,
+      created: contract.created,
+      createdDate: contract.created ? new Date(contract.created * 1000).toISOString() : undefined,
+      wasmHash: contract.wasm_hash,
+      repository: contract.repository,
+      validation: contract.validation
+        ? {
+            ...contract.validation,
+            timestampDate: contract.validation.timestamp
+              ? new Date(contract.validation.timestamp * 1000).toISOString()
+              : undefined,
+          }
+        : undefined,
+      invocations: contract.invocations,
+      subinvocations: contract.subinvocations,
     };
   }
 }

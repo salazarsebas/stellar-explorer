@@ -75,7 +75,13 @@ export function AssetLogo({ code, issuer, tomlUrl, size = "md", className }: Ass
   if (isNative) {
     return (
       <div className={cn("relative overflow-hidden rounded-full", sizeClass, className)}>
-        <Image src={XLM_LOGO_PATH} alt="XLM logo" fill className="object-cover" />
+        <Image
+          src={XLM_LOGO_PATH}
+          alt="XLM logo"
+          fill
+          sizes="(max-width: 640px) 24px, (max-width: 768px) 40px, 56px"
+          className="object-cover"
+        />
       </div>
     );
   }

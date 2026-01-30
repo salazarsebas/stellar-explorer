@@ -217,7 +217,19 @@
     "noStorage": "Aucune Entrée de Stockage",
     "noStorageDescription": "Ce contrat n'a pas de données de stockage d'instance.",
     "storageComingSoon": "Bientôt disponible",
-    "storageComingSoonDescription": "La vue de stockage pour ce contrat sera bientôt disponible."
+    "storageComingSoonDescription": "La vue de stockage pour ce contrat sera bientôt disponible.",
+    "verificationDetails": "Détails de Vérification",
+    "verificationTimestamp": "Vérifié le",
+    "verificationMethod": "Méthode de Vérification",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "Voir le Dépôt",
+    "viewCommit": "Voir le Commit",
+    "verifyOnStellarExpert": "Vérifier sur Stellar Expert",
+    "whyVerify": "Pourquoi vérifier?",
+    "verifyGuidance": "La vérification de contrat permet aux utilisateurs de réviser le code source original et de confirmer qu'il correspond au bytecode déployé. Cela renforce la confiance et la transparence.",
+    "learnToVerify": "Apprendre à vérifier",
+    "totalInvocations": "Total des Invocations",
+    "creator": "Créateur"
   },
   "watchlist": {
     "title": "Favoris",
