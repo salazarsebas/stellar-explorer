@@ -400,5 +400,204 @@
     "watchlistCleared": "Liste de favoris vidée",
     "streamError": "Erreur de flux",
     "streamConnectionFailed": "Échec de connexion au flux"
-  }
+  },
+  "header": {
+    "refreshData": "Actualiser les données",
+    "toggleTheme": "Changer le thème"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Explorateur Stellar"
+  },
+  "accessibility": {
+    "changeLanguage": "Changer de langue"
+  },
+  "accumulatingData": "Accumulation des données...",
+  "assetDetails": {
+    "title": "Actif",
+    "notFound": "Actif non trouvé",
+    "notFoundMessage": "L'actif que vous recherchez n'existe pas ou a été supprimé.",
+    "information": "Informations sur l'Actif",
+    "totalSupply": "Offre Totale",
+    "accounts": "Comptes",
+    "claimableBalances": "Soldes Réclamables",
+    "assetCode": "Code de l'Actif",
+    "issuer": "Émetteur",
+    "assetType": "Type d'Actif",
+    "liquidityPools": "Pools de Liquidité",
+    "flags": "Indicateurs de l'Actif",
+    "authRequired": "Autorisation Requise",
+    "authRevocable": "Autorisation Révocable",
+    "authImmutable": "Autorisation Immuable",
+    "clawbackEnabled": "Clawback Activé",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "statistics": "Statistiques",
+    "totalHolders": "Total des Détenteurs",
+    "circulating": "En Circulation",
+    "authorized": "Autorisé",
+    "verified": "Vérifié",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Actif Natif Stellar",
+    "aboutXlm": "À propos du XLM",
+    "xlmDescription": "XLM (Stellar Lumens) est l'actif natif du réseau Stellar. Il sert à plusieurs fins:",
+    "xlmPurpose1": "Payer les frais de transaction (généralement 0.00001 XLM par opération)",
+    "xlmPurpose2": "Maintenir les soldes minimum du compte (réserve de base)",
+    "xlmPurpose3": "Prévenir le spam en exigeant de petits montants pour la création de compte",
+    "xlmPurpose4": "Monnaie pont pour les transactions inter-actifs via le DEX"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "Actif Natif",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "Staking Liquide",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "Récompenses de Liquidité",
+    "stronghold": "Stronghold",
+    "assetPlatform": "Plateforme d'Actifs",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "Bitcoin",
+    "wrappedBtc": "BTC Wrappé",
+    "native": "Natif"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "opération",
+      "operations": "opérations"
+    },
+    "ledger": {
+      "txs": "txs",
+      "ops": "ops"
+    },
+    "asset": {
+      "holders": "détenteurs"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "Code QR",
+      "downloadSvg": "Télécharger SVG",
+      "accountQrCode": "Code QR du Compte"
+    },
+    "assetLogo": {
+      "xlmLogo": "Logo XLM",
+      "assetLogo": "Logo {code}"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "Actif",
+      "priceXlm": "Prix (XLM)",
+      "change24h": "Variation 24h",
+      "volume24h": "Volume 24h",
+      "holders": "Détenteurs",
+      "auth": "Auth",
+      "noAssetsFound": "Aucun actif trouvé"
+    },
+    "globalSearch": {
+      "search": "Rechercher",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Fil d'Ariane"
+    }
+  },
+  "developerMode": {
+    "title": "Mode Développeur",
+    "enableDevMode": "Activer le Mode Développeur",
+    "options": "Options d'Affichage",
+    "showXdr": "Afficher les Données XDR Brutes",
+    "showApiEndpoints": "Afficher les Points de Terminaison API",
+    "showInternalIds": "Afficher les IDs Internes",
+    "apiEndpoint": "Point de Terminaison API",
+    "horizonUrl": "API Horizon",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "Données XDR",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "Copier XDR",
+    "copyEndpoint": "Copier le Point de Terminaison"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "Bases",
+      "network": "Réseau",
+      "accounts": "Comptes",
+      "transactions": "Transactions",
+      "operations": "Opérations",
+      "assets": "Actifs",
+      "trading": "Trading",
+      "contracts": "Contrats Intelligents",
+      "features": "Fonctionnalités",
+      "technical": "Technique"
+    },
+    "terms": {}
+  },
+  "internalIds": "IDs Internes",
+  "ledgerDetails": {
+    "title": "Registre",
+    "notFound": "Registre non trouvé",
+    "notFoundMessage": "Le registre que vous recherchez n'existe pas ou n'a pas encore été créé.",
+    "details": "Détails du Registre",
+    "closeTime": "Heure de Clôture",
+    "transactions": "Transactions",
+    "successful": "réussies",
+    "failed": "échouées",
+    "operations": "Opérations",
+    "protocolVersion": "Version du Protocole",
+    "totalFees": "Frais Totaux",
+    "baseFee": "Frais de Base",
+    "hash": "Hash",
+    "prevHash": "Hash Précédent",
+    "transactionsInLedger": "Transactions dans ce Registre",
+    "noTransactions": "Aucune transaction",
+    "noTransactionsDesc": "Ce registre ne contient aucune transaction.",
+    "failedToLoadTx": "Échec du chargement des transactions",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "noFeeData": "Données de frais indisponibles",
+  "noTransactionData": "Aucune donnée de transaction",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "Aucune requête de recherche",
+    "noQueryHint": "Entrez un hash de transaction, une adresse de compte ou un numéro de registre pour rechercher.",
+    "redirecting": "Redirection...",
+    "title": "Résultats de Recherche",
+    "detectedAs": "Détecté comme:",
+    "trySearchingAs": "Essayez de rechercher comme:",
+    "couldntIdentify": "Impossible d'identifier le type de requête",
+    "couldntIdentifyMessage": "La requête de recherche ne correspond à aucun format d'entité Stellar connu. Veuillez vérifier votre saisie."
+  },
+  "transactionSearch": {
+    "title": "Rechercher des Transactions",
+    "byHash": "Par Hash",
+    "byAccount": "Par Compte",
+    "byLedger": "Par Registre",
+    "search": "Rechercher",
+    "hashPlaceholder": "Entrez le hash de la transaction (64 caractères hex)...",
+    "accountPlaceholder": "Entrez l'adresse du compte (G...)...",
+    "ledgerPlaceholder": "Entrez le numéro de séquence du registre...",
+    "hashRequired": "Veuillez entrer un hash de transaction",
+    "accountRequired": "Veuillez entrer une adresse de compte",
+    "ledgerRequired": "Veuillez entrer un numéro de séquence de registre",
+    "invalidHash": "Hash invalide. Doit avoir 64 caractères hexadécimaux.",
+    "invalidAccount": "Compte invalide. Doit commencer par G et avoir 56 caractères.",
+    "invalidLedger": "Séquence de registre invalide. Doit être un nombre positif.",
+    "searchingFor": "Affichage des transactions pour",
+    "accountLabel": "Compte",
+    "ledgerLabel": "Registre",
+    "clearSearch": "Effacer la recherche",
+    "filterByStatus": "Filtrer",
+    "showAll": "Tous",
+    "showSuccess": "Réussite",
+    "showFailed": "Échec",
+    "noTransactionsFor": "Aucune transaction trouvée pour ce {type}."
+  },
+  "transactions_word": "transactions",
+  "xlm": "XLM"
 }

@@ -400,5 +400,204 @@
     "watchlistCleared": "Lista de favoritos limpa",
     "streamError": "Erro de transmissão",
     "streamConnectionFailed": "Falha na conexão de transmissão"
-  }
+  },
+  "header": {
+    "refreshData": "Atualizar dados",
+    "toggleTheme": "Alternar tema"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Explorador Stellar"
+  },
+  "accessibility": {
+    "changeLanguage": "Mudar idioma"
+  },
+  "accumulatingData": "Acumulando dados...",
+  "assetDetails": {
+    "title": "Ativo",
+    "notFound": "Ativo não encontrado",
+    "notFoundMessage": "O ativo que você procura não existe ou pode ter sido removido.",
+    "information": "Informações do Ativo",
+    "totalSupply": "Oferta Total",
+    "accounts": "Contas",
+    "claimableBalances": "Saldos Resgatáveis",
+    "assetCode": "Código do Ativo",
+    "issuer": "Emissor",
+    "assetType": "Tipo de Ativo",
+    "liquidityPools": "Pools de Liquidez",
+    "flags": "Flags do Ativo",
+    "authRequired": "Autorização Obrigatória",
+    "authRevocable": "Autorização Revogável",
+    "authImmutable": "Autorização Imutável",
+    "clawbackEnabled": "Clawback Habilitado",
+    "enabled": "Habilitado",
+    "disabled": "Desabilitado",
+    "statistics": "Estatísticas",
+    "totalHolders": "Total de Holders",
+    "circulating": "Circulando",
+    "authorized": "Autorizado",
+    "verified": "Verificado",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Ativo Nativo Stellar",
+    "aboutXlm": "Sobre o XLM",
+    "xlmDescription": "XLM (Stellar Lumens) é o ativo nativo da rede Stellar. Ele serve a múltiplos propósitos:",
+    "xlmPurpose1": "Pagar taxas de transação (tipicamente 0.00001 XLM por operação)",
+    "xlmPurpose2": "Manter saldos mínimos de conta (reserva base)",
+    "xlmPurpose3": "Prevenir spam exigindo pequenas quantias para criação de conta",
+    "xlmPurpose4": "Moeda ponte para transações entre ativos via DEX"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "Ativo Nativo",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "Staking Líquido",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "Recompensas de Liquidez",
+    "stronghold": "Stronghold",
+    "assetPlatform": "Plataforma de Ativos",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "Bitcoin",
+    "wrappedBtc": "BTC Wrapped",
+    "native": "Nativo"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "operação",
+      "operations": "operações"
+    },
+    "ledger": {
+      "txs": "txs",
+      "ops": "ops"
+    },
+    "asset": {
+      "holders": "holders"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "Código QR",
+      "downloadSvg": "Baixar SVG",
+      "accountQrCode": "Código QR da Conta"
+    },
+    "assetLogo": {
+      "xlmLogo": "Logo XLM",
+      "assetLogo": "Logo {code}"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "Ativo",
+      "priceXlm": "Preço (XLM)",
+      "change24h": "Variação 24h",
+      "volume24h": "Volume 24h",
+      "holders": "Holders",
+      "auth": "Auth",
+      "noAssetsFound": "Nenhum ativo encontrado"
+    },
+    "globalSearch": {
+      "search": "Buscar",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Navegação"
+    }
+  },
+  "developerMode": {
+    "title": "Modo Desenvolvedor",
+    "enableDevMode": "Ativar Modo Desenvolvedor",
+    "options": "Opções de Exibição",
+    "showXdr": "Mostrar Dados XDR Brutos",
+    "showApiEndpoints": "Mostrar Endpoints da API",
+    "showInternalIds": "Mostrar IDs Internos",
+    "apiEndpoint": "Endpoint da API",
+    "horizonUrl": "API Horizon",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "Dados XDR",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "Copiar XDR",
+    "copyEndpoint": "Copiar Endpoint"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "Básico",
+      "network": "Rede",
+      "accounts": "Contas",
+      "transactions": "Transações",
+      "operations": "Operações",
+      "assets": "Ativos",
+      "trading": "Trading",
+      "contracts": "Contratos Inteligentes",
+      "features": "Recursos",
+      "technical": "Técnico"
+    },
+    "terms": {}
+  },
+  "internalIds": "IDs Internos",
+  "ledgerDetails": {
+    "title": "Livro",
+    "notFound": "Livro não encontrado",
+    "notFoundMessage": "O livro que você procura não existe ou ainda não foi criado.",
+    "details": "Detalhes do Livro",
+    "closeTime": "Hora de Fechamento",
+    "transactions": "Transações",
+    "successful": "bem-sucedidas",
+    "failed": "falhas",
+    "operations": "Operações",
+    "protocolVersion": "Versão do Protocolo",
+    "totalFees": "Taxas Totais",
+    "baseFee": "Taxa Base",
+    "hash": "Hash",
+    "prevHash": "Hash Anterior",
+    "transactionsInLedger": "Transações neste Livro",
+    "noTransactions": "Sem transações",
+    "noTransactionsDesc": "Este livro não contém transações.",
+    "failedToLoadTx": "Falha ao carregar transações",
+    "prev": "Anterior",
+    "next": "Próximo"
+  },
+  "noFeeData": "Dados de taxa indisponíveis",
+  "noTransactionData": "Sem dados de transação",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "Sem consulta de busca",
+    "noQueryHint": "Digite um hash de transação, endereço de conta ou número de livro para buscar.",
+    "redirecting": "Redirecionando...",
+    "title": "Resultados da Busca",
+    "detectedAs": "Detectado como:",
+    "trySearchingAs": "Tente buscar como:",
+    "couldntIdentify": "Não foi possível identificar o tipo de consulta",
+    "couldntIdentifyMessage": "A consulta de busca não corresponde a nenhum formato de entidade Stellar conhecido. Verifique sua entrada."
+  },
+  "transactionSearch": {
+    "title": "Buscar Transações",
+    "byHash": "Por Hash",
+    "byAccount": "Por Conta",
+    "byLedger": "Por Livro",
+    "search": "Buscar",
+    "hashPlaceholder": "Digite o hash da transação (64 caracteres hex)...",
+    "accountPlaceholder": "Digite o endereço da conta (G...)...",
+    "ledgerPlaceholder": "Digite o número de sequência do livro...",
+    "hashRequired": "Por favor, digite um hash de transação",
+    "accountRequired": "Por favor, digite um endereço de conta",
+    "ledgerRequired": "Por favor, digite um número de sequência de livro",
+    "invalidHash": "Hash inválido. Deve ter 64 caracteres hexadecimais.",
+    "invalidAccount": "Conta inválida. Deve começar com G e ter 56 caracteres.",
+    "invalidLedger": "Sequência de livro inválida. Deve ser um número positivo.",
+    "searchingFor": "Mostrando transações para",
+    "accountLabel": "Conta",
+    "ledgerLabel": "Livro",
+    "clearSearch": "Limpar busca",
+    "filterByStatus": "Filtrar",
+    "showAll": "Todos",
+    "showSuccess": "Sucesso",
+    "showFailed": "Falha",
+    "noTransactionsFor": "Nenhuma transação encontrada para este {type}."
+  },
+  "transactions_word": "transações",
+  "xlm": "XLM"
 }

@@ -400,5 +400,204 @@
     "watchlistCleared": "ウォッチリストをクリアしました",
     "streamError": "ストリームエラー",
     "streamConnectionFailed": "ストリーム接続に失敗しました"
-  }
+  },
+  "header": {
+    "refreshData": "データを更新",
+    "toggleTheme": "テーマを切り替え"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Stellar エクスプローラー"
+  },
+  "accessibility": {
+    "changeLanguage": "言語を変更"
+  },
+  "accumulatingData": "データを収集中...",
+  "assetDetails": {
+    "title": "アセット",
+    "notFound": "アセットが見つかりません",
+    "notFoundMessage": "お探しのアセットは存在しないか、削除された可能性があります。",
+    "information": "アセット情報",
+    "totalSupply": "総供給量",
+    "accounts": "アカウント",
+    "claimableBalances": "請求可能残高",
+    "assetCode": "アセットコード",
+    "issuer": "発行者",
+    "assetType": "アセットタイプ",
+    "liquidityPools": "流動性プール",
+    "flags": "アセットフラグ",
+    "authRequired": "認証必須",
+    "authRevocable": "認証取消可能",
+    "authImmutable": "認証不変",
+    "clawbackEnabled": "クローバック有効",
+    "enabled": "有効",
+    "disabled": "無効",
+    "statistics": "統計",
+    "totalHolders": "総保有者数",
+    "circulating": "流通量",
+    "authorized": "承認済み",
+    "verified": "検証済み",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Stellarネイティブアセット",
+    "aboutXlm": "XLMについて",
+    "xlmDescription": "XLM（Stellar Lumens）はStellarネットワークのネイティブアセットです。複数の目的があります：",
+    "xlmPurpose1": "トランザクション手数料の支払い（通常、操作ごとに0.00001 XLM）",
+    "xlmPurpose2": "最低アカウント残高の維持（基本リザーブ）",
+    "xlmPurpose3": "アカウント作成に少額を要求することでスパムを防止",
+    "xlmPurpose4": "DEXを介したクロスアセット取引のブリッジ通貨"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "ネイティブアセット",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "リキッドステーキング",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "流動性報酬",
+    "stronghold": "Stronghold",
+    "assetPlatform": "アセットプラットフォーム",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "ビットコイン",
+    "wrappedBtc": "ラップドBTC",
+    "native": "ネイティブ"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "操作",
+      "operations": "操作"
+    },
+    "ledger": {
+      "txs": "txs",
+      "ops": "ops"
+    },
+    "asset": {
+      "holders": "保有者"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "QRコード",
+      "downloadSvg": "SVGをダウンロード",
+      "accountQrCode": "アカウントQRコード"
+    },
+    "assetLogo": {
+      "xlmLogo": "XLMロゴ",
+      "assetLogo": "{code}ロゴ"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "アセット",
+      "priceXlm": "価格（XLM）",
+      "change24h": "24時間変動",
+      "volume24h": "24時間取引量",
+      "holders": "保有者",
+      "auth": "認証",
+      "noAssetsFound": "アセットが見つかりません"
+    },
+    "globalSearch": {
+      "search": "検索",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "パンくずリスト"
+    }
+  },
+  "developerMode": {
+    "title": "開発者モード",
+    "enableDevMode": "開発者モードを有効にする",
+    "options": "表示オプション",
+    "showXdr": "生XDRデータを表示",
+    "showApiEndpoints": "APIエンドポイントを表示",
+    "showInternalIds": "内部IDを表示",
+    "apiEndpoint": "APIエンドポイント",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDRデータ",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "XDRをコピー",
+    "copyEndpoint": "エンドポイントをコピー"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "基本",
+      "network": "ネットワーク",
+      "accounts": "アカウント",
+      "transactions": "トランザクション",
+      "operations": "操作",
+      "assets": "アセット",
+      "trading": "取引",
+      "contracts": "スマートコントラクト",
+      "features": "機能",
+      "technical": "技術"
+    },
+    "terms": {}
+  },
+  "internalIds": "内部ID",
+  "ledgerDetails": {
+    "title": "レジャー",
+    "notFound": "レジャーが見つかりません",
+    "notFoundMessage": "お探しのレジャーは存在しないか、まだ作成されていません。",
+    "details": "レジャー詳細",
+    "closeTime": "クローズ時間",
+    "transactions": "トランザクション",
+    "successful": "成功",
+    "failed": "失敗",
+    "operations": "操作",
+    "protocolVersion": "プロトコルバージョン",
+    "totalFees": "合計手数料",
+    "baseFee": "基本手数料",
+    "hash": "ハッシュ",
+    "prevHash": "前のハッシュ",
+    "transactionsInLedger": "このレジャーのトランザクション",
+    "noTransactions": "トランザクションなし",
+    "noTransactionsDesc": "このレジャーにはトランザクションがありません。",
+    "failedToLoadTx": "トランザクションの読み込みに失敗しました",
+    "prev": "前へ",
+    "next": "次へ"
+  },
+  "noFeeData": "手数料データがありません",
+  "noTransactionData": "トランザクションデータがありません",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "検索クエリがありません",
+    "noQueryHint": "トランザクションハッシュ、アカウントアドレス、またはレジャー番号を入力して検索してください。",
+    "redirecting": "リダイレクト中...",
+    "title": "検索結果",
+    "detectedAs": "検出タイプ：",
+    "trySearchingAs": "次として検索してみてください：",
+    "couldntIdentify": "クエリタイプを識別できませんでした",
+    "couldntIdentifyMessage": "検索クエリは既知のStellarエンティティ形式と一致しません。入力を確認してください。"
+  },
+  "transactionSearch": {
+    "title": "トランザクション検索",
+    "byHash": "ハッシュで",
+    "byAccount": "アカウントで",
+    "byLedger": "レジャーで",
+    "search": "検索",
+    "hashPlaceholder": "トランザクションハッシュを入力（16進数64文字）...",
+    "accountPlaceholder": "アカウントアドレスを入力（G...）...",
+    "ledgerPlaceholder": "レジャーシーケンス番号を入力...",
+    "hashRequired": "トランザクションハッシュを入力してください",
+    "accountRequired": "アカウントアドレスを入力してください",
+    "ledgerRequired": "レジャーシーケンス番号を入力してください",
+    "invalidHash": "無効なハッシュです。16進数64文字である必要があります。",
+    "invalidAccount": "無効なアカウントです。Gで始まり56文字である必要があります。",
+    "invalidLedger": "無効なレジャーシーケンスです。正の数である必要があります。",
+    "searchingFor": "次のトランザクションを表示中",
+    "accountLabel": "アカウント",
+    "ledgerLabel": "レジャー",
+    "clearSearch": "検索をクリア",
+    "filterByStatus": "フィルター",
+    "showAll": "すべて",
+    "showSuccess": "成功",
+    "showFailed": "失敗",
+    "noTransactionsFor": "この{type}のトランザクションが見つかりませんでした。"
+  },
+  "transactions_word": "トランザクション",
+  "xlm": "XLM"
 }

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { Home, Layers, ArrowRightLeft, Users, Coins, FileCode, Star, Menu } from "lucide-react";
+import { Home, Layers, ArrowRightLeft, Users, Coins, FileCode, Star, Menu, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -25,7 +25,10 @@ export function MobileNav() {
     { href: "/contracts", icon: FileCode, label: t("contracts") },
   ];
 
-  const bottomItems = [{ href: "/watchlist", icon: Star, label: t("watchlist") }];
+  const bottomItems = [
+    { href: "/learn", icon: GraduationCap, label: t("learn") },
+    { href: "/watchlist", icon: Star, label: t("watchlist") },
+  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

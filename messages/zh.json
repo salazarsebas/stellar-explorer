@@ -400,5 +400,204 @@
     "watchlistCleared": "关注列表已清空",
     "streamError": "流错误",
     "streamConnectionFailed": "流连接失败"
-  }
+  },
+  "header": {
+    "refreshData": "刷新数据",
+    "toggleTheme": "切换主题"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Stellar 浏览器"
+  },
+  "accessibility": {
+    "changeLanguage": "更改语言"
+  },
+  "accumulatingData": "正在累积数据...",
+  "assetDetails": {
+    "title": "资产",
+    "notFound": "资产未找到",
+    "notFoundMessage": "您查找的资产不存在或已被移除。",
+    "information": "资产信息",
+    "totalSupply": "总供应量",
+    "accounts": "账户",
+    "claimableBalances": "可领取余额",
+    "assetCode": "资产代码",
+    "issuer": "发行方",
+    "assetType": "资产类型",
+    "liquidityPools": "流动性池",
+    "flags": "资产标志",
+    "authRequired": "需要授权",
+    "authRevocable": "可撤销授权",
+    "authImmutable": "不可变授权",
+    "clawbackEnabled": "已启用追回",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "statistics": "统计",
+    "totalHolders": "持有者总数",
+    "circulating": "流通中",
+    "authorized": "已授权",
+    "verified": "已验证",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Stellar 原生资产",
+    "aboutXlm": "关于 XLM",
+    "xlmDescription": "XLM（Stellar Lumens）是 Stellar 网络的原生资产。它有多种用途：",
+    "xlmPurpose1": "支付交易费用（通常每笔操作 0.00001 XLM）",
+    "xlmPurpose2": "维持最低账户余额（基础储备）",
+    "xlmPurpose3": "通过要求创建账户时支付少量金额来防止垃圾交易",
+    "xlmPurpose4": "通过 DEX 进行跨资产交易的桥接货币"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "原生资产",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "流动性质押",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "流动性奖励",
+    "stronghold": "Stronghold",
+    "assetPlatform": "资产平台",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "比特币",
+    "wrappedBtc": "封装 BTC",
+    "native": "原生"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "操作",
+      "operations": "操作"
+    },
+    "ledger": {
+      "txs": "交易",
+      "ops": "操作"
+    },
+    "asset": {
+      "holders": "持有者"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "二维码",
+      "downloadSvg": "下载 SVG",
+      "accountQrCode": "账户二维码"
+    },
+    "assetLogo": {
+      "xlmLogo": "XLM 标志",
+      "assetLogo": "{code} 标志"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "资产",
+      "priceXlm": "价格 (XLM)",
+      "change24h": "24小时涨跌",
+      "volume24h": "24小时成交量",
+      "holders": "持有者",
+      "auth": "授权",
+      "noAssetsFound": "未找到资产"
+    },
+    "globalSearch": {
+      "search": "搜索",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "面包屑导航"
+    }
+  },
+  "developerMode": {
+    "title": "开发者模式",
+    "enableDevMode": "启用开发者模式",
+    "options": "显示选项",
+    "showXdr": "显示原始 XDR 数据",
+    "showApiEndpoints": "显示 API 端点",
+    "showInternalIds": "显示内部 ID",
+    "apiEndpoint": "API 端点",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDR 数据",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "复制 XDR",
+    "copyEndpoint": "复制端点"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "基础",
+      "network": "网络",
+      "accounts": "账户",
+      "transactions": "交易",
+      "operations": "操作",
+      "assets": "资产",
+      "trading": "交易",
+      "contracts": "智能合约",
+      "features": "功能",
+      "technical": "技术"
+    },
+    "terms": {}
+  },
+  "internalIds": "内部 ID",
+  "ledgerDetails": {
+    "title": "账本",
+    "notFound": "账本未找到",
+    "notFoundMessage": "您查找的账本不存在或尚未创建。",
+    "details": "账本详情",
+    "closeTime": "关闭时间",
+    "transactions": "交易",
+    "successful": "成功",
+    "failed": "失败",
+    "operations": "操作",
+    "protocolVersion": "协议版本",
+    "totalFees": "总费用",
+    "baseFee": "基础费用",
+    "hash": "哈希",
+    "prevHash": "前一个哈希",
+    "transactionsInLedger": "此账本中的交易",
+    "noTransactions": "无交易",
+    "noTransactionsDesc": "此账本不包含任何交易。",
+    "failedToLoadTx": "加载交易失败",
+    "prev": "上一个",
+    "next": "下一个"
+  },
+  "noFeeData": "无费用数据",
+  "noTransactionData": "无交易数据",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "无搜索查询",
+    "noQueryHint": "输入交易哈希、账户地址或账本编号进行搜索。",
+    "redirecting": "正在重定向...",
+    "title": "搜索结果",
+    "detectedAs": "识别为：",
+    "trySearchingAs": "尝试搜索为：",
+    "couldntIdentify": "无法识别查询类型",
+    "couldntIdentifyMessage": "搜索查询不匹配任何已知的 Stellar 实体格式。请检查您的输入。"
+  },
+  "transactionSearch": {
+    "title": "搜索交易",
+    "byHash": "按哈希",
+    "byAccount": "按账户",
+    "byLedger": "按账本",
+    "search": "搜索",
+    "hashPlaceholder": "输入交易哈希（64个十六进制字符）...",
+    "accountPlaceholder": "输入账户地址（G...）...",
+    "ledgerPlaceholder": "输入账本序列号...",
+    "hashRequired": "请输入交易哈希",
+    "accountRequired": "请输入账户地址",
+    "ledgerRequired": "请输入账本序列号",
+    "invalidHash": "无效哈希。必须是64个十六进制字符。",
+    "invalidAccount": "无效账户。必须以G开头且有56个字符。",
+    "invalidLedger": "无效账本序列。必须是正数。",
+    "searchingFor": "显示以下交易",
+    "accountLabel": "账户",
+    "ledgerLabel": "账本",
+    "clearSearch": "清除搜索",
+    "filterByStatus": "筛选",
+    "showAll": "全部",
+    "showSuccess": "成功",
+    "showFailed": "失败",
+    "noTransactionsFor": "未找到此{type}的交易。"
+  },
+  "transactions_word": "交易",
+  "xlm": "XLM"
 }

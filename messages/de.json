@@ -400,5 +400,204 @@
     "watchlistCleared": "Merkliste geleert",
     "streamError": "Stream-Fehler",
     "streamConnectionFailed": "Stream-Verbindung fehlgeschlagen"
-  }
+  },
+  "header": {
+    "refreshData": "Daten aktualisieren",
+    "toggleTheme": "Thema wechseln"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Stellar Explorer"
+  },
+  "accessibility": {
+    "changeLanguage": "Sprache ändern"
+  },
+  "accumulatingData": "Daten werden gesammelt...",
+  "assetDetails": {
+    "title": "Asset",
+    "notFound": "Asset nicht gefunden",
+    "notFoundMessage": "Das gesuchte Asset existiert nicht oder wurde entfernt.",
+    "information": "Asset-Informationen",
+    "totalSupply": "Gesamtangebot",
+    "accounts": "Konten",
+    "claimableBalances": "Einlösbare Guthaben",
+    "assetCode": "Asset-Code",
+    "issuer": "Emittent",
+    "assetType": "Asset-Typ",
+    "liquidityPools": "Liquiditätspools",
+    "flags": "Asset-Flags",
+    "authRequired": "Autorisierung Erforderlich",
+    "authRevocable": "Autorisierung Widerrufbar",
+    "authImmutable": "Autorisierung Unveränderlich",
+    "clawbackEnabled": "Clawback Aktiviert",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "statistics": "Statistiken",
+    "totalHolders": "Gesamte Inhaber",
+    "circulating": "Im Umlauf",
+    "authorized": "Autorisiert",
+    "verified": "Verifiziert",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Natives Stellar Asset",
+    "aboutXlm": "Über XLM",
+    "xlmDescription": "XLM (Stellar Lumens) ist das native Asset des Stellar-Netzwerks. Es dient mehreren Zwecken:",
+    "xlmPurpose1": "Transaktionsgebühren bezahlen (typischerweise 0.00001 XLM pro Operation)",
+    "xlmPurpose2": "Mindestkontostände aufrechterhalten (Basisreserve)",
+    "xlmPurpose3": "Spam verhindern durch Anforderung kleiner Beträge für Kontoerstellung",
+    "xlmPurpose4": "Brückenwährung für Asset-übergreifende Transaktionen über DEX"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "Natives Asset",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "Liquid Staking",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "Liquiditätsbelohnungen",
+    "stronghold": "Stronghold",
+    "assetPlatform": "Asset-Plattform",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "Bitcoin",
+    "wrappedBtc": "Wrapped BTC",
+    "native": "Nativ"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "Operation",
+      "operations": "Operationen"
+    },
+    "ledger": {
+      "txs": "Txs",
+      "ops": "Ops"
+    },
+    "asset": {
+      "holders": "Inhaber"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "QR-Code",
+      "downloadSvg": "SVG herunterladen",
+      "accountQrCode": "Konto-QR-Code"
+    },
+    "assetLogo": {
+      "xlmLogo": "XLM-Logo",
+      "assetLogo": "{code}-Logo"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "Asset",
+      "priceXlm": "Preis (XLM)",
+      "change24h": "24h Änderung",
+      "volume24h": "24h Volumen",
+      "holders": "Inhaber",
+      "auth": "Auth",
+      "noAssetsFound": "Keine Assets gefunden"
+    },
+    "globalSearch": {
+      "search": "Suchen",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Breadcrumb"
+    }
+  },
+  "developerMode": {
+    "title": "Entwicklermodus",
+    "enableDevMode": "Entwicklermodus aktivieren",
+    "options": "Anzeigeoptionen",
+    "showXdr": "Rohe XDR-Daten anzeigen",
+    "showApiEndpoints": "API-Endpunkte anzeigen",
+    "showInternalIds": "Interne IDs anzeigen",
+    "apiEndpoint": "API-Endpunkt",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDR-Daten",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "XDR kopieren",
+    "copyEndpoint": "Endpunkt kopieren"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "Grundlagen",
+      "network": "Netzwerk",
+      "accounts": "Konten",
+      "transactions": "Transaktionen",
+      "operations": "Operationen",
+      "assets": "Assets",
+      "trading": "Handel",
+      "contracts": "Smart Contracts",
+      "features": "Funktionen",
+      "technical": "Technisch"
+    },
+    "terms": {}
+  },
+  "internalIds": "Interne IDs",
+  "ledgerDetails": {
+    "title": "Ledger",
+    "notFound": "Ledger nicht gefunden",
+    "notFoundMessage": "Der gesuchte Ledger existiert nicht oder wurde noch nicht erstellt.",
+    "details": "Ledger-Details",
+    "closeTime": "Abschlusszeit",
+    "transactions": "Transaktionen",
+    "successful": "erfolgreich",
+    "failed": "fehlgeschlagen",
+    "operations": "Operationen",
+    "protocolVersion": "Protokollversion",
+    "totalFees": "Gesamtgebühren",
+    "baseFee": "Basisgebühr",
+    "hash": "Hash",
+    "prevHash": "Vorheriger Hash",
+    "transactionsInLedger": "Transaktionen in diesem Ledger",
+    "noTransactions": "Keine Transaktionen",
+    "noTransactionsDesc": "Dieser Ledger enthält keine Transaktionen.",
+    "failedToLoadTx": "Fehler beim Laden der Transaktionen",
+    "prev": "Zurück",
+    "next": "Weiter"
+  },
+  "noFeeData": "Keine Gebührendaten verfügbar",
+  "noTransactionData": "Keine Transaktionsdaten",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "Keine Suchanfrage",
+    "noQueryHint": "Geben Sie einen Transaktions-Hash, eine Kontoadresse oder eine Ledger-Nummer ein.",
+    "redirecting": "Weiterleitung...",
+    "title": "Suchergebnisse",
+    "detectedAs": "Erkannt als:",
+    "trySearchingAs": "Versuchen Sie zu suchen als:",
+    "couldntIdentify": "Abfragetyp konnte nicht identifiziert werden",
+    "couldntIdentifyMessage": "Die Suchanfrage entspricht keinem bekannten Stellar-Entitätsformat. Bitte überprüfen Sie Ihre Eingabe."
+  },
+  "transactionSearch": {
+    "title": "Transaktionen suchen",
+    "byHash": "Nach Hash",
+    "byAccount": "Nach Konto",
+    "byLedger": "Nach Ledger",
+    "search": "Suchen",
+    "hashPlaceholder": "Transaktions-Hash eingeben (64 Hex-Zeichen)...",
+    "accountPlaceholder": "Kontoadresse eingeben (G...)...",
+    "ledgerPlaceholder": "Ledger-Sequenznummer eingeben...",
+    "hashRequired": "Bitte geben Sie einen Transaktions-Hash ein",
+    "accountRequired": "Bitte geben Sie eine Kontoadresse ein",
+    "ledgerRequired": "Bitte geben Sie eine Ledger-Sequenznummer ein",
+    "invalidHash": "Ungültiger Hash. Muss 64 hexadezimale Zeichen haben.",
+    "invalidAccount": "Ungültiges Konto. Muss mit G beginnen und 56 Zeichen haben.",
+    "invalidLedger": "Ungültige Ledger-Sequenz. Muss eine positive Zahl sein.",
+    "searchingFor": "Zeige Transaktionen für",
+    "accountLabel": "Konto",
+    "ledgerLabel": "Ledger",
+    "clearSearch": "Suche löschen",
+    "filterByStatus": "Filtern",
+    "showAll": "Alle",
+    "showSuccess": "Erfolgreich",
+    "showFailed": "Fehlgeschlagen",
+    "noTransactionsFor": "Keine Transaktionen für diesen {type} gefunden."
+  },
+  "transactions_word": "Transaktionen",
+  "xlm": "XLM"
 }
