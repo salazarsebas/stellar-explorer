@@ -215,7 +215,9 @@
     "liveUntilLedger": "有效至账本",
     "failedToLoadStorage": "存储加载失败",
     "noStorage": "无存储条目",
-    "noStorageDescription": "此合约没有实例存储数据。"
+    "noStorageDescription": "此合约没有实例存储数据。",
+    "storageComingSoon": "即将推出",
+    "storageComingSoonDescription": "合约存储浏览器即将推出。"
   },
   "watchlist": {
     "title": "关注列表",
@@ -535,7 +537,163 @@
       "features": "功能",
       "technical": "技术"
     },
-    "terms": {}
+    "terms": {
+      "stellar": {
+        "term": "Stellar",
+        "short": "一个用于快速、低成本支付的开源区块链网络。",
+        "full": "Stellar是一个开源的去中心化区块链网络，专为快速、低成本的金融交易而设计。它连接金融机构、支付系统和个人，实现3-5秒内结算的跨境支付和资产代币化。"
+      },
+      "xlm": {
+        "term": "XLM (流明)",
+        "short": "Stellar网络的原生加密货币。",
+        "full": "XLM（流明）是Stellar网络的原生数字货币。它有多种用途：支付交易费用（基本费用0.00001 XLM）、维持账户最低余额（基本储备金0.5 XLM），还可以作为去中心化交易所（DEX）上资产交换的桥接货币。"
+      },
+      "account": {
+        "term": "账户",
+        "short": "一种基本数据结构，可持有余额并发送/接收付款。",
+        "full": "账户是Stellar上的基本数据结构。每个账户都有一个唯一的公钥（以'G'开头），持有XLM和其他资产的余额，并可以发送/接收付款。"
+      },
+      "publicKey": {
+        "term": "公钥",
+        "short": "以'G'开头的56个字符的标识符，代表账户地址。",
+        "full": "公钥是以'G'开头的56个字符的字符串，作为Stellar上的账户地址。它使用Ed25519加密从密钥派生而来，可以安全共享。"
+      },
+      "secretKey": {
+        "term": "密钥",
+        "short": "以'S'开头的56个字符的私钥，用于签署交易。",
+        "full": "密钥（也称为私钥）是以'S'开头的56个字符的字符串，允许您授权从您的账户发起的交易。必须完全保密。"
+      },
+      "ledger": {
+        "term": "账本",
+        "short": "包含所有账户和交易的网络状态快照。",
+        "full": "账本是给定时间点Stellar网络状态的完整快照。每3-5秒，网络会产生一个新的账本，包含所有账户、余额、信任线和修改状态的交易。"
+      },
+      "transaction": {
+        "term": "交易",
+        "short": "提交到网络执行的操作包。",
+        "full": "交易是修改账本状态的一个或多个操作的包。每笔交易都有一个源账户（支付费用的人）、序列号、最大费用、可选备注和1-100个操作。交易是原子的。"
+      },
+      "operation": {
+        "term": "操作",
+        "short": "交易中的单个动作，如支付或创建信任线。",
+        "full": "操作是修改账本的单个动作。Stellar支持27种操作类型，包括支付、信任线更改、账户创建、DEX上的报价和智能合约调用。"
+      },
+      "payment": {
+        "term": "支付",
+        "short": "将资产从一个账户发送到另一个账户的操作。",
+        "full": "支付是将资产从一个账户转移到另一个账户的操作类型。发送者指定目标账户、资产类型和金额。"
+      },
+      "asset": {
+        "term": "资产",
+        "short": "Stellar上任何代币化的价值，如XLM、稳定币或自定义代币。",
+        "full": "Stellar上的资产代表任何类型的价值——从原生XLM到法币支持的稳定币、商品或自定义代币。非原生资产由代码（1-12个字符）和发行者的公钥标识。"
+      },
+      "trustline": {
+        "term": "信任线",
+        "short": "持有发行者特定资产的明确授权。",
+        "full": "信任线是Stellar上的一条记录，授权账户持有特定资产。它代表对资产发行者的明确信任。"
+      },
+      "issuer": {
+        "term": "发行者",
+        "short": "创建和管理非原生资产的账户。",
+        "full": "发行者是创建和控制自定义资产的Stellar账户。发行者可以控制其他账户是否可以持有该资产。"
+      },
+      "fee": {
+        "term": "费用",
+        "short": "向网络提交交易的XLM成本。",
+        "full": "Stellar上的交易费用以XLM支付。基本费用是每个操作100 stroops（0.00001 XLM）。"
+      },
+      "stroops": {
+        "term": "Stroops",
+        "short": "XLM的最小单位：1 XLM = 10,000,000 stroops。",
+        "full": "stroop是XLM的最小单位。1 XLM等于10,000,000（10^7）stroops。"
+      },
+      "memo": {
+        "term": "备注",
+        "short": "附加到交易的可选元数据。",
+        "full": "备注是附加到交易的可选数据。类型包括：文本（最多28个字符）、ID（64位数字）、哈希（32字节哈希）和返回。"
+      },
+      "signer": {
+        "term": "签名者",
+        "short": "被授权为账户签署交易的密钥。",
+        "full": "签名者是可以为账户授权交易的密钥。账户可以有多个具有不同权重的签名者。"
+      },
+      "threshold": {
+        "term": "阈值",
+        "short": "授权不同操作所需的签名权重。",
+        "full": "阈值定义授权操作所需的累积签名者权重。Stellar有三个级别：低、中、高。"
+      },
+      "multisig": {
+        "term": "多重签名",
+        "short": "需要多个签名来授权交易的账户配置。",
+        "full": "多重签名（multisig）是一种安全功能，账户需要多个密钥的签名才能授权交易。"
+      },
+      "soroban": {
+        "term": "Soroban",
+        "short": "Stellar的智能合约平台，使用Rust和WASM。",
+        "full": "Soroban是Stellar的智能合约平台，于2024年推出。它允许开发者用Rust编写编译为WebAssembly（WASM）的智能合约。"
+      },
+      "contract": {
+        "term": "智能合约",
+        "short": "部署在Stellar网络上的自执行代码。",
+        "full": "Stellar上的智能合约（通过Soroban）是部署到网络的程序，在被调用时自动执行。"
+      },
+      "wasm": {
+        "term": "WASM",
+        "short": "用于Soroban智能合约的WebAssembly字节码格式。",
+        "full": "WebAssembly（WASM）是Soroban合约编译成的字节码格式。开发者用Rust编写合约，然后编译为WASM进行部署。"
+      },
+      "xdr": {
+        "term": "XDR",
+        "short": "外部数据表示 - Stellar的二进制序列化格式。",
+        "full": "XDR（外部数据表示）是整个Stellar使用的二进制编码格式。所有交易、账本条目和网络消息都序列化为XDR。"
+      },
+      "horizon": {
+        "term": "Horizon",
+        "short": "与Stellar网络交互的REST API服务器。",
+        "full": "Horizon是Stellar的HTTP API，提供对网络的访问。它允许提交交易、查询账户余额和浏览账本历史。"
+      },
+      "stellarCore": {
+        "term": "Stellar Core",
+        "short": "验证交易和维护共识的骨干软件。",
+        "full": "Stellar Core是驱动Stellar网络的软件。它验证交易，参与共识，并维护账本。"
+      },
+      "consensus": {
+        "term": "共识（SCP）",
+        "short": "Stellar共识协议 - 网络如何就账本状态达成一致。",
+        "full": "Stellar共识协议（SCP）是网络就交易有效性和账本状态达成一致的方式。与工作量证明不同，SCP使用联邦拜占庭协议。"
+      },
+      "validator": {
+        "term": "验证者",
+        "short": "参与网络共识过程的节点。",
+        "full": "验证者是参与共识的Stellar Core节点。验证者提议并对交易进行投票。"
+      },
+      "dex": {
+        "term": "DEX (SDEX)",
+        "short": "Stellar内置的去中心化资产交易所。",
+        "full": "Stellar去中心化交易所（SDEX）是用于资产交易的内置市场。用户可以创建自动匹配的买卖订单。"
+      },
+      "offer": {
+        "term": "订单",
+        "short": "Stellar DEX上的买入或卖出订单。",
+        "full": "订单是在Stellar DEX上以指定价格买入或卖出资产的指令。"
+      },
+      "claimableBalance": {
+        "term": "可领取余额",
+        "short": "预留给指定账户稍后领取的资产。",
+        "full": "可领取余额是锁定在特殊条目中的资产，可以由指定账户在指定条件下领取。"
+      },
+      "sponsorship": {
+        "term": "赞助",
+        "short": "一个账户代替另一个账户支付储备金。",
+        "full": "赞助允许一个账户为另一个账户的信任线、订单或其他条目支付基本储备金要求。"
+      },
+      "reserve": {
+        "term": "储备金",
+        "short": "维护账户和数据所需的最低XLM余额。",
+        "full": "储备金是账户必须维持的最低XLM余额。基本储备金（目前0.5 XLM）加上每个子条目0.5 XLM。"
+      }
+    }
   },
   "internalIds": "内部 ID",
   "ledgerDetails": {

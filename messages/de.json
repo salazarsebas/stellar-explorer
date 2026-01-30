@@ -215,7 +215,9 @@
     "liveUntilLedger": "Gültig bis Ledger",
     "failedToLoadStorage": "Speicher konnte nicht geladen werden",
     "noStorage": "Keine Speichereinträge",
-    "noStorageDescription": "Dieser Vertrag hat keine Instanz-Speicherdaten."
+    "noStorageDescription": "Dieser Vertrag hat keine Instanz-Speicherdaten.",
+    "storageComingSoon": "Demnächst verfügbar",
+    "storageComingSoonDescription": "Die Speicheransicht für diesen Vertrag wird in Kürze verfügbar sein."
   },
   "watchlist": {
     "title": "Merkliste",
@@ -535,7 +537,163 @@
       "features": "Funktionen",
       "technical": "Technisch"
     },
-    "terms": {}
+    "terms": {
+      "stellar": {
+        "term": "Stellar",
+        "short": "Ein Open-Source-Blockchain-Netzwerk für schnelle, kostengünstige Zahlungen.",
+        "full": "Stellar ist ein dezentralisiertes Open-Source-Blockchain-Netzwerk für schnelle, kostengünstige Finanztransaktionen. Es verbindet Finanzinstitute, Zahlungssysteme und Menschen und ermöglicht grenzüberschreitende Zahlungen und Asset-Tokenisierung mit Abwicklung in 3-5 Sekunden."
+      },
+      "xlm": {
+        "term": "XLM (Lumens)",
+        "short": "Die native Kryptowährung des Stellar-Netzwerks.",
+        "full": "XLM (Lumens) ist die native digitale Währung des Stellar-Netzwerks. Sie dient mehreren Zwecken: Zahlung von Transaktionsgebühren (Basisgebühr 0,00001 XLM), Aufrechterhaltung von Mindestkontosalden (Basisreserve 0,5 XLM) und kann als Brückenwährung für Asset-Tausch auf der dezentralen Börse (DEX) fungieren."
+      },
+      "account": {
+        "term": "Konto",
+        "short": "Eine grundlegende Datenstruktur, die Guthaben hält und Zahlungen senden/empfangen kann.",
+        "full": "Ein Konto ist die grundlegende Datenstruktur auf Stellar. Jedes Konto hat einen eindeutigen öffentlichen Schlüssel (beginnt mit 'G'), hält Guthaben von XLM und anderen Assets und kann Zahlungen senden/empfangen. Konten müssen ein Mindestguthaben (Basisreserve + Untereinträge × 0,5 XLM) halten und haben konfigurierbare Signaturschwellen."
+      },
+      "publicKey": {
+        "term": "Öffentlicher Schlüssel",
+        "short": "Ein 56-Zeichen-Identifikator beginnend mit 'G', der eine Kontoadresse darstellt.",
+        "full": "Ein öffentlicher Schlüssel ist eine 56-Zeichen-Zeichenkette beginnend mit 'G', die als Kontoadresse auf Stellar dient. Er wird aus einem geheimen Schlüssel mittels Ed25519-Kryptographie abgeleitet und kann sicher geteilt werden."
+      },
+      "secretKey": {
+        "term": "Geheimer Schlüssel",
+        "short": "Ein 56-Zeichen-Privatschlüssel beginnend mit 'S' zum Signieren von Transaktionen.",
+        "full": "Ein geheimer Schlüssel (auch Privatschlüssel genannt) ist eine 56-Zeichen-Zeichenkette beginnend mit 'S', die es ermöglicht, Transaktionen von Ihrem Konto zu autorisieren. Er muss vollständig privat gehalten werden."
+      },
+      "ledger": {
+        "term": "Ledger",
+        "short": "Ein Snapshot des Netzwerkzustands mit allen Konten und Transaktionen.",
+        "full": "Ein Ledger ist ein vollständiger Snapshot des Stellar-Netzwerkzustands zu einem bestimmten Zeitpunkt. Alle 3-5 Sekunden produziert das Netzwerk einen neuen Ledger mit allen Konten, Guthaben, Vertrauenslinien und den Transaktionen, die den Zustand verändert haben."
+      },
+      "transaction": {
+        "term": "Transaktion",
+        "short": "Ein Bündel von Operationen, das zur Ausführung an das Netzwerk übermittelt wird.",
+        "full": "Eine Transaktion ist ein Bündel von einer oder mehreren Operationen, die den Ledger-Zustand ändern. Jede Transaktion hat ein Quellkonto (zahlt die Gebühr), eine Sequenznummer, eine maximale Gebühr, optionales Memo und 1-100 Operationen. Transaktionen sind atomar."
+      },
+      "operation": {
+        "term": "Operation",
+        "short": "Eine einzelne Aktion innerhalb einer Transaktion, wie Zahlung oder Vertrauenslinien-Erstellung.",
+        "full": "Eine Operation ist eine einzelne Aktion, die den Ledger verändert. Stellar unterstützt 27 Operationstypen einschließlich Zahlungen, Vertrauenslinien-Änderungen, Kontoerstellung, Angebote auf der DEX und Smart-Contract-Aufrufe."
+      },
+      "payment": {
+        "term": "Zahlung",
+        "short": "Eine Operation, die ein Asset von einem Konto zu einem anderen sendet.",
+        "full": "Eine Zahlung ist ein Operationstyp, der Assets von einem Konto zu einem anderen überträgt. Der Sender gibt das Zielkonto, den Asset-Typ und den Betrag an."
+      },
+      "asset": {
+        "term": "Asset",
+        "short": "Jeder tokenisierte Wert auf Stellar, wie XLM, Stablecoins oder benutzerdefinierte Token.",
+        "full": "Ein Asset auf Stellar repräsentiert jeden Werttyp - von nativem XLM bis zu Fiat-gestützten Stablecoins, Rohstoffen oder benutzerdefinierten Token. Nicht-native Assets werden durch einen Code (1-12 Zeichen) und den öffentlichen Schlüssel des Emittenten identifiziert."
+      },
+      "trustline": {
+        "term": "Vertrauenslinie",
+        "short": "Eine explizite Autorisierung, ein bestimmtes Asset von einem Emittenten zu halten.",
+        "full": "Eine Vertrauenslinie ist ein Eintrag auf Stellar, der ein Konto autorisiert, ein bestimmtes Asset zu halten. Sie repräsentiert explizites Vertrauen in den Asset-Emittenten."
+      },
+      "issuer": {
+        "term": "Emittent",
+        "short": "Das Konto, das ein nicht-natives Asset erstellt und verwaltet.",
+        "full": "Ein Emittent ist das Stellar-Konto, das ein benutzerdefiniertes Asset erstellt und kontrolliert. Der Emittent kann steuern, ob andere Konten das Asset halten können."
+      },
+      "fee": {
+        "term": "Gebühr",
+        "short": "Die Kosten in XLM, um eine Transaktion an das Netzwerk zu übermitteln.",
+        "full": "Transaktionsgebühren auf Stellar werden in XLM bezahlt. Die Basisgebühr beträgt 100 Stroops (0,00001 XLM) pro Operation."
+      },
+      "stroops": {
+        "term": "Stroops",
+        "short": "Die kleinste Einheit von XLM: 1 XLM = 10.000.000 Stroops.",
+        "full": "Ein Stroop ist die kleinste Einheit von XLM. Ein XLM entspricht 10.000.000 (10^7) Stroops."
+      },
+      "memo": {
+        "term": "Memo",
+        "short": "Optionale Metadaten, die einer Transaktion angehängt werden.",
+        "full": "Ein Memo sind optionale Daten, die einer Transaktion angehängt werden. Typen umfassen: Text (bis zu 28 Zeichen), ID (64-Bit-Zahl), Hash (32-Byte-Hash) und Return."
+      },
+      "signer": {
+        "term": "Unterzeichner",
+        "short": "Ein Schlüssel, der autorisiert ist, Transaktionen für ein Konto zu signieren.",
+        "full": "Ein Unterzeichner ist ein Schlüssel, der Transaktionen für ein Konto autorisieren kann. Konten können mehrere Unterzeichner mit unterschiedlichen Gewichtungen haben."
+      },
+      "threshold": {
+        "term": "Schwellenwert",
+        "short": "Das erforderliche Signiergewicht, um verschiedene Operationen zu autorisieren.",
+        "full": "Schwellenwerte definieren, wie viel kumulatives Unterzeichnergewicht erforderlich ist, um Operationen zu autorisieren. Stellar hat drei Stufen: niedrig, mittel und hoch."
+      },
+      "multisig": {
+        "term": "Multi-Signatur",
+        "short": "Kontokonfiguration, die mehrere Signaturen zur Autorisierung von Transaktionen erfordert.",
+        "full": "Multi-Signatur (Multisig) ist eine Sicherheitsfunktion, bei der ein Konto Signaturen von mehreren Schlüsseln benötigt, um Transaktionen zu autorisieren."
+      },
+      "soroban": {
+        "term": "Soroban",
+        "short": "Stellars Smart-Contract-Plattform mit Rust und WASM.",
+        "full": "Soroban ist Stellars Smart-Contract-Plattform, die 2024 gestartet wurde. Sie ermöglicht Entwicklern, Smart Contracts in Rust zu schreiben, die zu WebAssembly (WASM) kompilieren."
+      },
+      "contract": {
+        "term": "Smart Contract",
+        "short": "Selbstausführender Code, der im Stellar-Netzwerk bereitgestellt wird.",
+        "full": "Ein Smart Contract auf Stellar (via Soroban) ist ein Programm, das im Netzwerk bereitgestellt wird und automatisch ausgeführt wird, wenn es aufgerufen wird."
+      },
+      "wasm": {
+        "term": "WASM",
+        "short": "WebAssembly-Bytecode-Format für Soroban Smart Contracts.",
+        "full": "WebAssembly (WASM) ist das Bytecode-Format, zu dem Soroban-Contracts kompilieren. Entwickler schreiben Contracts in Rust, das dann für die Bereitstellung zu WASM kompiliert."
+      },
+      "xdr": {
+        "term": "XDR",
+        "short": "External Data Representation - Stellars binäres Serialisierungsformat.",
+        "full": "XDR (External Data Representation) ist das binäre Kodierungsformat, das in ganz Stellar verwendet wird. Alle Transaktionen, Ledger-Einträge und Netzwerknachrichten werden als XDR serialisiert."
+      },
+      "horizon": {
+        "term": "Horizon",
+        "short": "Der REST-API-Server für die Interaktion mit dem Stellar-Netzwerk.",
+        "full": "Horizon ist Stellars HTTP-API, die Zugang zum Netzwerk bietet. Sie ermöglicht das Einreichen von Transaktionen, Abfragen von Kontosalden und Durchsuchen der Ledger-Historie."
+      },
+      "stellarCore": {
+        "term": "Stellar Core",
+        "short": "Die Backbone-Software, die Transaktionen validiert und Konsens aufrechterhält.",
+        "full": "Stellar Core ist die Software, die das Stellar-Netzwerk antreibt. Sie validiert Transaktionen, nimmt am Konsens teil und pflegt den Ledger."
+      },
+      "consensus": {
+        "term": "Konsens (SCP)",
+        "short": "Stellar Consensus Protocol - wie das Netzwerk sich auf den Ledger-Zustand einigt.",
+        "full": "Das Stellar Consensus Protocol (SCP) ist, wie das Netzwerk sich auf Transaktionsvalidität und Ledger-Zustand einigt. Anders als Proof-of-Work verwendet SCP Federated Byzantine Agreement."
+      },
+      "validator": {
+        "term": "Validator",
+        "short": "Ein Knoten, der am Konsensprozess des Netzwerks teilnimmt.",
+        "full": "Ein Validator ist ein Stellar-Core-Knoten, der am Konsens teilnimmt. Validatoren schlagen Transaktionen vor und stimmen über sie ab."
+      },
+      "dex": {
+        "term": "DEX (SDEX)",
+        "short": "Stellars eingebaute dezentrale Börse für den Handel mit Assets.",
+        "full": "Die Stellar Decentralized Exchange (SDEX) ist ein eingebauter Marktplatz für den Handel mit Assets. Benutzer können Kauf-/Verkaufsangebote erstellen, die automatisch abgeglichen werden."
+      },
+      "offer": {
+        "term": "Angebot",
+        "short": "Eine Kauf- oder Verkaufsorder auf der Stellar DEX.",
+        "full": "Ein Angebot ist eine Order auf der Stellar DEX, um ein Asset zu einem bestimmten Preis zu kaufen oder zu verkaufen."
+      },
+      "claimableBalance": {
+        "term": "Einforderbares Guthaben",
+        "short": "Assets, die für eine spätere Einfoderung durch bestimmte Konten beiseitegelegt werden.",
+        "full": "Ein einforderbares Guthaben sind Assets, die in einem speziellen Eintrag gesperrt sind und von bestimmten Konten unter bestimmten Bedingungen eingefordert werden können."
+      },
+      "sponsorship": {
+        "term": "Sponsoring",
+        "short": "Ein Konto, das Reserven im Namen eines anderen zahlt.",
+        "full": "Sponsoring ermöglicht es einem Konto, die Basisreserve-Anforderungen für die Vertrauenslinien, Angebote oder andere Einträge eines anderen Kontos zu zahlen."
+      },
+      "reserve": {
+        "term": "Reserve",
+        "short": "Mindest-XLM-Guthaben erforderlich zur Aufrechterhaltung von Konto und Daten.",
+        "full": "Die Reserve ist das Mindest-XLM-Guthaben, das ein Konto halten muss. Die Basisreserve (derzeit 0,5 XLM) plus 0,5 XLM pro Untereintrag."
+      }
+    }
   },
   "internalIds": "Interne IDs",
   "ledgerDetails": {

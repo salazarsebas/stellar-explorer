@@ -23,6 +23,24 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Verify translation files have equal keys
+        run: |
+          echo "Counting keys in translation files..."
+          counts=""
+          for f in messages/*.json; do
+            count=$(cat "$f" | jq '[.. | scalars] | length')
+            echo "$(basename $f): $count keys"
+            counts="$counts$count\n"
+          done
+
+          unique_counts=$(echo -e "$counts" | sort -u | grep -v '^$' | wc -l)
+          if [ "$unique_counts" -ne 1 ]; then
+            echo "❌ Error: Translation files have different key counts!"
+            exit 1
+          else
+            echo "✅ All translation files have the same number of keys"
+          fi
+
       - name: Build
         run: bun run build
 

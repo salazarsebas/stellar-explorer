@@ -215,7 +215,9 @@
     "liveUntilLedger": "Valide Jusqu'au Registre",
     "failedToLoadStorage": "Échec du chargement du stockage",
     "noStorage": "Aucune Entrée de Stockage",
-    "noStorageDescription": "Ce contrat n'a pas de données de stockage d'instance."
+    "noStorageDescription": "Ce contrat n'a pas de données de stockage d'instance.",
+    "storageComingSoon": "Bientôt disponible",
+    "storageComingSoonDescription": "La vue de stockage pour ce contrat sera bientôt disponible."
   },
   "watchlist": {
     "title": "Favoris",
@@ -535,7 +537,163 @@
       "features": "Fonctionnalités",
       "technical": "Technique"
     },
-    "terms": {}
+    "terms": {
+      "stellar": {
+        "term": "Stellar",
+        "short": "Un réseau blockchain open-source pour des paiements rapides et peu coûteux.",
+        "full": "Stellar est un réseau blockchain décentralisé et open-source conçu pour des transactions financières rapides et peu coûteuses. Il connecte les institutions financières, les systèmes de paiement et les personnes, permettant des paiements transfrontaliers et la tokenisation d'actifs avec un règlement en 3-5 secondes."
+      },
+      "xlm": {
+        "term": "XLM (Lumens)",
+        "short": "La cryptomonnaie native du réseau Stellar.",
+        "full": "XLM (Lumens) est la monnaie numérique native du réseau Stellar. Elle sert plusieurs objectifs : payer les frais de transaction (frais de base 0,00001 XLM), maintenir les soldes minimums des comptes (réserve de base 0,5 XLM) et peut servir de monnaie pont pour les échanges d'actifs sur l'échange décentralisé (DEX)."
+      },
+      "account": {
+        "term": "Compte",
+        "short": "Une structure de données fondamentale qui détient des soldes et peut envoyer/recevoir des paiements.",
+        "full": "Un compte est la structure de données fondamentale sur Stellar. Chaque compte a une clé publique unique (commençant par 'G'), détient des soldes de XLM et d'autres actifs, et peut envoyer/recevoir des paiements."
+      },
+      "publicKey": {
+        "term": "Clé Publique",
+        "short": "Un identifiant de 56 caractères commençant par 'G' représentant une adresse de compte.",
+        "full": "Une clé publique est une chaîne de 56 caractères commençant par 'G' qui sert d'adresse de compte sur Stellar. Elle est dérivée d'une clé secrète en utilisant la cryptographie Ed25519 et peut être partagée en toute sécurité."
+      },
+      "secretKey": {
+        "term": "Clé Secrète",
+        "short": "Une clé privée de 56 caractères commençant par 'S' utilisée pour signer les transactions.",
+        "full": "Une clé secrète (aussi appelée clé privée) est une chaîne de 56 caractères commençant par 'S' qui vous permet d'autoriser des transactions depuis votre compte. Elle doit être gardée complètement privée."
+      },
+      "ledger": {
+        "term": "Ledger",
+        "short": "Un instantané de l'état du réseau contenant tous les comptes et transactions.",
+        "full": "Un ledger est un instantané complet de l'état du réseau Stellar à un moment donné. Toutes les 3-5 secondes, le réseau produit un nouveau ledger contenant tous les comptes, soldes, lignes de confiance et les transactions qui ont modifié l'état."
+      },
+      "transaction": {
+        "term": "Transaction",
+        "short": "Un ensemble d'opérations soumis au réseau pour exécution.",
+        "full": "Une transaction est un ensemble d'une ou plusieurs opérations qui modifient l'état du ledger. Chaque transaction a un compte source (qui paie les frais), un numéro de séquence, des frais maximum, un mémo optionnel et 1-100 opérations. Les transactions sont atomiques."
+      },
+      "operation": {
+        "term": "Opération",
+        "short": "Une action unique au sein d'une transaction, comme un paiement ou la création d'une ligne de confiance.",
+        "full": "Une opération est une action unique qui modifie le ledger. Stellar supporte 27 types d'opérations incluant les paiements, les changements de ligne de confiance, la création de compte, les offres sur le DEX et les invocations de contrats intelligents."
+      },
+      "payment": {
+        "term": "Paiement",
+        "short": "Une opération qui envoie un actif d'un compte à un autre.",
+        "full": "Un paiement est un type d'opération qui transfère des actifs d'un compte à un autre. L'expéditeur spécifie le compte de destination, le type d'actif et le montant."
+      },
+      "asset": {
+        "term": "Actif",
+        "short": "Toute valeur tokenisée sur Stellar, comme XLM, stablecoins ou tokens personnalisés.",
+        "full": "Un actif sur Stellar représente tout type de valeur - du XLM natif aux stablecoins adossés à des devises, matières premières ou tokens personnalisés. Les actifs non natifs sont identifiés par un code (1-12 caractères) et la clé publique de l'émetteur."
+      },
+      "trustline": {
+        "term": "Ligne de Confiance",
+        "short": "Une autorisation explicite de détenir un actif spécifique d'un émetteur.",
+        "full": "Une ligne de confiance est un enregistrement sur Stellar qui autorise un compte à détenir un actif spécifique. Elle représente une confiance explicite dans l'émetteur de l'actif."
+      },
+      "issuer": {
+        "term": "Émetteur",
+        "short": "Le compte qui crée et gère un actif non natif.",
+        "full": "Un émetteur est le compte Stellar qui crée et contrôle un actif personnalisé. L'émetteur peut contrôler si d'autres comptes peuvent détenir l'actif."
+      },
+      "fee": {
+        "term": "Frais",
+        "short": "Le coût en XLM pour soumettre une transaction au réseau.",
+        "full": "Les frais de transaction sur Stellar sont payés en XLM. Les frais de base sont de 100 stroops (0,00001 XLM) par opération."
+      },
+      "stroops": {
+        "term": "Stroops",
+        "short": "La plus petite unité de XLM : 1 XLM = 10 000 000 stroops.",
+        "full": "Un stroop est la plus petite unité de XLM. Un XLM équivaut à 10 000 000 (10^7) stroops."
+      },
+      "memo": {
+        "term": "Mémo",
+        "short": "Métadonnées optionnelles attachées à une transaction.",
+        "full": "Un mémo est des données optionnelles attachées à une transaction. Les types incluent : texte (jusqu'à 28 caractères), ID (nombre 64 bits), hash (hash 32 octets) et return."
+      },
+      "signer": {
+        "term": "Signataire",
+        "short": "Une clé autorisée à signer des transactions pour un compte.",
+        "full": "Un signataire est une clé qui peut autoriser des transactions pour un compte. Les comptes peuvent avoir plusieurs signataires avec différents poids."
+      },
+      "threshold": {
+        "term": "Seuil",
+        "short": "Le poids de signature requis pour autoriser différentes opérations.",
+        "full": "Les seuils définissent le poids cumulé de signataire nécessaire pour autoriser des opérations. Stellar a trois niveaux : bas, moyen et élevé."
+      },
+      "multisig": {
+        "term": "Multi-signature",
+        "short": "Configuration de compte nécessitant plusieurs signatures pour autoriser les transactions.",
+        "full": "La multi-signature (multisig) est une fonctionnalité de sécurité où un compte nécessite des signatures de plusieurs clés pour autoriser des transactions."
+      },
+      "soroban": {
+        "term": "Soroban",
+        "short": "La plateforme de contrats intelligents de Stellar utilisant Rust et WASM.",
+        "full": "Soroban est la plateforme de contrats intelligents de Stellar, lancée en 2024. Elle permet aux développeurs d'écrire des contrats intelligents en Rust qui compilent vers WebAssembly (WASM)."
+      },
+      "contract": {
+        "term": "Contrat Intelligent",
+        "short": "Code auto-exécutant déployé sur le réseau Stellar.",
+        "full": "Un contrat intelligent sur Stellar (via Soroban) est un programme déployé sur le réseau qui s'exécute automatiquement lorsqu'il est invoqué."
+      },
+      "wasm": {
+        "term": "WASM",
+        "short": "Format bytecode WebAssembly utilisé pour les contrats intelligents Soroban.",
+        "full": "WebAssembly (WASM) est le format bytecode vers lequel les contrats Soroban compilent. Les développeurs écrivent des contrats en Rust, qui compile ensuite vers WASM pour le déploiement."
+      },
+      "xdr": {
+        "term": "XDR",
+        "short": "External Data Representation - le format de sérialisation binaire de Stellar.",
+        "full": "XDR (External Data Representation) est le format d'encodage binaire utilisé dans tout Stellar. Toutes les transactions, entrées de ledger et messages réseau sont sérialisés en XDR."
+      },
+      "horizon": {
+        "term": "Horizon",
+        "short": "Le serveur API REST pour interagir avec le réseau Stellar.",
+        "full": "Horizon est l'API HTTP de Stellar qui fournit un accès au réseau. Elle permet de soumettre des transactions, interroger les soldes des comptes et parcourir l'historique du ledger."
+      },
+      "stellarCore": {
+        "term": "Stellar Core",
+        "short": "Le logiciel principal qui valide les transactions et maintient le consensus.",
+        "full": "Stellar Core est le logiciel qui alimente le réseau Stellar. Il valide les transactions, participe au consensus et maintient le ledger."
+      },
+      "consensus": {
+        "term": "Consensus (SCP)",
+        "short": "Stellar Consensus Protocol - comment le réseau s'accorde sur l'état du ledger.",
+        "full": "Le Stellar Consensus Protocol (SCP) est la façon dont le réseau s'accorde sur la validité des transactions et l'état du ledger. Contrairement au proof-of-work, SCP utilise l'Accord Byzantin Fédéré."
+      },
+      "validator": {
+        "term": "Validateur",
+        "short": "Un nœud qui participe au processus de consensus du réseau.",
+        "full": "Un validateur est un nœud Stellar Core qui participe au consensus. Les validateurs proposent et votent sur les transactions."
+      },
+      "dex": {
+        "term": "DEX (SDEX)",
+        "short": "L'échange décentralisé intégré de Stellar pour le trading d'actifs.",
+        "full": "Le Stellar Decentralized Exchange (SDEX) est une place de marché intégrée pour le trading d'actifs. Les utilisateurs peuvent créer des offres d'achat/vente qui sont automatiquement appariées."
+      },
+      "offer": {
+        "term": "Offre",
+        "short": "Un ordre d'achat ou de vente sur le DEX Stellar.",
+        "full": "Une offre est un ordre sur le DEX Stellar pour acheter ou vendre un actif à un prix spécifié."
+      },
+      "claimableBalance": {
+        "term": "Solde Réclamable",
+        "short": "Actifs mis de côté pour réclamation ultérieure par des comptes spécifiés.",
+        "full": "Un solde réclamable est des actifs verrouillés dans une entrée spéciale qui peuvent être réclamés par des comptes spécifiés sous des conditions spécifiées."
+      },
+      "sponsorship": {
+        "term": "Parrainage",
+        "short": "Un compte payant les réserves au nom d'un autre.",
+        "full": "Le parrainage permet à un compte de payer les exigences de réserve de base pour les lignes de confiance, offres ou autres entrées d'un autre compte."
+      },
+      "reserve": {
+        "term": "Réserve",
+        "short": "Solde minimum XLM requis pour maintenir le compte et les données.",
+        "full": "La réserve est le solde minimum XLM qu'un compte doit maintenir. La réserve de base (actuellement 0,5 XLM) plus 0,5 XLM par sous-entrée."
+      }
+    }
   },
   "internalIds": "IDs Internes",
   "ledgerDetails": {
