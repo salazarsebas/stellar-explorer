@@ -138,3 +138,35 @@ export function useContractStorage(contractId: string) {
     enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
   });
 }
+
+// Hook for assets list with pagination
+export function useAssetsList(cursor?: string) {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.assetsList(network, cursor));
+}
+
+// Hook for asset trade aggregations (24h volume, price change)
+export function useAssetTrades(code: string, issuer: string) {
+  const { network } = useNetwork();
+  const isNative = code === "XLM" && issuer === "native";
+  return useQuery({
+    ...stellarQueries.assetTradeAggregations(network, code, issuer),
+    enabled: !isNative && !!code && !!issuer,
+  });
+}
+
+// Hook for asset orderbook
+export function useAssetOrderbook(sellingCode: string, sellingIssuer: string) {
+  const { network } = useNetwork();
+  const isNative = sellingCode === "XLM" && sellingIssuer === "native";
+  return useQuery({
+    ...stellarQueries.assetOrderbook(network, sellingCode, sellingIssuer),
+    enabled: !isNative && !!sellingCode && !!sellingIssuer,
+  });
+}
+
+// Hook for top assets
+export function useTopAssets() {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.topAssets(network));
+}

@@ -39,6 +39,13 @@ export const stellarKeys = {
   assets: (network: NetworkKey) => [...stellarKeys.network(network), "assets"] as const,
   asset: (network: NetworkKey, code: string, issuer: string) =>
     [...stellarKeys.assets(network), code, issuer] as const,
+  assetsList: (network: NetworkKey, cursor?: string) =>
+    [...stellarKeys.assets(network), "list", cursor] as const,
+  assetTrades: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.asset(network, code, issuer), "trades"] as const,
+  assetOrderbook: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.asset(network, code, issuer), "orderbook"] as const,
+  topAssets: (network: NetworkKey) => [...stellarKeys.assets(network), "top"] as const,
 
   // Contracts (Soroban)
   contracts: (network: NetworkKey) => [...stellarKeys.network(network), "contracts"] as const,
@@ -199,6 +206,209 @@ export const stellarQueries = {
       return horizon.accounts().forAsset(asset).limit(limit).call();
     },
     staleTime: STALE_TIME,
+  }),
+
+  // Assets list with pagination
+  assetsList: (network: NetworkKey, cursor?: string, limit = 20) => ({
+    queryKey: stellarKeys.assetsList(network, cursor),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      let builder = horizon.assets().order("desc").limit(limit);
+      if (cursor) {
+        builder = builder.cursor(cursor);
+      }
+      return builder.call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Trade aggregations for an asset (24h volume)
+  assetTradeAggregations: (
+    network: NetworkKey,
+    baseCode: string,
+    baseIssuer: string,
+    counterCode = "XLM",
+    counterIssuer?: string
+  ) => ({
+    queryKey: stellarKeys.assetTrades(network, baseCode, baseIssuer),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      const { Asset } = await import("@stellar/stellar-sdk");
+
+      const baseAsset =
+        baseCode === "XLM" ? Asset.native() : new Asset(baseCode, baseIssuer);
+      const counterAsset =
+        counterCode === "XLM" ? Asset.native() : new Asset(counterCode, counterIssuer!);
+
+      // Get 24h trade aggregations (1 hour resolution)
+      const now = Date.now();
+      const oneDayAgo = now - 24 * 60 * 60 * 1000;
+
+      const response = await horizon
+        .tradeAggregation(baseAsset, counterAsset, oneDayAgo, now, 3600000, 0)
+        .limit(24)
+        .call();
+
+      // Calculate 24h stats
+      let volume24h = 0;
+      let high24h = 0;
+      let low24h = Infinity;
+      let open24h = 0;
+      let close24h = 0;
+
+      if (response.records.length > 0) {
+        open24h = parseFloat(response.records[0].open);
+        close24h = parseFloat(response.records[response.records.length - 1].close);
+
+        for (const record of response.records) {
+          volume24h += parseFloat(record.base_volume);
+          const recordHigh = parseFloat(record.high);
+          const recordLow = parseFloat(record.low);
+          if (recordHigh > high24h) high24h = recordHigh;
+          if (recordLow < low24h) low24h = recordLow;
+        }
+      }
+
+      const priceChange24h = open24h > 0 ? ((close24h - open24h) / open24h) * 100 : 0;
+
+      return {
+        records: response.records,
+        volume24h,
+        high24h: high24h === 0 ? null : high24h,
+        low24h: low24h === Infinity ? null : low24h,
+        open24h: open24h || null,
+        close24h: close24h || null,
+        priceChange24h,
+        tradeCount: response.records.reduce(
+          (acc, r) => acc + (typeof r.trade_count === 'string' ? parseInt(r.trade_count, 10) : r.trade_count),
+          0
+        ),
+      };
+    },
+    staleTime: 60000, // 1 minute
+  }),
+
+  // Orderbook for an asset pair
+  assetOrderbook: (
+    network: NetworkKey,
+    sellingCode: string,
+    sellingIssuer: string,
+    buyingCode = "XLM",
+    buyingIssuer?: string
+  ) => ({
+    queryKey: stellarKeys.assetOrderbook(network, sellingCode, sellingIssuer),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      const { Asset } = await import("@stellar/stellar-sdk");
+
+      const sellingAsset =
+        sellingCode === "XLM" ? Asset.native() : new Asset(sellingCode, sellingIssuer);
+      const buyingAsset =
+        buyingCode === "XLM" ? Asset.native() : new Asset(buyingCode, buyingIssuer!);
+
+      const response = await horizon
+        .orderbook(sellingAsset, buyingAsset)
+        .limit(10)
+        .call();
+
+      // Calculate spread and mid price
+      const bestBid = response.bids[0] ? parseFloat(response.bids[0].price) : null;
+      const bestAsk = response.asks[0] ? parseFloat(response.asks[0].price) : null;
+      const midPrice = bestBid && bestAsk ? (bestBid + bestAsk) / 2 : null;
+      const spread = bestBid && bestAsk ? ((bestAsk - bestBid) / bestAsk) * 100 : null;
+
+      return {
+        bids: response.bids,
+        asks: response.asks,
+        bestBid,
+        bestAsk,
+        midPrice,
+        spread,
+      };
+    },
+    staleTime: 10000, // 10 seconds
+  }),
+
+  // Top assets - fetch popular assets and enrich with data
+  topAssets: (network: NetworkKey) => ({
+    queryKey: stellarKeys.topAssets(network),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      const { Asset } = await import("@stellar/stellar-sdk");
+
+      // Known popular assets to fetch
+      const popularAssets = [
+        { code: "USDC", issuer: "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN" },
+        { code: "yXLM", issuer: "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55" },
+        { code: "AQUA", issuer: "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA" },
+        { code: "SHX", issuer: "GDSTRSHXHGJ7ZIVRBXEYE5Q74XUVCUSEZ6XKRCLJKFX3VZC5ZCWHQC5C" },
+        { code: "EURC", issuer: "GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2" },
+        { code: "BTC", issuer: "GDPJALI4AZKUU2W426U5WKMAT6CN3AJRPIIRYR2YM54TL2GDWO5O2MZM" },
+      ];
+
+      // Fetch asset info for each
+      const assetsData = await Promise.all(
+        popularAssets.map(async ({ code, issuer }) => {
+          try {
+            const assetResponse = await horizon.assets().forCode(code).forIssuer(issuer).call();
+            const assetRecord = assetResponse.records[0];
+
+            if (!assetRecord) return null;
+
+            // Get 24h trade data against XLM
+            const baseAsset = new Asset(code, issuer);
+            const counterAsset = Asset.native();
+            const now = Date.now();
+            const oneDayAgo = now - 24 * 60 * 60 * 1000;
+
+            let volume24h = 0;
+            let priceChange24h = 0;
+            let currentPrice = 0;
+
+            try {
+              const trades = await horizon
+                .tradeAggregation(baseAsset, counterAsset, oneDayAgo, now, 86400000, 0)
+                .limit(1)
+                .call();
+
+              if (trades.records.length > 0) {
+                const record = trades.records[0];
+                volume24h = parseFloat(record.base_volume);
+                const open = parseFloat(record.open);
+                const close = parseFloat(record.close);
+                currentPrice = close;
+                priceChange24h = open > 0 ? ((close - open) / open) * 100 : 0;
+              }
+            } catch {
+              // Trade data not available
+            }
+
+            // Calculate total accounts (authorized + authorized_to_maintain_liabilities)
+            const numAccounts =
+              assetRecord.accounts.authorized +
+              assetRecord.accounts.authorized_to_maintain_liabilities;
+
+            return {
+              code: assetRecord.asset_code,
+              issuer: assetRecord.asset_issuer,
+              assetType: assetRecord.asset_type,
+              numAccounts,
+              amount: parseFloat(assetRecord.balances.authorized),
+              volume24h,
+              priceChange24h,
+              currentPrice,
+              flags: assetRecord.flags,
+            };
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      // Filter out null values and sort by num_accounts
+      return assetsData.filter(Boolean).sort((a, b) => b!.numAccounts - a!.numAccounts);
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
   }),
 
   // Fee stats
