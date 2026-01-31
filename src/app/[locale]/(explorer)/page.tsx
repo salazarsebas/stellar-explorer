@@ -176,7 +176,7 @@ export default function HomePage() {
   return (
     <div className="space-y-10">
       {/* Hero section with gradient background */}
-      <section className="relative -mx-4 mb-4 px-4 py-12 md:-mx-6 md:px-6 lg:-mx-8 lg:px-8">
+      <section className="relative -mx-4 -mt-4 mb-4 px-4 pt-16 pb-12 md:-mx-6 md:-mt-6 md:px-6 lg:-mx-8 lg:-mt-8 lg:px-8">
         {/* Gradient overlays */}
         <div className="from-primary/5 absolute inset-0 bg-gradient-to-b via-transparent to-transparent" />
         <div className="from-primary/10 absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] via-transparent to-transparent" />
