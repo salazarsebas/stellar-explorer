@@ -4,6 +4,7 @@ import { Check, Copy, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface CopyButtonProps {
   value: string;
@@ -16,11 +17,13 @@ interface CopyButtonProps {
 export function CopyButton({
   value,
   variant = "icon",
-  label = "Copy",
+  label,
   className,
   isLink = false,
 }: CopyButtonProps) {
+  const t = useTranslations("common");
   const { copy, copied } = useCopy();
+  const buttonLabel = label ?? t("copy");
 
   if (variant === "icon") {
     return (
@@ -51,12 +54,12 @@ export function CopyButton({
       {copied ? (
         <>
           <Check className="text-success size-3.5" />
-          Copied
+          {t("copied")}
         </>
       ) : (
         <>
           {isLink ? <Link2 className="size-3.5" /> : <Copy className="size-3.5" />}
-          {label}
+          {buttonLabel}
         </>
       )}
     </Button>

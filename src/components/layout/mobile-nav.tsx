@@ -1,8 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, Layers, ArrowRightLeft, Users, Coins, FileCode, Star, Menu } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import {
+  Home,
+  Layers,
+  ArrowRightLeft,
+  Users,
+  Coins,
+  FileCode,
+  BarChart3,
+  Star,
+  Menu,
+  GraduationCap,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -10,34 +21,40 @@ import { StellarLogo } from "./stellar-icon";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
-const navItems = [
-  { href: "/", icon: Home, label: "Overview" },
-  { href: "/ledgers", icon: Layers, label: "Ledgers" },
-  { href: "/transactions", icon: ArrowRightLeft, label: "Transactions" },
-  { href: "/accounts", icon: Users, label: "Accounts" },
-  { href: "/assets", icon: Coins, label: "Assets" },
-  { href: "/contracts", icon: FileCode, label: "Contracts" },
-];
-
-const bottomItems = [{ href: "/watchlist", icon: Star, label: "Watchlist" }];
-
 export function MobileNav() {
   const pathname = usePathname();
+  const t = useTranslations("navigation");
+  const tMobile = useTranslations("mobileNav");
   const [open, setOpen] = useState(false);
+
+  const navItems = [
+    { href: "/", icon: Home, label: t("overview") },
+    { href: "/ledgers", icon: Layers, label: t("ledgers") },
+    { href: "/transactions", icon: ArrowRightLeft, label: t("transactions") },
+    { href: "/accounts", icon: Users, label: t("accounts") },
+    { href: "/assets", icon: Coins, label: t("assets") },
+    { href: "/contracts", icon: FileCode, label: t("contracts") },
+    { href: "/analytics", icon: BarChart3, label: t("analytics") },
+  ];
+
+  const bottomItems = [
+    { href: "/learn", icon: GraduationCap, label: t("learn") },
+    { href: "/watchlist", icon: Star, label: t("watchlist") },
+  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="md:hidden">
           <Menu className="size-5" />
-          <span className="sr-only">Toggle menu</span>
+          <span className="sr-only">{t("toggleMenu")}</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-72 p-0">
         <SheetHeader className="border-border border-b p-4">
           <SheetTitle className="flex items-center gap-3">
             <StellarLogo className="size-8" />
-            <span>Stellar Explorer</span>
+            <span>{tMobile("stellarExplorer")}</span>
           </SheetTitle>
         </SheetHeader>
 

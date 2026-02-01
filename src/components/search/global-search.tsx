@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { detectEntityType, getEntityRoute, truncateHash } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import type { EntityType } from "@/types";
+import { useTranslations } from "next-intl";
 
 const entityIcons: Record<EntityType, typeof Search> = {
   transaction: ArrowRightLeft,
@@ -24,15 +25,6 @@ const entityIcons: Record<EntityType, typeof Search> = {
   asset: Coins,
   ledger: Layers,
   unknown: Search,
-};
-
-const entityLabels: Record<EntityType, string> = {
-  transaction: "Transaction",
-  account: "Account",
-  contract: "Contract",
-  asset: "Asset",
-  ledger: "Ledger",
-  unknown: "Search",
 };
 
 const RECENT_SEARCHES_KEY = "stellar-explorer-recent-searches";
@@ -53,6 +45,9 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const router = useRouter();
+  const t = useTranslations("search");
+  const tEntity = useTranslations("entityTypes");
+  const tComponents = useTranslations("components.globalSearch");
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -130,7 +125,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
       {/* Search trigger - icon only on mobile, full bar on md+ */}
       <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(true)}>
         <Search className="size-5" />
-        <span className="sr-only">Search</span>
+        <span className="sr-only">{tComponents("search")}</span>
       </Button>
 
       <Button
@@ -143,38 +138,32 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
         onClick={() => setOpen(true)}
       >
         <Search className="mr-2 size-4" />
-        <span className="flex-1 truncate text-left">Search transactions, accounts...</span>
+        <span className="flex-1 truncate text-left">{t("placeholder")}</span>
         <kbd className="bg-muted text-muted-foreground hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none lg:inline-flex">
-          <span className="text-xs">⌘</span>K
+          <span className="text-xs">{tComponents("keyboardShortcut")}</span>K
         </kbd>
       </Button>
 
       {/* Search dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Search by tx hash, account, asset, contract, or ledger..."
-          value={query}
-          onValueChange={setQuery}
-        />
+        <CommandInput placeholder={t("inputPlaceholder")} value={query} onValueChange={setQuery} />
         <CommandList>
           <CommandEmpty>
             <div className="py-6 text-center">
-              <p className="text-muted-foreground text-sm">No results found.</p>
-              <p className="text-muted-foreground mt-1 text-xs">
-                Try a transaction hash, account address, or ledger number.
-              </p>
+              <p className="text-muted-foreground text-sm">{t("noResults")}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{t("noResultsHint")}</p>
             </div>
           </CommandEmpty>
 
           {/* Current query suggestion */}
           {query && (
-            <CommandGroup heading="Search">
+            <CommandGroup heading={tComponents("search")}>
               <CommandItem onSelect={() => handleSearch(query)} className="gap-3">
                 <Icon className="size-4" />
                 <div className="flex-1 overflow-hidden">
                   <p className="truncate font-mono text-sm">{truncateHash(query, 16, 16)}</p>
                   <p className="text-muted-foreground text-xs">
-                    Search as {entityLabels[detectedType]}
+                    {t("searchAs", { type: tEntity(detectedType) })}
                   </p>
                 </div>
               </CommandItem>
@@ -187,7 +176,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
               <CommandGroup
                 heading={
                   <div className="flex items-center justify-between">
-                    <span>Recent</span>
+                    <span>{t("recent")}</span>
                     <Button
                       variant="ghost"
                       size="xs"
@@ -197,7 +186,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
                         clearRecentSearches();
                       }}
                     >
-                      Clear
+                      {t("clear")}
                     </Button>
                   </div>
                 }
@@ -215,7 +204,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
                         <p className="truncate font-mono text-sm">
                           {truncateHash(search.query, 12, 12)}
                         </p>
-                        <p className="text-muted-foreground text-xs">{entityLabels[search.type]}</p>
+                        <p className="text-muted-foreground text-xs">{tEntity(search.type)}</p>
                       </div>
                       <SearchIcon className="text-muted-foreground size-4" />
                     </CommandItem>
@@ -229,7 +218,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
           {!query && (
             <>
               <CommandSeparator />
-              <CommandGroup heading="Quick Access">
+              <CommandGroup heading={t("quickAccess")}>
                 <CommandItem
                   onSelect={() => {
                     setOpen(false);
@@ -237,7 +226,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
                   }}
                 >
                   <ArrowRightLeft className="mr-3 size-4" />
-                  Recent Transactions
+                  {t("recentTransactions")}
                 </CommandItem>
                 <CommandItem
                   onSelect={() => {
@@ -246,7 +235,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
                   }}
                 >
                   <Layers className="mr-3 size-4" />
-                  Latest Ledgers
+                  {t("latestLedgers")}
                 </CommandItem>
                 <CommandItem
                   onSelect={() => {
@@ -255,7 +244,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
                   }}
                 >
                   <FileCode className="mr-3 size-4" />
-                  Smart Contracts
+                  {t("smartContracts")}
                 </CommandItem>
               </CommandGroup>
             </>

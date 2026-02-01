@@ -120,3 +120,99 @@ export function useContractEvents(contractId: string, startLedger?: number) {
     enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
   });
 }
+
+// Hook for contract code (WASM)
+export function useContractCode(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractCode(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}
+
+// Hook for contract storage
+export function useContractStorage(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractStorage(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}
+
+// Hook for assets list with pagination
+export function useAssetsList(cursor?: string) {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.assetsList(network, cursor));
+}
+
+// Hook for asset trade aggregations (24h volume, price change)
+export function useAssetTrades(code: string, issuer: string) {
+  const { network } = useNetwork();
+  const isNative = code === "XLM" && issuer === "native";
+  return useQuery({
+    ...stellarQueries.assetTradeAggregations(network, code, issuer),
+    enabled: !isNative && !!code && !!issuer,
+  });
+}
+
+// Hook for asset orderbook
+export function useAssetOrderbook(sellingCode: string, sellingIssuer: string) {
+  const { network } = useNetwork();
+  const isNative = sellingCode === "XLM" && sellingIssuer === "native";
+  return useQuery({
+    ...stellarQueries.assetOrderbook(network, sellingCode, sellingIssuer),
+    enabled: !isNative && !!sellingCode && !!sellingIssuer,
+  });
+}
+
+// Hook for top assets
+export function useTopAssets() {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.topAssets(network));
+}
+
+// ============================================
+// Stellar Expert Hooks (Enriched Data)
+// ============================================
+
+// Hook for network statistics (from Stellar Expert)
+export function useNetworkStats() {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.networkStats(network));
+}
+
+// Hook for enriched asset data (from Stellar Expert)
+export function useEnrichedAsset(code: string, issuer: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.enrichedAsset(network, code, issuer),
+    enabled: !!code && !!issuer,
+  });
+}
+
+// Hook for top assets from Stellar Expert (with ratings)
+export function useTopAssetsExpert(options?: {
+  sort?: "rating" | "trustlines" | "volume" | "trades";
+  limit?: number;
+}) {
+  const { network } = useNetwork();
+  return useQuery(stellarQueries.topAssetsExpert(network, options));
+}
+
+// Hook for contract verification status
+export function useContractVerification(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractVerification(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}
+
+// Hook for detailed contract information (from Stellar Expert)
+export function useContractDetails(contractId: string) {
+  const { network } = useNetwork();
+  return useQuery({
+    ...stellarQueries.contractDetails(network, contractId),
+    enabled: !!contractId && contractId.startsWith("C") && contractId.length === 56,
+  });
+}

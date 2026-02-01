@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { AssetLogo } from "@/components/common/asset-logo";
 import { truncateHash, formatCompactNumber } from "@/lib/utils";
@@ -14,6 +15,7 @@ interface AssetCardProps {
 }
 
 export function AssetCard({ asset, className }: AssetCardProps) {
+  const t = useTranslations("cards.asset");
   const assetPath = `/asset/${asset.asset_code}-${asset.asset_issuer}`;
 
   return (
@@ -47,7 +49,7 @@ export function AssetCard({ asset, className }: AssetCardProps) {
             <span className="text-sm font-medium tabular-nums">
               {formatCompactNumber(asset.num_accounts)}
             </span>
-            <span className="text-muted-foreground ml-1 text-xs">holders</span>
+            <span className="text-muted-foreground ml-1 text-xs">{t("holders")}</span>
           </div>
         </CardContent>
       </Card>

@@ -1,0 +1,853 @@
+{
+  "metadata": {
+    "title": "Stellar Explorer",
+    "description": "Erkunden Sie das Stellar-Netzwerk. Sehen Sie Transaktionen, Konten, Assets und Smart Contracts."
+  },
+  "navigation": {
+    "overview": "Übersicht",
+    "ledgers": "Ledger",
+    "transactions": "Transaktionen",
+    "accounts": "Konten",
+    "assets": "Assets",
+    "contracts": "Verträge",
+    "analytics": "Analytik",
+    "learn": "Lernen",
+    "watchlist": "Merkliste",
+    "collapse": "Einklappen",
+    "toggleMenu": "Menü umschalten"
+  },
+  "search": {
+    "placeholder": "Transaktionen, Konten suchen...",
+    "inputPlaceholder": "Nach TX-Hash, Konto, Asset, Vertrag oder Ledger suchen...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "noResultsHint": "Versuchen Sie einen Transaktions-Hash, eine Kontoadresse oder Ledger-Nummer.",
+    "searchAs": "Suchen als {type}",
+    "recent": "Kürzlich",
+    "clear": "Löschen",
+    "quickAccess": "Schnellzugriff",
+    "recentTransactions": "Kürzliche Transaktionen",
+    "latestLedgers": "Neueste Ledger",
+    "smartContracts": "Smart Contracts"
+  },
+  "entityTypes": {
+    "transaction": "Transaktion",
+    "account": "Konto",
+    "contract": "Vertrag",
+    "asset": "Asset",
+    "ledger": "Ledger",
+    "unknown": "Suchen"
+  },
+  "common": {
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "copyLink": "Link kopieren",
+    "back": "Zurück",
+    "home": "Startseite",
+    "search": "Suchen",
+    "viewAll": "Alle anzeigen",
+    "loading": "Laden...",
+    "tryAgain": "Erneut versuchen",
+    "clearAll": "Alles löschen",
+    "remove": "Entfernen",
+    "watch": "Beobachten"
+  },
+  "errors": {
+    "somethingWentWrong": "Etwas ist schief gelaufen",
+    "failedToLoadData": "Daten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "notFound": "Nicht gefunden"
+  },
+  "empty": {
+    "noResults": "Keine Ergebnisse gefunden"
+  },
+  "network": {
+    "mainnet": "Mainnet",
+    "testnet": "Testnet",
+    "futurenet": "Futurenet",
+    "public": "Öffentlich",
+    "label": "Netzwerk"
+  },
+  "home": {
+    "badge": "Echtzeit-Blockchain-Daten",
+    "title": "Erkunden Sie das Stellar-Netzwerk",
+    "subtitle": "Entdecken Sie Transaktionen, Konten, Assets und Smart Contracts mit einer Premium-Explorer-Erfahrung.",
+    "networkOverview": "Netzwerk-Übersicht",
+    "networkActivity": "Netzwerk-Aktivität",
+    "recentTransactions": "Kürzliche Transaktionen",
+    "latestLedger": "Neuester Ledger",
+    "viewAllLedgers": "Alle Ledger für mehr Historie anzeigen",
+    "noRecentTransactions": "Keine kürzlichen Transaktionen",
+    "explore": "Erkunden"
+  },
+  "stats": {
+    "latestLedger": "Neuester Ledger",
+    "protocolVersion": "Protokoll-Version",
+    "baseFee": "Basisgebühr",
+    "perOperation": "pro Operation",
+    "txs": "{count} TXs"
+  },
+  "exploreCards": {
+    "transactions": "Transaktionen",
+    "transactionsDesc": "Alle Netzwerk-Aktivität anzeigen",
+    "ledgers": "Ledger",
+    "ledgersDesc": "Ledger-Historie durchsuchen",
+    "assets": "Assets",
+    "assetsDesc": "Tokens entdecken",
+    "contracts": "Verträge",
+    "contractsDesc": "Soroban erkunden"
+  },
+  "transactions": {
+    "title": "Transaktionen",
+    "recentTransactions": "Kürzliche Transaktionen",
+    "failedToLoad": "Transaktionen konnten nicht geladen werden",
+    "noTransactions": "Keine Transaktionen",
+    "noRecentFound": "Keine kürzlichen Transaktionen in diesem Netzwerk gefunden."
+  },
+  "ledgers": {
+    "title": "Ledger",
+    "searchLedger": "Ledger suchen",
+    "enterSequence": "Ledger-Sequenznummer eingeben...",
+    "enterSequenceError": "Bitte geben Sie eine Ledger-Sequenznummer ein",
+    "invalidSequence": "Ungültige Ledger-Sequenz. Muss eine positive Zahl sein.",
+    "latestLedger": "Neuester Ledger: #{sequence}",
+    "recentLedgers": "Kürzliche Ledger",
+    "failedToLoad": "Ledger konnten nicht geladen werden",
+    "noLedgers": "Keine Ledger",
+    "noLedgersFound": "Keine Ledger in diesem Netzwerk gefunden."
+  },
+  "accounts": {
+    "title": "Konten",
+    "subtitle": "Suchen und erkunden Sie Stellar-Konten",
+    "findAccount": "Konto finden",
+    "enterAddress": "Kontoadresse eingeben (G...)",
+    "enterAddressError": "Bitte geben Sie eine Kontoadresse ein",
+    "invalidAddress": "Ungültige Kontoadresse. Muss mit G beginnen und 56 Zeichen haben.",
+    "stellarAccounts": "Stellar-Konten",
+    "accountsDescription": "Geben Sie eine Stellar-Adresse ein, um Kontodetails, Guthaben, Transaktionen und Signer-Informationen anzuzeigen."
+  },
+  "assets": {
+    "title": "Assets",
+    "subtitle": "Erkunden Sie Tokens und Assets im Stellar-Netzwerk",
+    "findAsset": "Asset finden",
+    "assetCode": "Asset-Code (z.B. USDC)",
+    "issuerAddress": "Emittenten-Adresse (G...)",
+    "enterCodeError": "Bitte geben Sie einen Asset-Code ein",
+    "enterIssuerError": "Bitte geben Sie die Emittenten-Adresse ein",
+    "search": "Suchen",
+    "popularAssets": "Beliebte Assets",
+    "topAssets": "Top Assets",
+    "allAssets": "Alle Assets",
+    "stellarAssets": "Stellar-Assets",
+    "assetsDescription": "Assets auf Stellar werden durch ihren Code und Emittenten identifiziert. Suchen Sie oben nach einem Asset, um Angebot, Halter und Handelsinformationen anzuzeigen.",
+    "assetsHint": "Geben Sie den Asset-Code (z.B. USDC) und die Emittenten-Adresse ein, um jedes Asset im Netzwerk zu erkunden.",
+    "nativeAsset": "Natives Asset",
+    "liquidStaking": "Liquid Staking",
+    "liquidityRewards": "Liquiditätsbelohnungen",
+    "failedToLoad": "Assets konnten nicht geladen werden",
+    "showingFirst": "Zeige die ersten",
+    "assetsNote": "Assets. Verwenden Sie die Suche, um bestimmte Assets zu finden.",
+    "holders": "Halter",
+    "volume24h": "24h-Volumen",
+    "priceChange": "Preisänderung",
+    "supply": "Angebot",
+    "price": "Preis"
+  },
+  "contracts": {
+    "title": "Smart Contracts",
+    "subtitle": "Erkunden Sie Soroban Smart Contracts im Stellar-Netzwerk",
+    "findContract": "Vertrag finden",
+    "enterContractId": "Vertrags-ID eingeben (C...)",
+    "enterContractIdError": "Bitte geben Sie eine Vertrags-ID ein",
+    "invalidContractId": "Ungültiges Vertrags-ID-Format. Muss mit C beginnen und 56 Zeichen haben.",
+    "sorobanContracts": "Soroban Smart Contracts",
+    "contractsDescription": "Soroban ist die Smart-Contract-Plattform von Stellar. Suchen Sie nach einem Vertrag anhand seiner ID, um Events, Speicher und Aufrufe anzuzeigen.",
+    "learnSoroban": "Soroban lernen",
+    "popularContracts": "Beliebte Verträge",
+    "comingSoon": "Demnächst verfügbar",
+    "popularContractsDescription": "Eine kuratierte Liste beliebter Soroban-Verträge wird hier verfügbar sein."
+  },
+  "contract": {
+    "title": "Vertrag",
+    "information": "Vertragsinformationen",
+    "contractId": "Vertrags-ID",
+    "type": "Typ",
+    "sorobanContract": "Soroban-Vertrag",
+    "status": "Status",
+    "active": "Aktiv",
+    "checking": "Überprüfe...",
+    "checkingVerification": "Überprüfe Verifizierungsstatus...",
+    "verified": "Verifiziert",
+    "verifiedDescription": "Dieser Vertrag wurde verifiziert. Der Quellcode ist zur Überprüfung verfügbar.",
+    "viewSource": "Quellcode anzeigen",
+    "unverified": "Nicht verifiziert",
+    "unverifiedDescription": "Dieser Vertrag wurde nicht verifiziert. Mit Vorsicht interagieren.",
+    "events": "Events",
+    "storage": "Speicher",
+    "code": "Code",
+    "recentEvents": "Kürzliche Events",
+    "contractEvent": "Vertrags-Event",
+    "ledger": "Ledger",
+    "contract": "Vertrag",
+    "system": "System",
+    "failedToLoadEvents": "Events konnten nicht geladen werden",
+    "noEvents": "Keine kürzlichen Events",
+    "noEventsDescription": "Dieser Vertrag hat keine Events in den kürzlichen Ledgern ausgelöst.",
+    "wasmBytecode": "WASM-Bytecode",
+    "wasmHash": "WASM-Hash",
+    "codeSize": "Code-Größe",
+    "bytes": "Bytes",
+    "hexBytecode": "Hex-Bytecode",
+    "copyCode": "Code kopieren",
+    "copied": "Kopiert!",
+    "showFullCode": "Vollständigen Code anzeigen",
+    "moreLines": "weitere Zeilen",
+    "collapseCode": "Code einklappen",
+    "failedToLoadCode": "Vertragscode konnte nicht geladen werden",
+    "noCode": "Kein Code gefunden",
+    "noCodeDescription": "Der Vertragscode konnte nicht abgerufen werden.",
+    "stellarAssetContract": "Stellar-Asset-Vertrag",
+    "sacDescription": "Dies ist ein nativer Stellar-Asset-Vertrag (SAC). Er umhüllt ein Stellar-Asset und hat keinen benutzerdefinierten WASM-Code.",
+    "nativeContract": "Nativer Vertrag",
+    "instanceStorage": "Instanz-Speicher",
+    "ttl": "TTL",
+    "ledgers": "Ledger",
+    "key": "Schlüssel",
+    "value": "Wert",
+    "liveUntilLedger": "Gültig bis Ledger",
+    "failedToLoadStorage": "Speicher konnte nicht geladen werden",
+    "noStorage": "Keine Speichereinträge",
+    "noStorageDescription": "Dieser Vertrag hat keine Instanz-Speicherdaten.",
+    "storageComingSoon": "Demnächst verfügbar",
+    "storageComingSoonDescription": "Die Speicheransicht für diesen Vertrag wird in Kürze verfügbar sein.",
+    "verificationDetails": "Verifizierungsdetails",
+    "verificationTimestamp": "Verifiziert am",
+    "verificationMethod": "Verifizierungsmethode",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "Repository anzeigen",
+    "viewCommit": "Commit anzeigen",
+    "verifyOnStellarExpert": "Bei Stellar Expert verifizieren",
+    "whyVerify": "Warum verifizieren?",
+    "verifyGuidance": "Die Vertragsverifizierung ermöglicht es Benutzern, den ursprünglichen Quellcode zu überprüfen und zu bestätigen, dass er mit dem bereitgestellten Bytecode übereinstimmt. Dies schafft Vertrauen und Transparenz.",
+    "learnToVerify": "Verifizierung lernen",
+    "totalInvocations": "Gesamte Aufrufe",
+    "creator": "Ersteller"
+  },
+  "watchlist": {
+    "title": "Merkliste",
+    "subtitle": "Verfolgen Sie Ihre Lieblingskonten, -verträge und -assets",
+    "savedItems": "Gespeicherte Elemente ({count})",
+    "emptyTitle": "Ihre Merkliste ist leer",
+    "emptyDescription": "Fügen Sie Konten, Verträge oder Assets zu Ihrer Merkliste hinzu, um schnell darauf zugreifen zu können."
+  },
+  "transaction": {
+    "title": "Transaktion",
+    "details": "Transaktionsdetails",
+    "notFound": "Transaktion nicht gefunden",
+    "notFoundMessage": "Die gesuchte Transaktion existiert nicht oder wurde möglicherweise entfernt.",
+    "status": "Status",
+    "ledger": "Ledger",
+    "timestamp": "Zeitstempel",
+    "operationsCount": "Operationen",
+    "feePaid": "Bezahlte Gebühr",
+    "maxFee": "Maximale Gebühr",
+    "source": "Quelle",
+    "memo": "Memo",
+    "operations": "Operationen",
+    "effects": "Effekte",
+    "rawData": "Rohdaten",
+    "noOperations": "Keine Operationen gefunden",
+    "noEffects": "Keine Effekte gefunden",
+    "failedToLoadOps": "Operationen konnten nicht geladen werden",
+    "failedToLoadEffects": "Effekte konnten nicht geladen werden",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR"
+  },
+  "account": {
+    "title": "Konto",
+    "notFound": "Konto nicht gefunden",
+    "notFoundMessage": "Das gesuchte Konto existiert nicht oder wurde möglicherweise entfernt.",
+    "overview": "Konto-Übersicht",
+    "xlmBalance": "XLM-Guthaben",
+    "otherAssets": "Andere Assets",
+    "subentries": "Untereinträge",
+    "sequence": "Sequenz",
+    "thresholds": "Schwellenwerte",
+    "signers": "Unterzeichner",
+    "homeDomain": "Domain",
+    "activity": "Aktivität",
+    "operations": "Operationen",
+    "balances": "Guthaben",
+    "noTransactions": "Keine Transaktionen",
+    "noTransactionsDesc": "Dieses Konto hat noch keine Transaktionen durchgeführt.",
+    "noOperations": "Keine Operationen",
+    "noOperationsDesc": "Dieses Konto hat noch keine Operationen durchgeführt.",
+    "failedToLoadTx": "Transaktionen konnten nicht geladen werden",
+    "failedToLoadOps": "Operationen konnten nicht geladen werden",
+    "newAccount": "Neues Konto:",
+    "startingBalance": "Startguthaben: {amount} XLM",
+    "asset": "Asset:",
+    "limit": "Limit:",
+    "max": "Max",
+    "sorobanCall": "Soroban-Vertragsaufruf",
+    "weight": "Gewicht: {weight}"
+  },
+  "operations": {
+    "create_account": "Konto erstellen",
+    "payment": "Zahlung",
+    "path_payment_strict_receive": "Pfadzahlung (Empfangen)",
+    "path_payment_strict_send": "Pfadzahlung (Senden)",
+    "manage_sell_offer": "Verkaufsangebot",
+    "manage_buy_offer": "Kaufangebot",
+    "create_passive_sell_offer": "Passives Verkaufsangebot",
+    "set_options": "Optionen festlegen",
+    "change_trust": "Vertrauen ändern",
+    "allow_trust": "Vertrauen erlauben",
+    "account_merge": "Konto zusammenführen",
+    "inflation": "Inflation",
+    "manage_data": "Daten verwalten",
+    "bump_sequence": "Sequenz erhöhen",
+    "create_claimable_balance": "Einforderbares Guthaben erstellen",
+    "claim_claimable_balance": "Guthaben einfordern",
+    "begin_sponsoring_future_reserves": "Sponsoring beginnen",
+    "end_sponsoring_future_reserves": "Sponsoring beenden",
+    "revoke_sponsorship": "Sponsoring widerrufen",
+    "clawback": "Clawback",
+    "clawback_claimable_balance": "Clawback Einforderbares Guthaben",
+    "set_trust_line_flags": "Trustline-Flags setzen",
+    "liquidity_pool_deposit": "LP-Einzahlung",
+    "liquidity_pool_withdraw": "LP-Auszahlung",
+    "invoke_host_function": "Vertrag aufrufen",
+    "extend_footprint_ttl": "TTL verlängern",
+    "restore_footprint": "Footprint wiederherstellen"
+  },
+  "time": {
+    "justNow": "gerade eben",
+    "secondsAgo": "vor {count}s",
+    "minutesAgo": "vor {count}m",
+    "hoursAgo": "vor {count}h",
+    "daysAgo": "vor {count}t"
+  },
+  "status": {
+    "success": "Erfolg",
+    "failed": "Fehlgeschlagen",
+    "pending": "Ausstehend",
+    "warning": "Warnung"
+  },
+  "charts": {
+    "tps": "Transaktionen Pro Sekunde",
+    "tpsLabel": "TPS",
+    "networkFees": "Netzwerkgebühren",
+    "feeStats": "Aktuelle Gebührenstatistiken",
+    "averageFee": "Durchschnittliche Gebühr",
+    "min": "Min",
+    "max": "Max",
+    "successRate": "Transaktions-Erfolgsrate",
+    "last100": "Letzte 100 Transaktionen",
+    "successful": "Erfolgreich",
+    "total": "Gesamt",
+    "transactionVolume": "Transaktionsvolumen",
+    "hourlyActivity": "Stündliche Aktivität",
+    "collectingData": "Daten werden gesammelt...",
+    "chartWillPopulate": "Das Diagramm wird gefüllt, während Transaktionen verarbeitet werden"
+  },
+  "streaming": {
+    "live": "Live",
+    "connecting": "Verbinden",
+    "offline": "Offline",
+    "reconnecting": "Wiederverbinden",
+    "realTimeUpdates": "Echtzeit-Updates aktiviert",
+    "connectionLost": "Verbindung verloren, wiederverbinden..."
+  },
+  "learn": {
+    "title": "Stellar lernen",
+    "subtitle": "Interaktives Glossar und Bildungsressourcen zum Verständnis des Stellar-Netzwerks",
+    "totalTerms": "Begriffe",
+    "beginnerTerms": "Anfänger",
+    "intermediateTerms": "Fortgeschritten",
+    "advancedTerms": "Experte",
+    "searchPlaceholder": "Begriffe, Konzepte oder Schlüsselwörter suchen...",
+    "searchResults": "Suchergebnisse",
+    "clearSearch": "Suche löschen",
+    "noResults": "Keine Begriffe gefunden, die Ihrer Suche entsprechen.",
+    "byCategory": "Nach Kategorie",
+    "byLevel": "Nach Niveau",
+    "beginner": "Anfänger",
+    "beginnerDescription": "Beginnen Sie hier - grundlegende Konzepte für neue Benutzer",
+    "intermediate": "Fortgeschritten",
+    "intermediateDescription": "Tieferes Verständnis für aktive Benutzer",
+    "advanced": "Experte",
+    "advancedDescription": "Technische Details für Entwickler und Experten",
+    "moreResources": "Weitere Lernressourcen",
+    "showLess": "Weniger anzeigen",
+    "readMore": "Mehr lesen",
+    "related": "Verwandt",
+    "learnMore": "Mehr erfahren",
+    "docs": "Docs",
+    "officialDocs": "Offizielle Docs",
+    "stellarLearn": "Stellar Learn",
+    "developerDocs": "Entwickler-Docs",
+    "sorobanDocs": "Soroban-Docs"
+  },
+  "networkStats": {
+    "title": "Netzwerk-Statistiken",
+    "source": "Stellar Expert",
+    "totalLedgers": "Gesamte Ledger",
+    "totalAccounts": "Gesamte Konten",
+    "fundedAccounts": "Finanzierte Konten",
+    "totalAssets": "Gesamte Assets",
+    "totalOperations": "Gesamte Operationen",
+    "totalTransactions": "Gesamte Transaktionen",
+    "totalTrades": "Gesamte Trades",
+    "trustlines": "Trustlines",
+    "successRate": "Erfolgsrate",
+    "notAvailable": "N/V"
+  },
+  "pagination": {
+    "previous": "Zurück",
+    "next": "Weiter",
+    "page": "Seite {current} von {total}"
+  },
+  "toasts": {
+    "copiedToClipboard": "In Zwischenablage kopiert",
+    "failedToCopy": "Kopieren fehlgeschlagen",
+    "alreadyInWatchlist": "Bereits in der Merkliste",
+    "addedToWatchlist": "Zur Merkliste hinzugefügt",
+    "removedFromWatchlist": "Aus der Merkliste entfernt",
+    "watchlistCleared": "Merkliste geleert",
+    "streamError": "Stream-Fehler",
+    "streamConnectionFailed": "Stream-Verbindung fehlgeschlagen"
+  },
+  "header": {
+    "refreshData": "Daten aktualisieren",
+    "toggleTheme": "Thema wechseln"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Stellar Explorer"
+  },
+  "accessibility": {
+    "changeLanguage": "Sprache ändern"
+  },
+  "accumulatingData": "Daten werden gesammelt...",
+  "assetDetails": {
+    "title": "Asset",
+    "notFound": "Asset nicht gefunden",
+    "notFoundMessage": "Das gesuchte Asset existiert nicht oder wurde entfernt.",
+    "information": "Asset-Informationen",
+    "totalSupply": "Gesamtangebot",
+    "accounts": "Konten",
+    "claimableBalances": "Einlösbare Guthaben",
+    "assetCode": "Asset-Code",
+    "issuer": "Emittent",
+    "assetType": "Asset-Typ",
+    "liquidityPools": "Liquiditätspools",
+    "flags": "Asset-Flags",
+    "authRequired": "Autorisierung Erforderlich",
+    "authRevocable": "Autorisierung Widerrufbar",
+    "authImmutable": "Autorisierung Unveränderlich",
+    "clawbackEnabled": "Clawback Aktiviert",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "statistics": "Statistiken",
+    "totalHolders": "Gesamte Inhaber",
+    "circulating": "Im Umlauf",
+    "authorized": "Autorisiert",
+    "verified": "Verifiziert",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Natives Stellar Asset",
+    "aboutXlm": "Über XLM",
+    "xlmDescription": "XLM (Stellar Lumens) ist das native Asset des Stellar-Netzwerks. Es dient mehreren Zwecken:",
+    "xlmPurpose1": "Transaktionsgebühren bezahlen (typischerweise 0.00001 XLM pro Operation)",
+    "xlmPurpose2": "Mindestkontostände aufrechterhalten (Basisreserve)",
+    "xlmPurpose3": "Spam verhindern durch Anforderung kleiner Beträge für Kontoerstellung",
+    "xlmPurpose4": "Brückenwährung für Asset-übergreifende Transaktionen über DEX"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "Natives Asset",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "Liquid Staking",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "Liquiditätsbelohnungen",
+    "stronghold": "Stronghold",
+    "assetPlatform": "Asset-Plattform",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "Bitcoin",
+    "wrappedBtc": "Wrapped BTC",
+    "native": "Nativ"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "Operation",
+      "operations": "Operationen"
+    },
+    "ledger": {
+      "txs": "Txs",
+      "ops": "Ops"
+    },
+    "asset": {
+      "holders": "Inhaber"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "QR-Code",
+      "downloadSvg": "SVG herunterladen",
+      "accountQrCode": "Konto-QR-Code"
+    },
+    "assetLogo": {
+      "xlmLogo": "XLM-Logo",
+      "assetLogo": "{code}-Logo"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "Asset",
+      "priceXlm": "Preis (XLM)",
+      "change24h": "24h Änderung",
+      "volume24h": "24h Volumen",
+      "holders": "Inhaber",
+      "auth": "Auth",
+      "noAssetsFound": "Keine Assets gefunden"
+    },
+    "globalSearch": {
+      "search": "Suchen",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "Breadcrumb"
+    }
+  },
+  "developerMode": {
+    "title": "Entwicklermodus",
+    "enableDevMode": "Entwicklermodus aktivieren",
+    "options": "Anzeigeoptionen",
+    "showXdr": "Rohe XDR-Daten anzeigen",
+    "showApiEndpoints": "API-Endpunkte anzeigen",
+    "showInternalIds": "Interne IDs anzeigen",
+    "apiEndpoint": "API-Endpunkt",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDR-Daten",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "XDR kopieren",
+    "copyEndpoint": "Endpunkt kopieren"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "Grundlagen",
+      "network": "Netzwerk",
+      "accounts": "Konten",
+      "transactions": "Transaktionen",
+      "operations": "Operationen",
+      "assets": "Assets",
+      "trading": "Handel",
+      "contracts": "Smart Contracts",
+      "features": "Funktionen",
+      "technical": "Technisch"
+    },
+    "terms": {
+      "stellar": {
+        "term": "Stellar",
+        "short": "Ein Open-Source-Blockchain-Netzwerk für schnelle, kostengünstige Zahlungen.",
+        "full": "Stellar ist ein dezentralisiertes Open-Source-Blockchain-Netzwerk für schnelle, kostengünstige Finanztransaktionen. Es verbindet Finanzinstitute, Zahlungssysteme und Menschen und ermöglicht grenzüberschreitende Zahlungen und Asset-Tokenisierung mit Abwicklung in 3-5 Sekunden."
+      },
+      "xlm": {
+        "term": "XLM (Lumens)",
+        "short": "Die native Kryptowährung des Stellar-Netzwerks.",
+        "full": "XLM (Lumens) ist die native digitale Währung des Stellar-Netzwerks. Sie dient mehreren Zwecken: Zahlung von Transaktionsgebühren (Basisgebühr 0,00001 XLM), Aufrechterhaltung von Mindestkontosalden (Basisreserve 0,5 XLM) und kann als Brückenwährung für Asset-Tausch auf der dezentralen Börse (DEX) fungieren."
+      },
+      "account": {
+        "term": "Konto",
+        "short": "Eine grundlegende Datenstruktur, die Guthaben hält und Zahlungen senden/empfangen kann.",
+        "full": "Ein Konto ist die grundlegende Datenstruktur auf Stellar. Jedes Konto hat einen eindeutigen öffentlichen Schlüssel (beginnt mit 'G'), hält Guthaben von XLM und anderen Assets und kann Zahlungen senden/empfangen. Konten müssen ein Mindestguthaben (Basisreserve + Untereinträge × 0,5 XLM) halten und haben konfigurierbare Signaturschwellen."
+      },
+      "publicKey": {
+        "term": "Öffentlicher Schlüssel",
+        "short": "Ein 56-Zeichen-Identifikator beginnend mit 'G', der eine Kontoadresse darstellt.",
+        "full": "Ein öffentlicher Schlüssel ist eine 56-Zeichen-Zeichenkette beginnend mit 'G', die als Kontoadresse auf Stellar dient. Er wird aus einem geheimen Schlüssel mittels Ed25519-Kryptographie abgeleitet und kann sicher geteilt werden."
+      },
+      "secretKey": {
+        "term": "Geheimer Schlüssel",
+        "short": "Ein 56-Zeichen-Privatschlüssel beginnend mit 'S' zum Signieren von Transaktionen.",
+        "full": "Ein geheimer Schlüssel (auch Privatschlüssel genannt) ist eine 56-Zeichen-Zeichenkette beginnend mit 'S', die es ermöglicht, Transaktionen von Ihrem Konto zu autorisieren. Er muss vollständig privat gehalten werden."
+      },
+      "ledger": {
+        "term": "Ledger",
+        "short": "Ein Snapshot des Netzwerkzustands mit allen Konten und Transaktionen.",
+        "full": "Ein Ledger ist ein vollständiger Snapshot des Stellar-Netzwerkzustands zu einem bestimmten Zeitpunkt. Alle 3-5 Sekunden produziert das Netzwerk einen neuen Ledger mit allen Konten, Guthaben, Vertrauenslinien und den Transaktionen, die den Zustand verändert haben."
+      },
+      "transaction": {
+        "term": "Transaktion",
+        "short": "Ein Bündel von Operationen, das zur Ausführung an das Netzwerk übermittelt wird.",
+        "full": "Eine Transaktion ist ein Bündel von einer oder mehreren Operationen, die den Ledger-Zustand ändern. Jede Transaktion hat ein Quellkonto (zahlt die Gebühr), eine Sequenznummer, eine maximale Gebühr, optionales Memo und 1-100 Operationen. Transaktionen sind atomar."
+      },
+      "operation": {
+        "term": "Operation",
+        "short": "Eine einzelne Aktion innerhalb einer Transaktion, wie Zahlung oder Vertrauenslinien-Erstellung.",
+        "full": "Eine Operation ist eine einzelne Aktion, die den Ledger verändert. Stellar unterstützt 27 Operationstypen einschließlich Zahlungen, Vertrauenslinien-Änderungen, Kontoerstellung, Angebote auf der DEX und Smart-Contract-Aufrufe."
+      },
+      "payment": {
+        "term": "Zahlung",
+        "short": "Eine Operation, die ein Asset von einem Konto zu einem anderen sendet.",
+        "full": "Eine Zahlung ist ein Operationstyp, der Assets von einem Konto zu einem anderen überträgt. Der Sender gibt das Zielkonto, den Asset-Typ und den Betrag an."
+      },
+      "asset": {
+        "term": "Asset",
+        "short": "Jeder tokenisierte Wert auf Stellar, wie XLM, Stablecoins oder benutzerdefinierte Token.",
+        "full": "Ein Asset auf Stellar repräsentiert jeden Werttyp - von nativem XLM bis zu Fiat-gestützten Stablecoins, Rohstoffen oder benutzerdefinierten Token. Nicht-native Assets werden durch einen Code (1-12 Zeichen) und den öffentlichen Schlüssel des Emittenten identifiziert."
+      },
+      "trustline": {
+        "term": "Vertrauenslinie",
+        "short": "Eine explizite Autorisierung, ein bestimmtes Asset von einem Emittenten zu halten.",
+        "full": "Eine Vertrauenslinie ist ein Eintrag auf Stellar, der ein Konto autorisiert, ein bestimmtes Asset zu halten. Sie repräsentiert explizites Vertrauen in den Asset-Emittenten."
+      },
+      "issuer": {
+        "term": "Emittent",
+        "short": "Das Konto, das ein nicht-natives Asset erstellt und verwaltet.",
+        "full": "Ein Emittent ist das Stellar-Konto, das ein benutzerdefiniertes Asset erstellt und kontrolliert. Der Emittent kann steuern, ob andere Konten das Asset halten können."
+      },
+      "fee": {
+        "term": "Gebühr",
+        "short": "Die Kosten in XLM, um eine Transaktion an das Netzwerk zu übermitteln.",
+        "full": "Transaktionsgebühren auf Stellar werden in XLM bezahlt. Die Basisgebühr beträgt 100 Stroops (0,00001 XLM) pro Operation."
+      },
+      "stroops": {
+        "term": "Stroops",
+        "short": "Die kleinste Einheit von XLM: 1 XLM = 10.000.000 Stroops.",
+        "full": "Ein Stroop ist die kleinste Einheit von XLM. Ein XLM entspricht 10.000.000 (10^7) Stroops."
+      },
+      "memo": {
+        "term": "Memo",
+        "short": "Optionale Metadaten, die einer Transaktion angehängt werden.",
+        "full": "Ein Memo sind optionale Daten, die einer Transaktion angehängt werden. Typen umfassen: Text (bis zu 28 Zeichen), ID (64-Bit-Zahl), Hash (32-Byte-Hash) und Return."
+      },
+      "signer": {
+        "term": "Unterzeichner",
+        "short": "Ein Schlüssel, der autorisiert ist, Transaktionen für ein Konto zu signieren.",
+        "full": "Ein Unterzeichner ist ein Schlüssel, der Transaktionen für ein Konto autorisieren kann. Konten können mehrere Unterzeichner mit unterschiedlichen Gewichtungen haben."
+      },
+      "threshold": {
+        "term": "Schwellenwert",
+        "short": "Das erforderliche Signiergewicht, um verschiedene Operationen zu autorisieren.",
+        "full": "Schwellenwerte definieren, wie viel kumulatives Unterzeichnergewicht erforderlich ist, um Operationen zu autorisieren. Stellar hat drei Stufen: niedrig, mittel und hoch."
+      },
+      "multisig": {
+        "term": "Multi-Signatur",
+        "short": "Kontokonfiguration, die mehrere Signaturen zur Autorisierung von Transaktionen erfordert.",
+        "full": "Multi-Signatur (Multisig) ist eine Sicherheitsfunktion, bei der ein Konto Signaturen von mehreren Schlüsseln benötigt, um Transaktionen zu autorisieren."
+      },
+      "soroban": {
+        "term": "Soroban",
+        "short": "Stellars Smart-Contract-Plattform mit Rust und WASM.",
+        "full": "Soroban ist Stellars Smart-Contract-Plattform, die 2024 gestartet wurde. Sie ermöglicht Entwicklern, Smart Contracts in Rust zu schreiben, die zu WebAssembly (WASM) kompilieren."
+      },
+      "contract": {
+        "term": "Smart Contract",
+        "short": "Selbstausführender Code, der im Stellar-Netzwerk bereitgestellt wird.",
+        "full": "Ein Smart Contract auf Stellar (via Soroban) ist ein Programm, das im Netzwerk bereitgestellt wird und automatisch ausgeführt wird, wenn es aufgerufen wird."
+      },
+      "wasm": {
+        "term": "WASM",
+        "short": "WebAssembly-Bytecode-Format für Soroban Smart Contracts.",
+        "full": "WebAssembly (WASM) ist das Bytecode-Format, zu dem Soroban-Contracts kompilieren. Entwickler schreiben Contracts in Rust, das dann für die Bereitstellung zu WASM kompiliert."
+      },
+      "xdr": {
+        "term": "XDR",
+        "short": "External Data Representation - Stellars binäres Serialisierungsformat.",
+        "full": "XDR (External Data Representation) ist das binäre Kodierungsformat, das in ganz Stellar verwendet wird. Alle Transaktionen, Ledger-Einträge und Netzwerknachrichten werden als XDR serialisiert."
+      },
+      "horizon": {
+        "term": "Horizon",
+        "short": "Der REST-API-Server für die Interaktion mit dem Stellar-Netzwerk.",
+        "full": "Horizon ist Stellars HTTP-API, die Zugang zum Netzwerk bietet. Sie ermöglicht das Einreichen von Transaktionen, Abfragen von Kontosalden und Durchsuchen der Ledger-Historie."
+      },
+      "stellarCore": {
+        "term": "Stellar Core",
+        "short": "Die Backbone-Software, die Transaktionen validiert und Konsens aufrechterhält.",
+        "full": "Stellar Core ist die Software, die das Stellar-Netzwerk antreibt. Sie validiert Transaktionen, nimmt am Konsens teil und pflegt den Ledger."
+      },
+      "consensus": {
+        "term": "Konsens (SCP)",
+        "short": "Stellar Consensus Protocol - wie das Netzwerk sich auf den Ledger-Zustand einigt.",
+        "full": "Das Stellar Consensus Protocol (SCP) ist, wie das Netzwerk sich auf Transaktionsvalidität und Ledger-Zustand einigt. Anders als Proof-of-Work verwendet SCP Federated Byzantine Agreement."
+      },
+      "validator": {
+        "term": "Validator",
+        "short": "Ein Knoten, der am Konsensprozess des Netzwerks teilnimmt.",
+        "full": "Ein Validator ist ein Stellar-Core-Knoten, der am Konsens teilnimmt. Validatoren schlagen Transaktionen vor und stimmen über sie ab."
+      },
+      "dex": {
+        "term": "DEX (SDEX)",
+        "short": "Stellars eingebaute dezentrale Börse für den Handel mit Assets.",
+        "full": "Die Stellar Decentralized Exchange (SDEX) ist ein eingebauter Marktplatz für den Handel mit Assets. Benutzer können Kauf-/Verkaufsangebote erstellen, die automatisch abgeglichen werden."
+      },
+      "offer": {
+        "term": "Angebot",
+        "short": "Eine Kauf- oder Verkaufsorder auf der Stellar DEX.",
+        "full": "Ein Angebot ist eine Order auf der Stellar DEX, um ein Asset zu einem bestimmten Preis zu kaufen oder zu verkaufen."
+      },
+      "claimableBalance": {
+        "term": "Einforderbares Guthaben",
+        "short": "Assets, die für eine spätere Einfoderung durch bestimmte Konten beiseitegelegt werden.",
+        "full": "Ein einforderbares Guthaben sind Assets, die in einem speziellen Eintrag gesperrt sind und von bestimmten Konten unter bestimmten Bedingungen eingefordert werden können."
+      },
+      "sponsorship": {
+        "term": "Sponsoring",
+        "short": "Ein Konto, das Reserven im Namen eines anderen zahlt.",
+        "full": "Sponsoring ermöglicht es einem Konto, die Basisreserve-Anforderungen für die Vertrauenslinien, Angebote oder andere Einträge eines anderen Kontos zu zahlen."
+      },
+      "reserve": {
+        "term": "Reserve",
+        "short": "Mindest-XLM-Guthaben erforderlich zur Aufrechterhaltung von Konto und Daten.",
+        "full": "Die Reserve ist das Mindest-XLM-Guthaben, das ein Konto halten muss. Die Basisreserve (derzeit 0,5 XLM) plus 0,5 XLM pro Untereintrag."
+      }
+    }
+  },
+  "internalIds": "Interne IDs",
+  "ledgerDetails": {
+    "title": "Ledger",
+    "notFound": "Ledger nicht gefunden",
+    "notFoundMessage": "Der gesuchte Ledger existiert nicht oder wurde noch nicht erstellt.",
+    "details": "Ledger-Details",
+    "closeTime": "Abschlusszeit",
+    "transactions": "Transaktionen",
+    "successful": "erfolgreich",
+    "failed": "fehlgeschlagen",
+    "operations": "Operationen",
+    "protocolVersion": "Protokollversion",
+    "totalFees": "Gesamtgebühren",
+    "baseFee": "Basisgebühr",
+    "hash": "Hash",
+    "prevHash": "Vorheriger Hash",
+    "transactionsInLedger": "Transaktionen in diesem Ledger",
+    "noTransactions": "Keine Transaktionen",
+    "noTransactionsDesc": "Dieser Ledger enthält keine Transaktionen.",
+    "failedToLoadTx": "Fehler beim Laden der Transaktionen",
+    "prev": "Zurück",
+    "next": "Weiter"
+  },
+  "noFeeData": "Keine Gebührendaten verfügbar",
+  "noTransactionData": "Keine Transaktionsdaten",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "Keine Suchanfrage",
+    "noQueryHint": "Geben Sie einen Transaktions-Hash, eine Kontoadresse oder eine Ledger-Nummer ein.",
+    "redirecting": "Weiterleitung...",
+    "title": "Suchergebnisse",
+    "detectedAs": "Erkannt als:",
+    "trySearchingAs": "Versuchen Sie zu suchen als:",
+    "couldntIdentify": "Abfragetyp konnte nicht identifiziert werden",
+    "couldntIdentifyMessage": "Die Suchanfrage entspricht keinem bekannten Stellar-Entitätsformat. Bitte überprüfen Sie Ihre Eingabe."
+  },
+  "transactionSearch": {
+    "title": "Transaktionen suchen",
+    "byHash": "Nach Hash",
+    "byAccount": "Nach Konto",
+    "byLedger": "Nach Ledger",
+    "search": "Suchen",
+    "hashPlaceholder": "Transaktions-Hash eingeben (64 Hex-Zeichen)...",
+    "accountPlaceholder": "Kontoadresse eingeben (G...)...",
+    "ledgerPlaceholder": "Ledger-Sequenznummer eingeben...",
+    "hashRequired": "Bitte geben Sie einen Transaktions-Hash ein",
+    "accountRequired": "Bitte geben Sie eine Kontoadresse ein",
+    "ledgerRequired": "Bitte geben Sie eine Ledger-Sequenznummer ein",
+    "invalidHash": "Ungültiger Hash. Muss 64 hexadezimale Zeichen haben.",
+    "invalidAccount": "Ungültiges Konto. Muss mit G beginnen und 56 Zeichen haben.",
+    "invalidLedger": "Ungültige Ledger-Sequenz. Muss eine positive Zahl sein.",
+    "searchingFor": "Zeige Transaktionen für",
+    "accountLabel": "Konto",
+    "ledgerLabel": "Ledger",
+    "clearSearch": "Suche löschen",
+    "filterByStatus": "Filtern",
+    "showAll": "Alle",
+    "showSuccess": "Erfolgreich",
+    "showFailed": "Fehlgeschlagen",
+    "noTransactionsFor": "Keine Transaktionen für diesen {type} gefunden."
+  },
+  "transactions_word": "Transaktionen",
+  "xlm": "XLM",
+  "analyticsMode": {
+    "title": "Analysemodus",
+    "enableAnalyticsMode": "Analysemodus aktivieren",
+    "features": "Funktionen",
+    "showStatistics": "Statistiken anzeigen",
+    "showTrendlines": "Trendlinien anzeigen",
+    "enableExport": "Export aktivieren",
+    "chartDensity": "Diagrammdichte",
+    "compact": "Kompakt",
+    "normal": "Normal",
+    "expanded": "Erweitert"
+  },
+  "analytics": {
+    "title": "Netzwerk-Analytik",
+    "subtitle": "Erweiterte Statistiken und Datenanalyse für das Stellar-Netzwerk",
+    "keyMetrics": "Hauptkennzahlen",
+    "funded": "finanziert",
+    "tabs": {
+      "overview": "Übersicht",
+      "transactions": "Transaktionen",
+      "network": "Netzwerk"
+    },
+    "timeRange": {
+      "1h": "1 Stunde",
+      "24h": "24 Stunden",
+      "7d": "7 Tage",
+      "30d": "30 Tage"
+    },
+    "enableBanner": {
+      "title": "Aktivieren Sie den Analysemodus für erweiterte Funktionen",
+      "description": "Erhalten Sie Zugang zu detaillierten Statistiken, Trendlinien und Datenexportfunktionen."
+    },
+    "metrics": {
+      "totalLedgers": "Gesamt Ledgers",
+      "totalAccounts": "Gesamt Konten",
+      "totalTransactions": "Gesamt Transaktionen",
+      "totalAssets": "Gesamt Vermögenswerte"
+    },
+    "statistics": {
+      "operationsPerTx": "Operationen pro Transaktion",
+      "feesStroops": "Gebühren (Stroops)",
+      "summary": "Statistische Zusammenfassung"
+    },
+    "stats": {
+      "mean": "Mittelwert",
+      "median": "Median",
+      "stdDev": "Standardabweichung",
+      "min": "Minimum",
+      "max": "Maximum",
+      "total": "Gesamt",
+      "range": "Bereich"
+    },
+    "tx": {
+      "sampleSize": "Stichprobengröße",
+      "recentTransactions": "aktuelle Transaktionen",
+      "successRate": "Erfolgsrate",
+      "successful": "Erfolgreich",
+      "failed": "Fehlgeschlagen",
+      "totalOperations": "Gesamt Operationen",
+      "avgOpsPerTx": "Durchschn. Ops/TX"
+    },
+    "network": {
+      "accountStats": "Kontostatistiken",
+      "activityStats": "Aktivitätsstatistiken",
+      "latestLedger": "Neueste Ledger-Info",
+      "totalAccounts": "Gesamt Konten",
+      "fundedAccounts": "Finanzierte Konten",
+      "deletedAccounts": "Gelöschte Konten",
+      "fundedRatio": "Finanzierungsquote",
+      "totalOperations": "Gesamt Operationen",
+      "totalTrades": "Gesamt Trades",
+      "totalPayments": "Gesamt Zahlungen",
+      "trustlines": "Vertrauenslinien",
+      "sequence": "Sequenz",
+      "transactions": "Transaktionen",
+      "operations": "Operationen",
+      "protocolVersion": "Protokollversion"
+    }
+  }
+}

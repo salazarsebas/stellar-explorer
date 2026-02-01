@@ -7,6 +7,7 @@ import { TimeAgo } from "@/components/common/time-ago";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, XCircle, ChevronRight } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
+import { useTranslations } from "next-intl";
 
 interface TransactionCardProps {
   transaction: Horizon.ServerApi.TransactionRecord;
@@ -16,6 +17,7 @@ interface TransactionCardProps {
 
 export function TransactionCard({ transaction, className, animationDelay }: TransactionCardProps) {
   const isSuccess = transaction.successful;
+  const t = useTranslations("cards.transaction");
 
   return (
     <Link href={`/tx/${transaction.hash}`}>
@@ -60,8 +62,8 @@ export function TransactionCard({ transaction, className, animationDelay }: Tran
               />
               <div className="text-muted-foreground flex items-center gap-2 text-xs">
                 <span>
-                  {transaction.operation_count} operation
-                  {transaction.operation_count !== 1 ? "s" : ""}
+                  {transaction.operation_count}{" "}
+                  {transaction.operation_count !== 1 ? t("operations") : t("operation")}
                 </span>
                 <span className="opacity-30">|</span>
                 <TimeAgo timestamp={transaction.created_at} />

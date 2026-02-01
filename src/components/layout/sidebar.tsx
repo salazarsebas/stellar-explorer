@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import {
   Home,
   Layers,
@@ -9,9 +9,11 @@ import {
   Users,
   Coins,
   FileCode,
+  BarChart3,
   Star,
   ChevronLeft,
   ChevronRight,
+  GraduationCap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,20 +23,25 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { StellarLogo } from "./stellar-icon";
 import { useState } from "react";
 
-const navItems = [
-  { href: "/", icon: Home, label: "Overview" },
-  { href: "/ledgers", icon: Layers, label: "Ledgers" },
-  { href: "/transactions", icon: ArrowRightLeft, label: "Transactions" },
-  { href: "/accounts", icon: Users, label: "Accounts" },
-  { href: "/assets", icon: Coins, label: "Assets" },
-  { href: "/contracts", icon: FileCode, label: "Contracts" },
-];
-
-const bottomItems = [{ href: "/watchlist", icon: Star, label: "Watchlist" }];
-
 export function Sidebar() {
   const pathname = usePathname();
+  const t = useTranslations("navigation");
   const [collapsed, setCollapsed] = useState(false);
+
+  const navItems = [
+    { href: "/", icon: Home, label: t("overview") },
+    { href: "/ledgers", icon: Layers, label: t("ledgers") },
+    { href: "/transactions", icon: ArrowRightLeft, label: t("transactions") },
+    { href: "/accounts", icon: Users, label: t("accounts") },
+    { href: "/assets", icon: Coins, label: t("assets") },
+    { href: "/contracts", icon: FileCode, label: t("contracts") },
+    { href: "/analytics", icon: BarChart3, label: t("analytics") },
+  ];
+
+  const bottomItems = [
+    { href: "/learn", icon: GraduationCap, label: t("learn") },
+    { href: "/watchlist", icon: Star, label: t("watchlist") },
+  ];
 
   return (
     <aside
@@ -176,7 +183,7 @@ export function Sidebar() {
           ) : (
             <>
               <ChevronLeft className="size-4" />
-              <span className="text-muted-foreground ml-2">Collapse</span>
+              <span className="text-muted-foreground ml-2">{t("collapse")}</span>
             </>
           )}
         </Button>

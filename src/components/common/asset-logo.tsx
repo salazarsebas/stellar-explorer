@@ -8,6 +8,10 @@ import { useAssetMetadata } from "@/lib/hooks/use-asset-metadata";
 // XLM logo path in public folder
 const XLM_LOGO_PATH = "/logo_xlm.png";
 
+// Blur placeholder SVG as base64 data URL
+const BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzMzMzMzMyIvPjwvc3ZnPg==";
+
 // Generate a deterministic color based on asset code
 function getAssetColor(code: string): string {
   const colors = [
@@ -71,7 +75,13 @@ export function AssetLogo({ code, issuer, tomlUrl, size = "md", className }: Ass
   if (isNative) {
     return (
       <div className={cn("relative overflow-hidden rounded-full", sizeClass, className)}>
-        <Image src={XLM_LOGO_PATH} alt="XLM logo" fill className="object-cover" />
+        <Image
+          src={XLM_LOGO_PATH}
+          alt="XLM logo"
+          fill
+          sizes="(max-width: 640px) 24px, (max-width: 768px) 40px, 56px"
+          className="object-cover"
+        />
       </div>
     );
   }
@@ -89,9 +99,12 @@ export function AssetLogo({ code, issuer, tomlUrl, size = "md", className }: Ass
           src={imageUrl}
           alt={`${code} logo`}
           fill
+          loading="lazy"
+          sizes="(max-width: 640px) 24px, (max-width: 768px) 40px, 56px"
           className="object-cover"
           onError={() => setImageError(true)}
-          unoptimized // Skip Next.js optimization for external images
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
         />
       </div>
     );

@@ -11,13 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { QrCode, Download } from "lucide-react";
 import { truncateHash } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface QrDialogProps {
   value: string;
   title?: string;
 }
 
-export function QrDialog({ value, title = "QR Code" }: QrDialogProps) {
+export function QrDialog({ value, title }: QrDialogProps) {
+  const t = useTranslations("components.qrDialog");
+
   const downloadQR = () => {
     const canvas = document.querySelector("#qr-code-svg");
     if (!canvas) return;
@@ -44,7 +47,7 @@ export function QrDialog({ value, title = "QR Code" }: QrDialogProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-xs">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>{title ?? t("title")}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
           <div className="rounded-lg bg-white p-4">
@@ -55,7 +58,7 @@ export function QrDialog({ value, title = "QR Code" }: QrDialogProps) {
           </p>
           <Button variant="outline" size="sm" onClick={downloadQR}>
             <Download className="mr-2 size-4" />
-            Download SVG
+            {t("downloadSvg")}
           </Button>
         </div>
       </DialogContent>

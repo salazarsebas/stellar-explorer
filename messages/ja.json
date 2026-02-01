@@ -1,0 +1,853 @@
+{
+  "metadata": {
+    "title": "Stellar エクスプローラー",
+    "description": "Stellar ネットワークを探索。トランザクション、アカウント、アセット、スマートコントラクトを表示。"
+  },
+  "navigation": {
+    "overview": "概要",
+    "ledgers": "レジャー",
+    "transactions": "トランザクション",
+    "accounts": "アカウント",
+    "assets": "アセット",
+    "contracts": "コントラクト",
+    "analytics": "分析",
+    "learn": "学ぶ",
+    "watchlist": "ウォッチリスト",
+    "collapse": "折りたたむ",
+    "toggleMenu": "メニュー切り替え"
+  },
+  "search": {
+    "placeholder": "トランザクション、アカウントを検索...",
+    "inputPlaceholder": "TXハッシュ、アカウント、アセット、コントラクト、レジャーで検索...",
+    "noResults": "結果が見つかりません。",
+    "noResultsHint": "トランザクションハッシュ、アカウントアドレス、レジャー番号を試してください。",
+    "searchAs": "{type} として検索",
+    "recent": "最近",
+    "clear": "クリア",
+    "quickAccess": "クイックアクセス",
+    "recentTransactions": "最近のトランザクション",
+    "latestLedgers": "最新レジャー",
+    "smartContracts": "スマートコントラクト"
+  },
+  "entityTypes": {
+    "transaction": "トランザクション",
+    "account": "アカウント",
+    "contract": "コントラクト",
+    "asset": "アセット",
+    "ledger": "レジャー",
+    "unknown": "検索"
+  },
+  "common": {
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "copyLink": "リンクをコピー",
+    "back": "戻る",
+    "home": "ホーム",
+    "search": "検索",
+    "viewAll": "すべて表示",
+    "loading": "読み込み中...",
+    "tryAgain": "再試行",
+    "clearAll": "すべてクリア",
+    "remove": "削除",
+    "watch": "フォロー"
+  },
+  "errors": {
+    "somethingWentWrong": "問題が発生しました",
+    "failedToLoadData": "データの読み込みに失敗しました。再試行してください。",
+    "notFound": "見つかりません"
+  },
+  "empty": {
+    "noResults": "結果が見つかりません"
+  },
+  "network": {
+    "mainnet": "メインネット",
+    "testnet": "テストネット",
+    "futurenet": "フューチャーネット",
+    "public": "パブリック",
+    "label": "ネットワーク"
+  },
+  "home": {
+    "badge": "リアルタイムブロックチェーンデータ",
+    "title": "Stellar ネットワークを探索",
+    "subtitle": "プレミアムエクスプローラー体験でトランザクション、アカウント、アセット、スマートコントラクトを発見。",
+    "networkOverview": "ネットワーク概要",
+    "networkActivity": "ネットワーク活動",
+    "recentTransactions": "最近のトランザクション",
+    "latestLedger": "最新レジャー",
+    "viewAllLedgers": "履歴を見るにはすべてのレジャーを表示",
+    "noRecentTransactions": "最近のトランザクションはありません",
+    "explore": "探索"
+  },
+  "stats": {
+    "latestLedger": "最新レジャー",
+    "protocolVersion": "プロトコルバージョン",
+    "baseFee": "基本手数料",
+    "perOperation": "オペレーションごと",
+    "txs": "{count} TX"
+  },
+  "exploreCards": {
+    "transactions": "トランザクション",
+    "transactionsDesc": "すべてのネットワーク活動を表示",
+    "ledgers": "レジャー",
+    "ledgersDesc": "レジャー履歴を閲覧",
+    "assets": "アセット",
+    "assetsDesc": "トークンを発見",
+    "contracts": "コントラクト",
+    "contractsDesc": "Sorobanを探索"
+  },
+  "transactions": {
+    "title": "トランザクション",
+    "recentTransactions": "最近のトランザクション",
+    "failedToLoad": "トランザクションの読み込みに失敗",
+    "noTransactions": "トランザクションなし",
+    "noRecentFound": "このネットワークで最近のトランザクションは見つかりませんでした。"
+  },
+  "ledgers": {
+    "title": "レジャー",
+    "searchLedger": "レジャーを検索",
+    "enterSequence": "レジャーシーケンス番号を入力...",
+    "enterSequenceError": "レジャーシーケンス番号を入力してください",
+    "invalidSequence": "無効なレジャーシーケンス。正の数である必要があります。",
+    "latestLedger": "最新レジャー: #{sequence}",
+    "recentLedgers": "最近のレジャー",
+    "failedToLoad": "レジャーの読み込みに失敗",
+    "noLedgers": "レジャーなし",
+    "noLedgersFound": "このネットワークでレジャーは見つかりませんでした。"
+  },
+  "accounts": {
+    "title": "アカウント",
+    "subtitle": "Stellarアカウントを検索・探索",
+    "findAccount": "アカウントを検索",
+    "enterAddress": "アカウントアドレスを入力 (G...)",
+    "enterAddressError": "アカウントアドレスを入力してください",
+    "invalidAddress": "無効なアカウントアドレス。Gで始まり56文字である必要があります。",
+    "stellarAccounts": "Stellarアカウント",
+    "accountsDescription": "Stellarアドレスを入力して、アカウント詳細、残高、トランザクション、署名者情報を表示。"
+  },
+  "assets": {
+    "title": "アセット",
+    "subtitle": "Stellarネットワーク上のトークンとアセットを探索",
+    "findAsset": "アセットを検索",
+    "assetCode": "アセットコード (例: USDC)",
+    "issuerAddress": "発行者アドレス (G...)",
+    "enterCodeError": "アセットコードを入力してください",
+    "enterIssuerError": "発行者アドレスを入力してください",
+    "search": "検索",
+    "popularAssets": "人気アセット",
+    "topAssets": "トップアセット",
+    "allAssets": "すべてのアセット",
+    "stellarAssets": "Stellarアセット",
+    "assetsDescription": "Stellarのアセットはコードと発行者で識別されます。上でアセットを検索して供給量、保有者、取引情報を確認。",
+    "assetsHint": "アセットコード（例: USDC）と発行者アドレスを入力して、ネットワーク上の任意のアセットを探索。",
+    "nativeAsset": "ネイティブアセット",
+    "liquidStaking": "リキッドステーキング",
+    "liquidityRewards": "流動性報酬",
+    "failedToLoad": "アセットの読み込みに失敗",
+    "showingFirst": "最初の",
+    "assetsNote": "アセットを表示中。特定のアセットを見つけるには検索を使用。",
+    "holders": "保有者",
+    "volume24h": "24時間取引量",
+    "priceChange": "価格変動",
+    "supply": "供給量",
+    "price": "価格"
+  },
+  "contracts": {
+    "title": "スマートコントラクト",
+    "subtitle": "Stellarネットワーク上のSorobanスマートコントラクトを探索",
+    "findContract": "コントラクトを検索",
+    "enterContractId": "コントラクトIDを入力 (C...)",
+    "enterContractIdError": "コントラクトIDを入力してください",
+    "invalidContractId": "無効なコントラクトID形式。Cで始まり56文字である必要があります。",
+    "sorobanContracts": "Sorobanスマートコントラクト",
+    "contractsDescription": "SorobanはStellarのスマートコントラクトプラットフォームです。IDでコントラクトを検索してイベント、ストレージ、呼び出しを確認。",
+    "learnSoroban": "Sorobanを学ぶ",
+    "popularContracts": "人気コントラクト",
+    "comingSoon": "近日公開",
+    "popularContractsDescription": "人気のSorobanコントラクトのリストがここに表示されます。"
+  },
+  "contract": {
+    "title": "コントラクト",
+    "information": "コントラクト情報",
+    "contractId": "コントラクトID",
+    "type": "タイプ",
+    "sorobanContract": "Sorobanコントラクト",
+    "status": "ステータス",
+    "active": "アクティブ",
+    "checking": "確認中...",
+    "checkingVerification": "検証ステータスを確認中...",
+    "verified": "検証済み",
+    "verifiedDescription": "このコントラクトは検証済みです。ソースコードが確認可能です。",
+    "viewSource": "ソースコードを表示",
+    "unverified": "未検証",
+    "unverifiedDescription": "このコントラクトは未検証です。慎重に対応してください。",
+    "events": "イベント",
+    "storage": "ストレージ",
+    "code": "コード",
+    "recentEvents": "最近のイベント",
+    "contractEvent": "コントラクトイベント",
+    "ledger": "レジャー",
+    "contract": "コントラクト",
+    "system": "システム",
+    "failedToLoadEvents": "イベントの読み込みに失敗",
+    "noEvents": "最近のイベントなし",
+    "noEventsDescription": "このコントラクトは最近のレジャーでイベントを発行していません。",
+    "wasmBytecode": "WASMバイトコード",
+    "wasmHash": "WASMハッシュ",
+    "codeSize": "コードサイズ",
+    "bytes": "バイト",
+    "hexBytecode": "16進バイトコード",
+    "copyCode": "コードをコピー",
+    "copied": "コピーしました！",
+    "showFullCode": "完全なコードを表示",
+    "moreLines": "行追加",
+    "collapseCode": "コードを折りたたむ",
+    "failedToLoadCode": "コントラクトコードの読み込みに失敗",
+    "noCode": "コードが見つかりません",
+    "noCodeDescription": "コントラクトコードを取得できませんでした。",
+    "stellarAssetContract": "Stellarアセットコントラクト",
+    "sacDescription": "これはネイティブStellarアセットコントラクト（SAC）です。Stellarアセットをラップし、カスタムWASMコードはありません。",
+    "nativeContract": "ネイティブコントラクト",
+    "instanceStorage": "インスタンスストレージ",
+    "ttl": "TTL",
+    "ledgers": "レジャー",
+    "key": "キー",
+    "value": "値",
+    "liveUntilLedger": "有効期限レジャー",
+    "failedToLoadStorage": "ストレージの読み込みに失敗",
+    "noStorage": "ストレージエントリなし",
+    "noStorageDescription": "このコントラクトにはインスタンスストレージデータがありません。",
+    "storageComingSoon": "近日公開",
+    "storageComingSoonDescription": "コントラクトストレージエクスプローラーは近日公開予定です。",
+    "verificationDetails": "検証詳細",
+    "verificationTimestamp": "検証日",
+    "verificationMethod": "検証方法",
+    "githubActions": "GitHub Actions",
+    "viewRepository": "リポジトリを表示",
+    "viewCommit": "コミットを表示",
+    "verifyOnStellarExpert": "Stellar Expert で検証",
+    "whyVerify": "なぜ検証するのか？",
+    "verifyGuidance": "コントラクト検証により、ユーザーはオリジナルのソースコードを確認し、デプロイされたバイトコードと一致することを確認できます。これにより信頼性と透明性が向上します。",
+    "learnToVerify": "検証方法を学ぶ",
+    "totalInvocations": "総呼び出し回数",
+    "creator": "作成者"
+  },
+  "watchlist": {
+    "title": "ウォッチリスト",
+    "subtitle": "お気に入りのアカウント、コントラクト、アセットを追跡",
+    "savedItems": "保存済みアイテム ({count})",
+    "emptyTitle": "ウォッチリストは空です",
+    "emptyDescription": "アカウント、コントラクト、アセットをウォッチリストに追加して素早くアクセス。"
+  },
+  "transaction": {
+    "title": "トランザクション",
+    "details": "トランザクション詳細",
+    "notFound": "トランザクションが見つかりません",
+    "notFoundMessage": "お探しのトランザクションは存在しないか、削除された可能性があります。",
+    "status": "ステータス",
+    "ledger": "レジャー",
+    "timestamp": "タイムスタンプ",
+    "operationsCount": "オペレーション",
+    "feePaid": "支払い手数料",
+    "maxFee": "最大手数料",
+    "source": "ソース",
+    "memo": "メモ",
+    "operations": "オペレーション",
+    "effects": "エフェクト",
+    "rawData": "生データ",
+    "noOperations": "オペレーションが見つかりません",
+    "noEffects": "エフェクトが見つかりません",
+    "failedToLoadOps": "オペレーションの読み込みに失敗",
+    "failedToLoadEffects": "エフェクトの読み込みに失敗",
+    "envelopeXdr": "エンベロープXDR",
+    "resultXdr": "結果XDR"
+  },
+  "account": {
+    "title": "アカウント",
+    "notFound": "アカウントが見つかりません",
+    "notFoundMessage": "お探しのアカウントは存在しないか、削除された可能性があります。",
+    "overview": "アカウント概要",
+    "xlmBalance": "XLM残高",
+    "otherAssets": "その他のアセット",
+    "subentries": "サブエントリ",
+    "sequence": "シーケンス",
+    "thresholds": "しきい値",
+    "signers": "署名者",
+    "homeDomain": "ドメイン",
+    "activity": "アクティビティ",
+    "operations": "オペレーション",
+    "balances": "残高",
+    "noTransactions": "トランザクションなし",
+    "noTransactionsDesc": "このアカウントはまだトランザクションを行っていません。",
+    "noOperations": "オペレーションなし",
+    "noOperationsDesc": "このアカウントはまだオペレーションを実行していません。",
+    "failedToLoadTx": "トランザクションの読み込みに失敗",
+    "failedToLoadOps": "オペレーションの読み込みに失敗",
+    "newAccount": "新規アカウント：",
+    "startingBalance": "初期残高：{amount} XLM",
+    "asset": "アセット：",
+    "limit": "限度：",
+    "max": "最大",
+    "sorobanCall": "Sorobanコントラクト呼び出し",
+    "weight": "ウェイト：{weight}"
+  },
+  "operations": {
+    "create_account": "アカウント作成",
+    "payment": "支払い",
+    "path_payment_strict_receive": "パス支払い（受取）",
+    "path_payment_strict_send": "パス支払い（送信）",
+    "manage_sell_offer": "売り注文",
+    "manage_buy_offer": "買い注文",
+    "create_passive_sell_offer": "パッシブ売り注文",
+    "set_options": "オプション設定",
+    "change_trust": "信頼変更",
+    "allow_trust": "信頼許可",
+    "account_merge": "アカウント統合",
+    "inflation": "インフレーション",
+    "manage_data": "データ管理",
+    "bump_sequence": "シーケンス更新",
+    "create_claimable_balance": "請求可能残高作成",
+    "claim_claimable_balance": "残高請求",
+    "begin_sponsoring_future_reserves": "スポンサー開始",
+    "end_sponsoring_future_reserves": "スポンサー終了",
+    "revoke_sponsorship": "スポンサー取消",
+    "clawback": "クローバック",
+    "clawback_claimable_balance": "請求可能残高クローバック",
+    "set_trust_line_flags": "トラストラインフラグ設定",
+    "liquidity_pool_deposit": "LP入金",
+    "liquidity_pool_withdraw": "LP出金",
+    "invoke_host_function": "コントラクト呼び出し",
+    "extend_footprint_ttl": "TTL延長",
+    "restore_footprint": "フットプリント復元"
+  },
+  "time": {
+    "justNow": "たった今",
+    "secondsAgo": "{count}秒前",
+    "minutesAgo": "{count}分前",
+    "hoursAgo": "{count}時間前",
+    "daysAgo": "{count}日前"
+  },
+  "status": {
+    "success": "成功",
+    "failed": "失敗",
+    "pending": "保留中",
+    "warning": "警告"
+  },
+  "charts": {
+    "tps": "秒間トランザクション数",
+    "tpsLabel": "TPS",
+    "networkFees": "ネットワーク手数料",
+    "feeStats": "現在の手数料統計",
+    "averageFee": "平均手数料",
+    "min": "最小",
+    "max": "最大",
+    "successRate": "トランザクション成功率",
+    "last100": "直近100トランザクション",
+    "successful": "成功",
+    "total": "合計",
+    "transactionVolume": "トランザクション量",
+    "hourlyActivity": "時間別アクティビティ",
+    "collectingData": "データ収集中...",
+    "chartWillPopulate": "トランザクション処理に応じてチャートが更新されます"
+  },
+  "streaming": {
+    "live": "ライブ",
+    "connecting": "接続中",
+    "offline": "オフライン",
+    "reconnecting": "再接続中",
+    "realTimeUpdates": "リアルタイム更新有効",
+    "connectionLost": "接続が失われました、再接続中..."
+  },
+  "learn": {
+    "title": "Stellarを学ぶ",
+    "subtitle": "Stellarネットワークを理解するためのインタラクティブ用語集と教育リソース",
+    "totalTerms": "用語",
+    "beginnerTerms": "初級",
+    "intermediateTerms": "中級",
+    "advancedTerms": "上級",
+    "searchPlaceholder": "用語、概念、キーワードを検索...",
+    "searchResults": "検索結果",
+    "clearSearch": "検索をクリア",
+    "noResults": "検索に一致する用語が見つかりませんでした。",
+    "byCategory": "カテゴリ別",
+    "byLevel": "レベル別",
+    "beginner": "初級",
+    "beginnerDescription": "ここから始めましょう - 新規ユーザー向けの基本概念",
+    "intermediate": "中級",
+    "intermediateDescription": "アクティブユーザー向けの深い理解",
+    "advanced": "上級",
+    "advancedDescription": "開発者・専門家向けの技術詳細",
+    "moreResources": "その他の学習リソース",
+    "showLess": "少なく表示",
+    "readMore": "もっと読む",
+    "related": "関連",
+    "learnMore": "詳細を見る",
+    "docs": "ドキュメント",
+    "officialDocs": "公式ドキュメント",
+    "stellarLearn": "Stellar Learn",
+    "developerDocs": "開発者ドキュメント",
+    "sorobanDocs": "Sorobanドキュメント"
+  },
+  "networkStats": {
+    "title": "ネットワーク統計",
+    "source": "Stellar Expert",
+    "totalLedgers": "総レジャー数",
+    "totalAccounts": "総アカウント数",
+    "fundedAccounts": "資金提供アカウント",
+    "totalAssets": "総アセット数",
+    "totalOperations": "総オペレーション数",
+    "totalTransactions": "総トランザクション数",
+    "totalTrades": "総取引数",
+    "trustlines": "トラストライン",
+    "successRate": "成功率",
+    "notAvailable": "利用不可"
+  },
+  "pagination": {
+    "previous": "前へ",
+    "next": "次へ",
+    "page": "{total}ページ中{current}ページ"
+  },
+  "toasts": {
+    "copiedToClipboard": "クリップボードにコピーしました",
+    "failedToCopy": "コピーに失敗しました",
+    "alreadyInWatchlist": "すでにウォッチリストにあります",
+    "addedToWatchlist": "ウォッチリストに追加しました",
+    "removedFromWatchlist": "ウォッチリストから削除しました",
+    "watchlistCleared": "ウォッチリストをクリアしました",
+    "streamError": "ストリームエラー",
+    "streamConnectionFailed": "ストリーム接続に失敗しました"
+  },
+  "header": {
+    "refreshData": "データを更新",
+    "toggleTheme": "テーマを切り替え"
+  },
+  "sidebar": {
+    "stellar": "Stellar"
+  },
+  "mobileNav": {
+    "stellarExplorer": "Stellar エクスプローラー"
+  },
+  "accessibility": {
+    "changeLanguage": "言語を変更"
+  },
+  "accumulatingData": "データを収集中...",
+  "assetDetails": {
+    "title": "アセット",
+    "notFound": "アセットが見つかりません",
+    "notFoundMessage": "お探しのアセットは存在しないか、削除された可能性があります。",
+    "information": "アセット情報",
+    "totalSupply": "総供給量",
+    "accounts": "アカウント",
+    "claimableBalances": "請求可能残高",
+    "assetCode": "アセットコード",
+    "issuer": "発行者",
+    "assetType": "アセットタイプ",
+    "liquidityPools": "流動性プール",
+    "flags": "アセットフラグ",
+    "authRequired": "認証必須",
+    "authRevocable": "認証取消可能",
+    "authImmutable": "認証不変",
+    "clawbackEnabled": "クローバック有効",
+    "enabled": "有効",
+    "disabled": "無効",
+    "statistics": "統計",
+    "totalHolders": "総保有者数",
+    "circulating": "流通量",
+    "authorized": "承認済み",
+    "verified": "検証済み",
+    "xlmTitle": "Stellar Lumens",
+    "xlmSubtitle": "XLM - Stellarネイティブアセット",
+    "aboutXlm": "XLMについて",
+    "xlmDescription": "XLM（Stellar Lumens）はStellarネットワークのネイティブアセットです。複数の目的があります：",
+    "xlmPurpose1": "トランザクション手数料の支払い（通常、操作ごとに0.00001 XLM）",
+    "xlmPurpose2": "最低アカウント残高の維持（基本リザーブ）",
+    "xlmPurpose3": "アカウント作成に少額を要求することでスパムを防止",
+    "xlmPurpose4": "DEXを介したクロスアセット取引のブリッジ通貨"
+  },
+  "assetsMeta": {
+    "stellarLumens": "Stellar Lumens",
+    "nativeAsset": "ネイティブアセット",
+    "usdCoin": "USD Coin",
+    "circle": "Circle",
+    "ultraStellar": "Ultra Stellar",
+    "liquidStaking": "リキッドステーキング",
+    "aquarius": "Aquarius",
+    "liquidityRewards": "流動性報酬",
+    "stronghold": "Stronghold",
+    "assetPlatform": "アセットプラットフォーム",
+    "euroCoin": "Euro Coin",
+    "bitcoin": "ビットコイン",
+    "wrappedBtc": "ラップドBTC",
+    "native": "ネイティブ"
+  },
+  "cards": {
+    "transaction": {
+      "operation": "操作",
+      "operations": "操作"
+    },
+    "ledger": {
+      "txs": "txs",
+      "ops": "ops"
+    },
+    "asset": {
+      "holders": "保有者"
+    }
+  },
+  "components": {
+    "qrDialog": {
+      "title": "QRコード",
+      "downloadSvg": "SVGをダウンロード",
+      "accountQrCode": "アカウントQRコード"
+    },
+    "assetLogo": {
+      "xlmLogo": "XLMロゴ",
+      "assetLogo": "{code}ロゴ"
+    },
+    "assetTable": {
+      "rank": "#",
+      "asset": "アセット",
+      "priceXlm": "価格（XLM）",
+      "change24h": "24時間変動",
+      "volume24h": "24時間取引量",
+      "holders": "保有者",
+      "auth": "認証",
+      "noAssetsFound": "アセットが見つかりません"
+    },
+    "globalSearch": {
+      "search": "検索",
+      "keyboardShortcut": "⌘"
+    },
+    "breadcrumb": {
+      "ariaLabel": "パンくずリスト"
+    }
+  },
+  "developerMode": {
+    "title": "開発者モード",
+    "enableDevMode": "開発者モードを有効にする",
+    "options": "表示オプション",
+    "showXdr": "生XDRデータを表示",
+    "showApiEndpoints": "APIエンドポイントを表示",
+    "showInternalIds": "内部IDを表示",
+    "apiEndpoint": "APIエンドポイント",
+    "horizonUrl": "Horizon API",
+    "rpcUrl": "Soroban RPC",
+    "xdrData": "XDRデータ",
+    "envelopeXdr": "Envelope XDR",
+    "resultXdr": "Result XDR",
+    "copyXdr": "XDRをコピー",
+    "copyEndpoint": "エンドポイントをコピー"
+  },
+  "glossary": {
+    "categories": {
+      "basics": "基本",
+      "network": "ネットワーク",
+      "accounts": "アカウント",
+      "transactions": "トランザクション",
+      "operations": "操作",
+      "assets": "アセット",
+      "trading": "取引",
+      "contracts": "スマートコントラクト",
+      "features": "機能",
+      "technical": "技術"
+    },
+    "terms": {
+      "stellar": {
+        "term": "Stellar",
+        "short": "高速・低コストの決済のためのオープンソースブロックチェーンネットワーク。",
+        "full": "Stellarは、高速・低コストの金融取引のために設計されたオープンソースの分散型ブロックチェーンネットワークです。金融機関、決済システム、個人を接続し、3〜5秒で決済される国境を越えた支払いと資産のトークン化を可能にします。"
+      },
+      "xlm": {
+        "term": "XLM（ルーメン）",
+        "short": "Stellarネットワークのネイティブ暗号通貨。",
+        "full": "XLM（ルーメン）はStellarネットワークのネイティブデジタル通貨です。複数の目的で使用されます：取引手数料の支払い（基本手数料0.00001 XLM）、アカウントの最小残高の維持（基本準備金0.5 XLM）、分散型取引所（DEX）での資産交換のブリッジ通貨として機能できます。"
+      },
+      "account": {
+        "term": "アカウント",
+        "short": "残高を保持し、支払いの送受信ができる基本的なデータ構造。",
+        "full": "アカウントはStellar上の基本的なデータ構造です。各アカウントには固有の公開鍵（'G'で始まる）があり、XLMやその他の資産の残高を保持し、支払いを送受信できます。"
+      },
+      "publicKey": {
+        "term": "公開鍵",
+        "short": "'G'で始まる56文字の識別子で、アカウントアドレスを表します。",
+        "full": "公開鍵は'G'で始まる56文字の文字列で、Stellar上のアカウントアドレスとして機能します。Ed25519暗号を使用して秘密鍵から派生し、安全に共有できます。"
+      },
+      "secretKey": {
+        "term": "秘密鍵",
+        "short": "'S'で始まる56文字の秘密鍵で、トランザクションの署名に使用されます。",
+        "full": "秘密鍵（プライベートキーとも呼ばれる）は'S'で始まる56文字の文字列で、アカウントからのトランザクションを承認できます。完全に非公開にする必要があります。"
+      },
+      "ledger": {
+        "term": "レジャー",
+        "short": "すべてのアカウントとトランザクションを含むネットワーク状態のスナップショット。",
+        "full": "レジャーは、特定の時点でのStellarネットワーク状態の完全なスナップショットです。3〜5秒ごとに、ネットワークはすべてのアカウント、残高、トラストライン、および状態を変更したトランザクションを含む新しいレジャーを生成します。"
+      },
+      "transaction": {
+        "term": "トランザクション",
+        "short": "実行のためにネットワークに送信される操作のバンドル。",
+        "full": "トランザクションは、レジャーの状態を変更する1つ以上の操作のバンドルです。各トランザクションには、ソースアカウント（手数料を支払う人）、シーケンス番号、最大手数料、オプションのメモ、1〜100の操作があります。トランザクションはアトミックです。"
+      },
+      "operation": {
+        "term": "オペレーション",
+        "short": "支払いやトラストライン作成などのトランザクション内の単一アクション。",
+        "full": "オペレーションはレジャーを変更する単一のアクションです。Stellarは支払い、トラストライン変更、アカウント作成、DEXでのオファー、スマートコントラクト呼び出しなど27種類のオペレーションタイプをサポートしています。"
+      },
+      "payment": {
+        "term": "支払い",
+        "short": "あるアカウントから別のアカウントに資産を送信するオペレーション。",
+        "full": "支払いは、あるアカウントから別のアカウントに資産を転送するオペレーションタイプです。送信者は宛先アカウント、資産タイプ、金額を指定します。"
+      },
+      "asset": {
+        "term": "資産",
+        "short": "XLM、ステーブルコイン、カスタムトークンなど、Stellar上のトークン化された価値。",
+        "full": "Stellar上の資産は、ネイティブXLMからフィアット裏付けのステーブルコイン、商品、カスタムトークンまで、あらゆる種類の価値を表します。非ネイティブ資産は、コード（1〜12文字）と発行者の公開鍵で識別されます。"
+      },
+      "trustline": {
+        "term": "トラストライン",
+        "short": "発行者から特定の資産を保持するための明示的な承認。",
+        "full": "トラストラインは、アカウントが特定の資産を保持することを承認するStellar上のレコードです。資産発行者への明示的な信頼を表します。"
+      },
+      "issuer": {
+        "term": "発行者",
+        "short": "非ネイティブ資産を作成・管理するアカウント。",
+        "full": "発行者は、カスタム資産を作成・制御するStellarアカウントです。発行者は他のアカウントがその資産を保持できるかどうかを制御できます。"
+      },
+      "fee": {
+        "term": "手数料",
+        "short": "ネットワークにトランザクションを送信するためのXLMコスト。",
+        "full": "Stellarの取引手数料はXLMで支払われます。基本手数料は操作あたり100 stroops（0.00001 XLM）です。"
+      },
+      "stroops": {
+        "term": "Stroops",
+        "short": "XLMの最小単位：1 XLM = 10,000,000 stroops。",
+        "full": "stroopはXLMの最小単位です。1 XLMは10,000,000（10^7）stroopsに相当します。"
+      },
+      "memo": {
+        "term": "メモ",
+        "short": "トランザクションに添付されるオプションのメタデータ。",
+        "full": "メモはトランザクションに添付されるオプションのデータです。タイプには：テキスト（最大28文字）、ID（64ビット数値）、ハッシュ（32バイトハッシュ）、リターンがあります。"
+      },
+      "signer": {
+        "term": "署名者",
+        "short": "アカウントのトランザクションに署名する権限を持つ鍵。",
+        "full": "署名者は、アカウントのトランザクションを承認できる鍵です。アカウントは異なる重みを持つ複数の署名者を持つことができます。"
+      },
+      "threshold": {
+        "term": "しきい値",
+        "short": "異なる操作を承認するために必要な署名の重み。",
+        "full": "しきい値は、操作を承認するために必要な累積署名者の重みを定義します。Stellarには低、中、高の3つのレベルがあります。"
+      },
+      "multisig": {
+        "term": "マルチシグ",
+        "short": "トランザクションを承認するために複数の署名が必要なアカウント設定。",
+        "full": "マルチシグ（マルチシグネチャー）は、アカウントがトランザクションを承認するために複数の鍵からの署名を必要とするセキュリティ機能です。"
+      },
+      "soroban": {
+        "term": "Soroban",
+        "short": "RustとWASMを使用するStellarのスマートコントラクトプラットフォーム。",
+        "full": "Sorobanは2024年に開始されたStellarのスマートコントラクトプラットフォームです。開発者がWebAssembly（WASM）にコンパイルされるRustでスマートコントラクトを書くことを可能にします。"
+      },
+      "contract": {
+        "term": "スマートコントラクト",
+        "short": "Stellarネットワークにデプロイされた自己実行コード。",
+        "full": "Stellar上のスマートコントラクト（Soroban経由）は、呼び出されると自動的に実行されるネットワークにデプロイされたプログラムです。"
+      },
+      "wasm": {
+        "term": "WASM",
+        "short": "Sorobanスマートコントラクトに使用されるWebAssemblyバイトコード形式。",
+        "full": "WebAssembly（WASM）はSorobanコントラクトがコンパイルされるバイトコード形式です。開発者はRustでコントラクトを書き、デプロイメント用にWASMにコンパイルします。"
+      },
+      "xdr": {
+        "term": "XDR",
+        "short": "External Data Representation - Stellarのバイナリシリアライゼーション形式。",
+        "full": "XDR（External Data Representation）はStellar全体で使用されるバイナリエンコーディング形式です。すべてのトランザクション、レジャーエントリ、ネットワークメッセージはXDRとしてシリアライズされます。"
+      },
+      "horizon": {
+        "term": "Horizon",
+        "short": "Stellarネットワークと対話するためのREST APIサーバー。",
+        "full": "Horizonはネットワークへのアクセスを提供するStellarのHTTP APIです。トランザクションの送信、アカウント残高のクエリ、レジャー履歴の閲覧が可能です。"
+      },
+      "stellarCore": {
+        "term": "Stellar Core",
+        "short": "トランザクションを検証しコンセンサスを維持するバックボーンソフトウェア。",
+        "full": "Stellar CoreはStellarネットワークを動かすソフトウェアです。トランザクションを検証し、コンセンサスに参加し、レジャーを維持します。"
+      },
+      "consensus": {
+        "term": "コンセンサス（SCP）",
+        "short": "Stellarコンセンサスプロトコル - ネットワークがレジャー状態に同意する方法。",
+        "full": "Stellarコンセンサスプロトコル（SCP）は、ネットワークがトランザクションの有効性とレジャー状態に同意する方法です。プルーフ・オブ・ワークとは異なり、SCPはフェデレーテッド・ビザンチン・アグリーメントを使用します。"
+      },
+      "validator": {
+        "term": "バリデーター",
+        "short": "ネットワークのコンセンサスプロセスに参加するノード。",
+        "full": "バリデーターはコンセンサスに参加するStellar Coreノードです。バリデーターはトランザクションを提案し投票します。"
+      },
+      "dex": {
+        "term": "DEX（SDEX）",
+        "short": "資産取引のためのStellarの組み込み分散型取引所。",
+        "full": "Stellar分散型取引所（SDEX）は資産取引のための組み込みマーケットプレイスです。ユーザーは自動的にマッチングされる買い/売り注文を作成できます。"
+      },
+      "offer": {
+        "term": "オファー",
+        "short": "Stellar DEXでの買い注文または売り注文。",
+        "full": "オファーは、指定した価格で資産を売買するStellar DEXでの注文です。"
+      },
+      "claimableBalance": {
+        "term": "請求可能残高",
+        "short": "指定されたアカウントが後で請求するために確保された資産。",
+        "full": "請求可能残高は、指定されたアカウントが指定された条件の下で請求できる特別なエントリにロックされた資産です。"
+      },
+      "sponsorship": {
+        "term": "スポンサーシップ",
+        "short": "あるアカウントが別のアカウントの代わりに準備金を支払うこと。",
+        "full": "スポンサーシップにより、あるアカウントが別のアカウントのトラストライン、オファー、またはその他のエントリの基本準備金要件を支払うことができます。"
+      },
+      "reserve": {
+        "term": "準備金",
+        "short": "アカウントとデータを維持するために必要な最小XLM残高。",
+        "full": "準備金はアカウントが維持しなければならない最小XLM残高です。基本準備金（現在0.5 XLM）に加えて、サブエントリごとに0.5 XLMです。"
+      }
+    }
+  },
+  "internalIds": "内部ID",
+  "ledgerDetails": {
+    "title": "レジャー",
+    "notFound": "レジャーが見つかりません",
+    "notFoundMessage": "お探しのレジャーは存在しないか、まだ作成されていません。",
+    "details": "レジャー詳細",
+    "closeTime": "クローズ時間",
+    "transactions": "トランザクション",
+    "successful": "成功",
+    "failed": "失敗",
+    "operations": "操作",
+    "protocolVersion": "プロトコルバージョン",
+    "totalFees": "合計手数料",
+    "baseFee": "基本手数料",
+    "hash": "ハッシュ",
+    "prevHash": "前のハッシュ",
+    "transactionsInLedger": "このレジャーのトランザクション",
+    "noTransactions": "トランザクションなし",
+    "noTransactionsDesc": "このレジャーにはトランザクションがありません。",
+    "failedToLoadTx": "トランザクションの読み込みに失敗しました",
+    "prev": "前へ",
+    "next": "次へ"
+  },
+  "noFeeData": "手数料データがありません",
+  "noTransactionData": "トランザクションデータがありません",
+  "p50": "P50",
+  "p99": "P99",
+  "searchPage": {
+    "noQuery": "検索クエリがありません",
+    "noQueryHint": "トランザクションハッシュ、アカウントアドレス、またはレジャー番号を入力して検索してください。",
+    "redirecting": "リダイレクト中...",
+    "title": "検索結果",
+    "detectedAs": "検出タイプ：",
+    "trySearchingAs": "次として検索してみてください：",
+    "couldntIdentify": "クエリタイプを識別できませんでした",
+    "couldntIdentifyMessage": "検索クエリは既知のStellarエンティティ形式と一致しません。入力を確認してください。"
+  },
+  "transactionSearch": {
+    "title": "トランザクション検索",
+    "byHash": "ハッシュで",
+    "byAccount": "アカウントで",
+    "byLedger": "レジャーで",
+    "search": "検索",
+    "hashPlaceholder": "トランザクションハッシュを入力（16進数64文字）...",
+    "accountPlaceholder": "アカウントアドレスを入力（G...）...",
+    "ledgerPlaceholder": "レジャーシーケンス番号を入力...",
+    "hashRequired": "トランザクションハッシュを入力してください",
+    "accountRequired": "アカウントアドレスを入力してください",
+    "ledgerRequired": "レジャーシーケンス番号を入力してください",
+    "invalidHash": "無効なハッシュです。16進数64文字である必要があります。",
+    "invalidAccount": "無効なアカウントです。Gで始まり56文字である必要があります。",
+    "invalidLedger": "無効なレジャーシーケンスです。正の数である必要があります。",
+    "searchingFor": "次のトランザクションを表示中",
+    "accountLabel": "アカウント",
+    "ledgerLabel": "レジャー",
+    "clearSearch": "検索をクリア",
+    "filterByStatus": "フィルター",
+    "showAll": "すべて",
+    "showSuccess": "成功",
+    "showFailed": "失敗",
+    "noTransactionsFor": "この{type}のトランザクションが見つかりませんでした。"
+  },
+  "transactions_word": "トランザクション",
+  "xlm": "XLM",
+  "analyticsMode": {
+    "title": "分析モード",
+    "enableAnalyticsMode": "分析モードを有効化",
+    "features": "機能",
+    "showStatistics": "統計を表示",
+    "showTrendlines": "トレンドラインを表示",
+    "enableExport": "データエクスポートを有効化",
+    "chartDensity": "チャート密度",
+    "compact": "コンパクト",
+    "normal": "標準",
+    "expanded": "拡張"
+  },
+  "analytics": {
+    "title": "ネットワーク分析",
+    "subtitle": "Stellarネットワークの高度な統計とデータ分析",
+    "keyMetrics": "主要指標",
+    "funded": "資金調達済み",
+    "tabs": {
+      "overview": "概要",
+      "transactions": "トランザクション",
+      "network": "ネットワーク"
+    },
+    "timeRange": {
+      "1h": "1時間",
+      "24h": "24時間",
+      "7d": "7日間",
+      "30d": "30日間"
+    },
+    "enableBanner": {
+      "title": "高度な機能のために分析モードを有効化",
+      "description": "詳細な統計、トレンドライン、データエクスポート機能にアクセスできます。"
+    },
+    "metrics": {
+      "totalLedgers": "総レジャー数",
+      "totalAccounts": "総アカウント数",
+      "totalTransactions": "総トランザクション数",
+      "totalAssets": "総資産数"
+    },
+    "statistics": {
+      "operationsPerTx": "トランザクションあたりの操作数",
+      "feesStroops": "手数料 (stroops)",
+      "summary": "統計サマリー"
+    },
+    "stats": {
+      "mean": "平均",
+      "median": "中央値",
+      "stdDev": "標準偏差",
+      "min": "最小",
+      "max": "最大",
+      "total": "合計",
+      "range": "範囲"
+    },
+    "tx": {
+      "sampleSize": "サンプルサイズ",
+      "recentTransactions": "最近のトランザクション",
+      "successRate": "成功率",
+      "successful": "成功",
+      "failed": "失敗",
+      "totalOperations": "総操作数",
+      "avgOpsPerTx": "平均操作/TX"
+    },
+    "network": {
+      "accountStats": "アカウント統計",
+      "activityStats": "活動統計",
+      "latestLedger": "最新レジャー情報",
+      "totalAccounts": "総アカウント数",
+      "fundedAccounts": "資金調達済みアカウント",
+      "deletedAccounts": "削除済みアカウント",
+      "fundedRatio": "資金調達率",
+      "totalOperations": "総操作数",
+      "totalTrades": "総取引数",
+      "totalPayments": "総支払い数",
+      "trustlines": "トラストライン",
+      "sequence": "シーケンス",
+      "transactions": "トランザクション",
+      "operations": "操作",
+      "protocolVersion": "プロトコルバージョン"
+    }
+  }
+}
