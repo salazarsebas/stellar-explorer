@@ -8,8 +8,7 @@ import { MobileNav } from "./mobile-nav";
 import { StellarLogo } from "./stellar-icon";
 import { GlobalSearch } from "@/components/search/global-search";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
-import { DeveloperModeToggle } from "@/components/common/developer-mode-toggle";
-import { AnalyticsModeToggle } from "@/components/common/analytics-mode-toggle";
+import { ViewModesToggle } from "@/components/common/view-modes-toggle";
 import { useTheme } from "@/lib/providers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -57,19 +56,16 @@ export function Header() {
           {/* Network Selector */}
           <NetworkSelector />
 
-          {/* Developer Mode */}
-          <DeveloperModeToggle />
+          {/* View Modes (Dev + Analytics) */}
+          <ViewModesToggle />
 
-          {/* Analytics Mode */}
-          <AnalyticsModeToggle />
-
-          {/* Refresh */}
+          {/* Refresh (hidden on mobile) */}
           <Button
             variant="ghost"
             size="icon"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="transition-colors hover:bg-white/10"
+            className="hidden transition-colors hover:bg-white/10 md:inline-flex"
           >
             <RefreshCw className={cn("size-4", isRefreshing && "animate-spin")} />
             <span className="sr-only">{t("refreshData")}</span>
