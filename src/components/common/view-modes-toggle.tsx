@@ -20,12 +20,7 @@ export function ViewModesToggle() {
   const { isAnalyticsMode, toggleAnalyticsMode } = useAnalyticsMode();
 
   const anyActive = isDevMode || isAnalyticsMode;
-  const badgeLabel =
-    isDevMode && isAnalyticsMode
-      ? "DEV·PRO"
-      : isDevMode
-        ? "DEV"
-        : "PRO";
+  const badgeLabel = isDevMode && isAnalyticsMode ? "DEV·PRO" : isDevMode ? "DEV" : "PRO";
 
   return (
     <DropdownMenu>
@@ -51,18 +46,12 @@ export function ViewModesToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuCheckboxItem
-          checked={isDevMode}
-          onCheckedChange={toggleDevMode}
-        >
+        <DropdownMenuCheckboxItem checked={isDevMode} onCheckedChange={toggleDevMode}>
           <Code className="mr-2 size-4" />
           {tDev("title")}
         </DropdownMenuCheckboxItem>
 
-        <DropdownMenuCheckboxItem
-          checked={isAnalyticsMode}
-          onCheckedChange={toggleAnalyticsMode}
-        >
+        <DropdownMenuCheckboxItem checked={isAnalyticsMode} onCheckedChange={toggleAnalyticsMode}>
           <BarChart3 className="mr-2 size-4" />
           {tAnalytics("title")}
         </DropdownMenuCheckboxItem>

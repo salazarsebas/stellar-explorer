@@ -21,6 +21,27 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing 'code' or 'issuer' parameter" }, { status: 400 });
   }
 
+  // SSRF protection: validate URL
+  try {
+    const parsedUrl = new URL(tomlUrl);
+    if (parsedUrl.protocol !== "https:") {
+      return NextResponse.json({ error: "Only HTTPS URLs are allowed" }, { status: 400 });
+    }
+    const hostname = parsedUrl.hostname.toLowerCase();
+    const blockedHosts = ["localhost", "127.0.0.1", "0.0.0.0", "[::1]"];
+    if (
+      blockedHosts.includes(hostname) ||
+      hostname.startsWith("10.") ||
+      hostname.startsWith("192.168.") ||
+      hostname.startsWith("172.") ||
+      hostname.startsWith("169.254.")
+    ) {
+      return NextResponse.json({ error: "Internal URLs are not allowed" }, { status: 400 });
+    }
+  } catch {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+  }
+
   try {
     // Check cache first
     const cacheKey = tomlUrl;

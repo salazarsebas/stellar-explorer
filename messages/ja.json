@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "リポジトリを表示",
     "viewCommit": "コミットを表示",
-    "verifyOnStellarExpert": "Stellar Expert で検証",
     "whyVerify": "なぜ検証するのか？",
     "verifyGuidance": "コントラクト検証により、ユーザーはオリジナルのソースコードを確認し、デプロイされたバイトコードと一致することを確認できます。これにより信頼性と透明性が向上します。",
     "learnToVerify": "検証方法を学ぶ",
@@ -389,17 +388,12 @@
   },
   "networkStats": {
     "title": "ネットワーク統計",
-    "source": "Stellar Expert",
     "totalLedgers": "総レジャー数",
-    "totalAccounts": "総アカウント数",
-    "fundedAccounts": "資金提供アカウント",
-    "totalAssets": "総アセット数",
     "totalOperations": "総オペレーション数",
     "totalTransactions": "総トランザクション数",
-    "totalTrades": "総取引数",
-    "trustlines": "トラストライン",
     "successRate": "成功率",
-    "notAvailable": "利用不可"
+    "baseFee": "平均手数料",
+    "protocolVersion": "プロトコル"
   },
   "pagination": {
     "previous": "前へ",
@@ -787,7 +781,6 @@
     "title": "ネットワーク分析",
     "subtitle": "Stellarネットワークの高度な統計とデータ分析",
     "keyMetrics": "主要指標",
-    "funded": "資金調達済み",
     "tabs": {
       "overview": "概要",
       "transactions": "トランザクション",
@@ -804,10 +797,10 @@
       "description": "詳細な統計、トレンドライン、データエクスポート機能にアクセスできます。"
     },
     "metrics": {
-      "totalLedgers": "総レジャー数",
-      "totalAccounts": "総アカウント数",
-      "totalTransactions": "総トランザクション数",
-      "totalAssets": "総資産数"
+      "latestLedger": "最新レジャー",
+      "ledgerTxCount": "レジャーTX数",
+      "ledgerOperations": "レジャー操作数",
+      "protocolVersion": "プロトコルバージョン"
     },
     "statistics": {
       "operationsPerTx": "トランザクションあたりの操作数",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "平均操作/TX"
     },
     "network": {
-      "accountStats": "アカウント統計",
-      "activityStats": "活動統計",
       "latestLedger": "最新レジャー情報",
-      "totalAccounts": "総アカウント数",
-      "fundedAccounts": "資金調達済みアカウント",
-      "deletedAccounts": "削除済みアカウント",
-      "fundedRatio": "資金調達率",
-      "totalOperations": "総操作数",
-      "totalTrades": "総取引数",
-      "totalPayments": "総支払い数",
-      "trustlines": "トラストライン",
       "sequence": "シーケンス",
       "transactions": "トランザクション",
       "operations": "操作",

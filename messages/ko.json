@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "저장소 보기",
     "viewCommit": "커밋 보기",
-    "verifyOnStellarExpert": "Stellar Expert에서 검증",
     "whyVerify": "왜 검증해야 하나요?",
     "verifyGuidance": "컨트랙트 검증을 통해 사용자는 원본 소스 코드를 검토하고 배포된 바이트코드와 일치하는지 확인할 수 있습니다. 이는 신뢰와 투명성을 높입니다.",
     "learnToVerify": "검증 방법 알아보기",
@@ -471,17 +470,12 @@
   },
   "networkStats": {
     "title": "네트워크 통계",
-    "source": "Stellar Expert",
     "totalLedgers": "전체 원장",
-    "totalAccounts": "전체 계정",
-    "fundedAccounts": "펀딩된 계정",
-    "totalAssets": "전체 자산",
     "totalOperations": "전체 오퍼레이션",
     "totalTransactions": "전체 트랜잭션",
-    "totalTrades": "전체 거래",
-    "trustlines": "신뢰선",
     "successRate": "성공률",
-    "notAvailable": "N/A"
+    "baseFee": "평균 수수료",
+    "protocolVersion": "프로토콜"
   },
   "cards": {
     "transaction": {
@@ -787,7 +781,6 @@
     "title": "네트워크 분석",
     "subtitle": "Stellar 네트워크를 위한 고급 통계 및 데이터 분석",
     "keyMetrics": "주요 지표",
-    "funded": "펀딩됨",
     "tabs": {
       "overview": "개요",
       "transactions": "트랜잭션",
@@ -804,10 +797,10 @@
       "description": "상세한 통계, 추세선 및 데이터 내보내기 기능에 액세스할 수 있습니다."
     },
     "metrics": {
-      "totalLedgers": "총 원장 수",
-      "totalAccounts": "총 계정 수",
-      "totalTransactions": "총 트랜잭션 수",
-      "totalAssets": "총 자산 수"
+      "latestLedger": "최신 원장",
+      "ledgerTxCount": "원장 TX 수",
+      "ledgerOperations": "원장 오퍼레이션",
+      "protocolVersion": "프로토콜 버전"
     },
     "statistics": {
       "operationsPerTx": "트랜잭션당 오퍼레이션",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "평균 Ops/TX"
     },
     "network": {
-      "accountStats": "계정 통계",
-      "activityStats": "활동 통계",
       "latestLedger": "최신 원장 정보",
-      "totalAccounts": "총 계정",
-      "fundedAccounts": "펀딩된 계정",
-      "deletedAccounts": "삭제된 계정",
-      "fundedRatio": "펀딩 비율",
-      "totalOperations": "총 오퍼레이션",
-      "totalTrades": "총 거래",
-      "totalPayments": "총 결제",
-      "trustlines": "신뢰선",
       "sequence": "시퀀스",
       "transactions": "트랜잭션",
       "operations": "오퍼레이션",

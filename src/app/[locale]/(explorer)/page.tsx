@@ -30,9 +30,6 @@ function NetworkStats() {
   const t = useTranslations("stats");
   const tNetwork = useTranslations("network");
 
-  // Enable real-time ledger streaming
-  useLedgerStream({ enabled: true });
-
   const avgFee = feeStats?.fee_charged?.mode ? stroopsToXLM(feeStats.fee_charged.mode) : "100";
 
   const networkLabels = {
@@ -238,7 +235,7 @@ export default function HomePage() {
         <DashboardCharts />
       </section>
 
-      {/* Network Statistics from Stellar Expert */}
+      {/* Network Statistics */}
       <section>
         <NetworkStatsCard />
       </section>

@@ -1,31 +1,21 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNetworkStats } from "@/lib/hooks";
-import {
-  Layers,
-  Users,
-  Coins,
-  ArrowLeftRight,
-  TrendingUp,
-  Wallet,
-  BarChart3,
-  Activity,
-} from "lucide-react";
+import { useLatestLedger, useFeeStats } from "@/lib/hooks";
+import { Layers, ArrowLeftRight, Activity, BarChart3, Wallet, Gauge } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { formatLedgerSequence, stroopsToXLM } from "@/lib/utils";
 
 interface StatItemProps {
   label: string;
   value: string;
   icon: React.ComponentType<{ className?: string }>;
-  trend?: number;
   className?: string;
 }
 
-function StatItem({ label, value, icon: Icon, trend, className }: StatItemProps) {
+function StatItem({ label, value, icon: Icon, className }: StatItemProps) {
   return (
     <div className={cn("bg-muted/30 flex items-center justify-between rounded-lg p-3", className)}>
       <div className="flex items-center gap-3">
@@ -37,18 +27,6 @@ function StatItem({ label, value, icon: Icon, trend, className }: StatItemProps)
           <p className="font-semibold tabular-nums">{value}</p>
         </div>
       </div>
-      {trend !== undefined && (
-        <Badge
-          variant="outline"
-          className={cn(
-            "text-[10px]",
-            trend >= 0 ? "border-green-500/30 text-green-500" : "border-red-500/30 text-red-500"
-          )}
-        >
-          {trend >= 0 ? "+" : ""}
-          {trend.toFixed(2)}%
-        </Badge>
-      )}
     </div>
   );
 }
@@ -77,31 +55,28 @@ function NetworkStatsCardSkeleton() {
 }
 
 export function NetworkStatsCard() {
-  const { data: stats, isLoading, error } = useNetworkStats();
+  const { data: ledger, isLoading: ledgerLoading } = useLatestLedger();
+  const { data: feeStats, isLoading: feeLoading } = useFeeStats();
   const t = useTranslations("networkStats");
+
+  const isLoading = ledgerLoading || feeLoading;
 
   if (isLoading) {
     return <NetworkStatsCardSkeleton />;
   }
 
-  if (error || !stats) {
-    // Silently fail - this is optional enriched data
+  if (!ledger) {
     return null;
   }
 
-  const formatLargeNumber = (num: number | undefined | null): string => {
-    if (num === undefined || num === null) return t("notAvailable");
-    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
-    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
-    return num.toLocaleString();
-  };
-
   const successRate =
-    stats.successful_transactions && stats.transactions
-      ? (stats.successful_transactions / stats.transactions) * 100
+    ledger.successful_transaction_count + ledger.failed_transaction_count > 0
+      ? (ledger.successful_transaction_count /
+          (ledger.successful_transaction_count + ledger.failed_transaction_count)) *
+        100
       : 0;
+
+  const avgFee = feeStats?.fee_charged?.mode || "100";
 
   return (
     <Card>
@@ -111,50 +86,32 @@ export function NetworkStatsCard() {
             <BarChart3 className="text-primary size-4" />
             {t("title")}
           </CardTitle>
-          <Badge variant="outline" className="text-[10px]">
-            {t("source")}
-          </Badge>
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <StatItem
             label={t("totalLedgers")}
-            value={formatLargeNumber(stats.ledgers)}
+            value={formatLedgerSequence(ledger.sequence)}
             icon={Layers}
           />
           <StatItem
-            label={t("totalAccounts")}
-            value={formatLargeNumber(stats.accounts?.total)}
-            icon={Users}
-          />
-          <StatItem
-            label={t("fundedAccounts")}
-            value={formatLargeNumber(stats.accounts?.funded)}
-            icon={Wallet}
-          />
-          <StatItem label={t("totalAssets")} value={formatLargeNumber(stats.assets)} icon={Coins} />
-          <StatItem
-            label={t("totalOperations")}
-            value={formatLargeNumber(stats.operations)}
-            icon={Activity}
-          />
-          <StatItem
             label={t("totalTransactions")}
-            value={formatLargeNumber(stats.transactions)}
+            value={ledger.successful_transaction_count.toLocaleString()}
             icon={ArrowLeftRight}
           />
           <StatItem
-            label={t("totalTrades")}
-            value={formatLargeNumber(stats.trades)}
-            icon={TrendingUp}
+            label={t("totalOperations")}
+            value={ledger.operation_count.toLocaleString()}
+            icon={Activity}
           />
+          <StatItem label={t("successRate")} value={`${successRate.toFixed(1)}%`} icon={Activity} />
+          <StatItem label={t("baseFee")} value={`${stroopsToXLM(avgFee)} XLM`} icon={Wallet} />
           <StatItem
-            label={t("trustlines")}
-            value={formatLargeNumber(stats.trustlines)}
-            icon={Coins}
+            label={t("protocolVersion")}
+            value={`v${ledger.protocol_version}`}
+            icon={Gauge}
           />
-          <StatItem label={t("successRate")} value={`${successRate.toFixed(2)}%`} icon={Activity} />
         </div>
       </CardContent>
     </Card>

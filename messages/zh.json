@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "查看仓库",
     "viewCommit": "查看提交",
-    "verifyOnStellarExpert": "在 Stellar Expert 上验证",
     "whyVerify": "为什么要验证？",
     "verifyGuidance": "合约验证允许用户查看原始源代码并确认其与部署的字节码匹配。这有助于建立信任和透明度。",
     "learnToVerify": "了解如何验证",
@@ -389,17 +388,12 @@
   },
   "networkStats": {
     "title": "网络统计",
-    "source": "Stellar Expert",
     "totalLedgers": "总账本数",
-    "totalAccounts": "总账户数",
-    "fundedAccounts": "已充值账户",
-    "totalAssets": "总资产数",
     "totalOperations": "总操作数",
     "totalTransactions": "总交易数",
-    "totalTrades": "总交易数",
-    "trustlines": "信任线",
     "successRate": "成功率",
-    "notAvailable": "不可用"
+    "baseFee": "平均费用",
+    "protocolVersion": "协议版本"
   },
   "pagination": {
     "previous": "上一页",
@@ -787,7 +781,6 @@
     "title": "网络分析",
     "subtitle": "Stellar 网络的高级统计和数据分析",
     "keyMetrics": "关键指标",
-    "funded": "已资助",
     "tabs": {
       "overview": "概览",
       "transactions": "交易",
@@ -804,10 +797,10 @@
       "description": "获取详细统计、趋势线和数据导出功能。"
     },
     "metrics": {
-      "totalLedgers": "总账本数",
-      "totalAccounts": "总账户数",
-      "totalTransactions": "总交易数",
-      "totalAssets": "总资产数"
+      "latestLedger": "最新账本",
+      "ledgerTxCount": "账本交易数",
+      "ledgerOperations": "账本操作数",
+      "protocolVersion": "协议版本"
     },
     "statistics": {
       "operationsPerTx": "每笔交易的操作数",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "平均操作/交易"
     },
     "network": {
-      "accountStats": "账户统计",
-      "activityStats": "活动统计",
       "latestLedger": "最新账本信息",
-      "totalAccounts": "总账户数",
-      "fundedAccounts": "已资助账户",
-      "deletedAccounts": "已删除账户",
-      "fundedRatio": "资助比例",
-      "totalOperations": "总操作数",
-      "totalTrades": "总交易数",
-      "totalPayments": "总支付数",
-      "trustlines": "信任线",
       "sequence": "序列",
       "transactions": "交易",
       "operations": "操作",

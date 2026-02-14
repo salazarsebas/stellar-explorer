@@ -1,8 +1,12 @@
 import type { NetworkKey } from "@/types";
-import type { Horizon } from "@stellar/stellar-sdk";
+import type { Horizon, xdr } from "@stellar/stellar-sdk";
 import { getHorizonClient, getRpcClient } from "./client";
-import { getStellarExpertClient } from "./stellar-expert";
-import { LIVE_LEDGER_POLL_INTERVAL, DEFAULT_PAGE_SIZE, STALE_TIME } from "@/lib/constants";
+import {
+  LIVE_LEDGER_POLL_INTERVAL,
+  DEFAULT_PAGE_SIZE,
+  STALE_TIME,
+  POPULAR_ASSETS,
+} from "@/lib/constants";
 
 // Query key factory for consistent cache keys
 export const stellarKeys = {
@@ -60,16 +64,6 @@ export const stellarKeys = {
 
   // Fee stats
   feeStats: (network: NetworkKey) => [...stellarKeys.network(network), "feeStats"] as const,
-
-  // Stellar Expert (enriched data)
-  networkStats: (network: NetworkKey) => [...stellarKeys.network(network), "networkStats"] as const,
-  enrichedAsset: (network: NetworkKey, code: string, issuer: string) =>
-    [...stellarKeys.asset(network, code, issuer), "enriched"] as const,
-  topAssetsExpert: (network: NetworkKey) => [...stellarKeys.assets(network), "topExpert"] as const,
-  contractVerification: (network: NetworkKey, contractId: string) =>
-    [...stellarKeys.contract(network, contractId), "verification"] as const,
-  contractDetails: (network: NetworkKey, contractId: string) =>
-    [...stellarKeys.contract(network, contractId), "details"] as const,
 };
 
 // Query option factories for TanStack Query
@@ -90,9 +84,8 @@ export const stellarQueries = {
     queryKey: stellarKeys.ledger(network, sequence),
     queryFn: async () => {
       const horizon = getHorizonClient(network);
-      // Get a specific ledger by fetching from the sequence
+      // SDK types .ledger(seq).call() as CollectionPage but it returns a single record
       const response = await horizon.ledgers().ledger(sequence).call();
-      // The call returns the ledger record directly
       return response as unknown as Horizon.ServerApi.LedgerRecord;
     },
     staleTime: Infinity, // Ledgers are immutable
@@ -247,8 +240,11 @@ export const stellarQueries = {
       const { Asset } = await import("@stellar/stellar-sdk");
 
       const baseAsset = baseCode === "XLM" ? Asset.native() : new Asset(baseCode, baseIssuer);
+      if (counterCode !== "XLM" && !counterIssuer) {
+        throw new Error("counterIssuer is required for non-XLM counter assets");
+      }
       const counterAsset =
-        counterCode === "XLM" ? Asset.native() : new Asset(counterCode, counterIssuer!);
+        counterCode === "XLM" ? Asset.native() : new Asset(counterCode, counterIssuer as string);
 
       // Get 24h trade aggregations (1 hour resolution)
       const now = Date.now();
@@ -314,8 +310,11 @@ export const stellarQueries = {
 
       const sellingAsset =
         sellingCode === "XLM" ? Asset.native() : new Asset(sellingCode, sellingIssuer);
+      if (buyingCode !== "XLM" && !buyingIssuer) {
+        throw new Error("buyingIssuer is required for non-XLM buying assets");
+      }
       const buyingAsset =
-        buyingCode === "XLM" ? Asset.native() : new Asset(buyingCode, buyingIssuer!);
+        buyingCode === "XLM" ? Asset.native() : new Asset(buyingCode, buyingIssuer as string);
 
       const response = await horizon.orderbook(sellingAsset, buyingAsset).limit(10).call();
 
@@ -344,14 +343,7 @@ export const stellarQueries = {
       const horizon = getHorizonClient(network);
       const { Asset } = await import("@stellar/stellar-sdk");
 
-      // Known popular assets to fetch
-      const popularAssets = [
-        { code: "USDC", issuer: "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN" },
-        { code: "yXLM", issuer: "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55" },
-        { code: "AQUA", issuer: "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA" },
-        { code: "EURC", issuer: "GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2" },
-        { code: "BTC", issuer: "GDPJALI4AZKUU2W426U5WKMAT6CN3AJRPIIRYR2YM54TL2GDWO5O2MZM" },
-      ];
+      const popularAssets = POPULAR_ASSETS;
 
       // Fetch asset info for each
       const assetsData = await Promise.all(
@@ -574,8 +566,7 @@ export const stellarQueries = {
       const contractInstance = contractData.val().instance();
 
       // Helper to decode ScVal to readable format
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const decodeScVal = (val: any): { type: string; value: unknown; raw: string } => {
+      const decodeScVal = (val: xdr.ScVal): { type: string; value: unknown; raw: string } => {
         const type = val.switch().name;
         let value: unknown;
         const raw = val.toXDR("base64");
@@ -623,66 +614,5 @@ export const stellarQueries = {
       };
     },
     staleTime: STALE_TIME,
-  }),
-
-  // ============================================
-  // Stellar Expert API Queries (Enriched Data)
-  // ============================================
-
-  // Network statistics from Stellar Expert
-  networkStats: (network: NetworkKey) => ({
-    queryKey: stellarKeys.networkStats(network),
-    queryFn: async () => {
-      const client = getStellarExpertClient(network);
-      return client.getNetworkStats();
-    },
-    staleTime: 60000, // 1 minute
-  }),
-
-  // Enriched asset data from Stellar Expert
-  enrichedAsset: (network: NetworkKey, code: string, issuer: string) => ({
-    queryKey: stellarKeys.enrichedAsset(network, code, issuer),
-    queryFn: async () => {
-      const client = getStellarExpertClient(network);
-      return client.getAsset(code, issuer);
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  }),
-
-  // Top assets list from Stellar Expert (with ratings)
-  topAssetsExpert: (
-    network: NetworkKey,
-    options?: { sort?: "rating" | "trustlines" | "volume" | "trades"; limit?: number }
-  ) => ({
-    queryKey: stellarKeys.topAssetsExpert(network),
-    queryFn: async () => {
-      const client = getStellarExpertClient(network);
-      return client.getAssetList({
-        sort: options?.sort || "rating",
-        order: "desc",
-        limit: options?.limit || 20,
-      });
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  }),
-
-  // Contract verification status from Stellar Expert
-  contractVerification: (network: NetworkKey, contractId: string) => ({
-    queryKey: stellarKeys.contractVerification(network, contractId),
-    queryFn: async () => {
-      const client = getStellarExpertClient(network);
-      return client.isContractVerified(contractId);
-    },
-    staleTime: 10 * 60 * 1000, // 10 minutes
-  }),
-
-  // Detailed contract information from Stellar Expert
-  contractDetails: (network: NetworkKey, contractId: string) => ({
-    queryKey: stellarKeys.contractDetails(network, contractId),
-    queryFn: async () => {
-      const client = getStellarExpertClient(network);
-      return client.getContractDetails(contractId);
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
   }),
 };

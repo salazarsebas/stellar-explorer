@@ -20,14 +20,13 @@ import {
   Download,
   Activity,
   Layers,
-  Users,
-  Coins,
   ArrowLeftRight,
   Calculator,
+  Shield,
 } from "lucide-react";
 import { DashboardCharts } from "@/components/charts";
 import { NetworkStatsCard } from "@/components/stats";
-import { useNetworkStats, useLatestLedger, useRecentTransactions } from "@/lib/hooks";
+import { useLatestLedger, useRecentTransactions } from "@/lib/hooks";
 import { useAnalyticsMode, useNetwork } from "@/lib/providers";
 import { cn } from "@/lib/utils";
 
@@ -158,7 +157,6 @@ export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState<"1h" | "24h" | "7d" | "30d">("24h");
 
   // Fetch data
-  const { data: networkStats, isLoading: statsLoading } = useNetworkStats();
   const { data: latestLedger, isLoading: ledgerLoading } = useLatestLedger();
   const { data: recentTxs, isLoading: txLoading } = useRecentTransactions(100);
 
@@ -196,26 +194,19 @@ export default function AnalyticsPage() {
 
   // Export data function
   const exportData = (format: "json" | "csv") => {
-    if (!txStats || !networkStats) return;
+    if (!txStats) return;
 
-    const exportData = {
+    const exportPayload = {
       exportedAt: new Date().toISOString(),
       network,
       timeRange,
-      networkStats: {
-        ledgers: networkStats.ledgers,
-        accounts: networkStats.accounts,
-        assets: networkStats.assets,
-        transactions: networkStats.transactions,
-        operations: networkStats.operations,
-        trades: networkStats.trades,
-      },
       transactionStats: txStats,
       latestLedger: latestLedger
         ? {
             sequence: latestLedger.sequence,
             closedAt: latestLedger.closed_at,
             txCount: latestLedger.successful_transaction_count,
+            operationCount: latestLedger.operation_count,
             protocolVersion: latestLedger.protocol_version,
           }
         : null,
@@ -226,7 +217,7 @@ export default function AnalyticsPage() {
     let filename: string;
 
     if (format === "json") {
-      content = JSON.stringify(exportData, null, 2);
+      content = JSON.stringify(exportPayload, null, 2);
       mimeType = "application/json";
       filename = `stellar-analytics-${network}-${timeRange}.json`;
     } else {
@@ -234,13 +225,10 @@ export default function AnalyticsPage() {
       const lines: string[] = [
         "Category,Metric,Value",
         `Network,Name,${network}`,
-        `Network,Total Ledgers,${networkStats.ledgers}`,
-        `Network,Total Accounts,${networkStats.accounts?.total || "N/A"}`,
-        `Network,Funded Accounts,${networkStats.accounts?.funded || "N/A"}`,
-        `Network,Total Assets,${networkStats.assets}`,
-        `Network,Total Transactions,${networkStats.transactions}`,
-        `Network,Total Operations,${networkStats.operations}`,
-        `Network,Total Trades,${networkStats.trades}`,
+        `Network,Latest Ledger,${latestLedger?.sequence ?? "N/A"}`,
+        `Network,Ledger TX Count,${latestLedger?.successful_transaction_count ?? "N/A"}`,
+        `Network,Ledger Operations,${latestLedger?.operation_count ?? "N/A"}`,
+        `Network,Protocol Version,${latestLedger?.protocol_version ?? "N/A"}`,
         `Transactions,Sample Size,${txStats.total}`,
         `Transactions,Success Rate,${txStats.successRate.toFixed(2)}%`,
         `Transactions,Successful,${txStats.successful}`,
@@ -280,7 +268,7 @@ export default function AnalyticsPage() {
     return num.toFixed(decimals);
   };
 
-  const isLoading = statsLoading || ledgerLoading || txLoading;
+  const isLoading = ledgerLoading || txLoading;
 
   return (
     <div className="space-y-8">
@@ -359,31 +347,24 @@ export default function AnalyticsPage() {
         <h2 className="mb-4 text-lg font-semibold">{t("keyMetrics")}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatisticCard
-            title={t("metrics.totalLedgers")}
-            value={networkStats ? formatNumber(networkStats.ledgers, 0) : "-"}
+            title={t("metrics.latestLedger")}
+            value={latestLedger ? `#${latestLedger.sequence.toLocaleString()}` : "-"}
             icon={Layers}
           />
           <StatisticCard
-            title={t("metrics.totalAccounts")}
-            value={
-              networkStats?.accounts?.total ? formatNumber(networkStats.accounts.total, 0) : "-"
-            }
-            subtitle={
-              networkStats?.accounts?.funded
-                ? `${formatNumber(networkStats.accounts.funded, 0)} ${t("funded")}`
-                : undefined
-            }
-            icon={Users}
-          />
-          <StatisticCard
-            title={t("metrics.totalTransactions")}
-            value={networkStats ? formatNumber(networkStats.transactions, 0) : "-"}
+            title={t("metrics.ledgerTxCount")}
+            value={latestLedger ? latestLedger.successful_transaction_count : "-"}
             icon={ArrowLeftRight}
           />
           <StatisticCard
-            title={t("metrics.totalAssets")}
-            value={networkStats ? formatNumber(networkStats.assets, 0) : "-"}
-            icon={Coins}
+            title={t("metrics.ledgerOperations")}
+            value={latestLedger ? latestLedger.operation_count : "-"}
+            icon={Activity}
+          />
+          <StatisticCard
+            title={t("metrics.protocolVersion")}
+            value={latestLedger ? `v${latestLedger.protocol_version}` : "-"}
+            icon={Shield}
           />
         </div>
       </section>
@@ -495,52 +476,6 @@ export default function AnalyticsPage() {
         {/* Network Tab */}
         <TabsContent value="network" className="space-y-6">
           <NetworkStatsCard />
-
-          {isAnalyticsMode && networkStats && (
-            <div className="grid gap-4 md:grid-cols-2">
-              <StatisticsTable
-                title={t("network.accountStats")}
-                data={[
-                  {
-                    label: t("network.totalAccounts"),
-                    value: formatNumber(networkStats.accounts?.total || 0, 0),
-                  },
-                  {
-                    label: t("network.fundedAccounts"),
-                    value: formatNumber(networkStats.accounts?.funded || 0, 0),
-                  },
-                  {
-                    label: t("network.deletedAccounts"),
-                    value: formatNumber(networkStats.accounts?.deleted || 0, 0),
-                  },
-                  {
-                    label: t("network.fundedRatio"),
-                    value: networkStats.accounts?.total
-                      ? `${((networkStats.accounts.funded / networkStats.accounts.total) * 100).toFixed(2)}%`
-                      : "N/A",
-                  },
-                ]}
-              />
-              <StatisticsTable
-                title={t("network.activityStats")}
-                data={[
-                  {
-                    label: t("network.totalOperations"),
-                    value: formatNumber(networkStats.operations, 0),
-                  },
-                  { label: t("network.totalTrades"), value: formatNumber(networkStats.trades, 0) },
-                  {
-                    label: t("network.totalPayments"),
-                    value: formatNumber(networkStats.payments, 0),
-                  },
-                  {
-                    label: t("network.trustlines"),
-                    value: formatNumber(networkStats.trustlines, 0),
-                  },
-                ]}
-              />
-            </div>
-          )}
 
           {latestLedger && (
             <Card>

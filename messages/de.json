@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "Repository anzeigen",
     "viewCommit": "Commit anzeigen",
-    "verifyOnStellarExpert": "Bei Stellar Expert verifizieren",
     "whyVerify": "Warum verifizieren?",
     "verifyGuidance": "Die Vertragsverifizierung ermöglicht es Benutzern, den ursprünglichen Quellcode zu überprüfen und zu bestätigen, dass er mit dem bereitgestellten Bytecode übereinstimmt. Dies schafft Vertrauen und Transparenz.",
     "learnToVerify": "Verifizierung lernen",
@@ -389,17 +388,12 @@
   },
   "networkStats": {
     "title": "Netzwerk-Statistiken",
-    "source": "Stellar Expert",
     "totalLedgers": "Gesamte Ledger",
-    "totalAccounts": "Gesamte Konten",
-    "fundedAccounts": "Finanzierte Konten",
-    "totalAssets": "Gesamte Assets",
     "totalOperations": "Gesamte Operationen",
     "totalTransactions": "Gesamte Transaktionen",
-    "totalTrades": "Gesamte Trades",
-    "trustlines": "Trustlines",
     "successRate": "Erfolgsrate",
-    "notAvailable": "N/V"
+    "baseFee": "Durchschn. Gebuhr",
+    "protocolVersion": "Protokoll"
   },
   "pagination": {
     "previous": "Zurück",
@@ -787,7 +781,6 @@
     "title": "Netzwerk-Analytik",
     "subtitle": "Erweiterte Statistiken und Datenanalyse für das Stellar-Netzwerk",
     "keyMetrics": "Hauptkennzahlen",
-    "funded": "finanziert",
     "tabs": {
       "overview": "Übersicht",
       "transactions": "Transaktionen",
@@ -804,10 +797,10 @@
       "description": "Erhalten Sie Zugang zu detaillierten Statistiken, Trendlinien und Datenexportfunktionen."
     },
     "metrics": {
-      "totalLedgers": "Gesamt Ledgers",
-      "totalAccounts": "Gesamt Konten",
-      "totalTransactions": "Gesamt Transaktionen",
-      "totalAssets": "Gesamt Vermögenswerte"
+      "latestLedger": "Neuester Ledger",
+      "ledgerTxCount": "Ledger-TX-Anzahl",
+      "ledgerOperations": "Ledger-Operationen",
+      "protocolVersion": "Protokollversion"
     },
     "statistics": {
       "operationsPerTx": "Operationen pro Transaktion",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "Durchschn. Ops/TX"
     },
     "network": {
-      "accountStats": "Kontostatistiken",
-      "activityStats": "Aktivitätsstatistiken",
       "latestLedger": "Neueste Ledger-Info",
-      "totalAccounts": "Gesamt Konten",
-      "fundedAccounts": "Finanzierte Konten",
-      "deletedAccounts": "Gelöschte Konten",
-      "fundedRatio": "Finanzierungsquote",
-      "totalOperations": "Gesamt Operationen",
-      "totalTrades": "Gesamt Trades",
-      "totalPayments": "Gesamt Zahlungen",
-      "trustlines": "Vertrauenslinien",
       "sequence": "Sequenz",
       "transactions": "Transaktionen",
       "operations": "Operationen",

@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "View Repository",
     "viewCommit": "View Commit",
-    "verifyOnStellarExpert": "Verify on Stellar Expert",
     "whyVerify": "Why Verify?",
     "verifyGuidance": "Contract verification allows users to review the original source code and confirm it matches the deployed bytecode. This builds trust and transparency.",
     "learnToVerify": "Learn how to verify",
@@ -471,17 +470,12 @@
   },
   "networkStats": {
     "title": "Network Statistics",
-    "source": "Stellar Expert",
     "totalLedgers": "Total Ledgers",
-    "totalAccounts": "Total Accounts",
-    "fundedAccounts": "Funded Accounts",
-    "totalAssets": "Total Assets",
     "totalOperations": "Total Operations",
     "totalTransactions": "Total Transactions",
-    "totalTrades": "Total Trades",
-    "trustlines": "Trustlines",
     "successRate": "Success Rate",
-    "notAvailable": "N/A"
+    "baseFee": "Avg Fee",
+    "protocolVersion": "Protocol"
   },
   "cards": {
     "transaction": {
@@ -787,7 +781,6 @@
     "title": "Network Analytics",
     "subtitle": "Advanced statistics and data analysis for the Stellar network",
     "keyMetrics": "Key Metrics",
-    "funded": "funded",
     "tabs": {
       "overview": "Overview",
       "transactions": "Transactions",
@@ -804,10 +797,10 @@
       "description": "Get access to detailed statistics, trendlines, and data export capabilities."
     },
     "metrics": {
-      "totalLedgers": "Total Ledgers",
-      "totalAccounts": "Total Accounts",
-      "totalTransactions": "Total Transactions",
-      "totalAssets": "Total Assets"
+      "latestLedger": "Latest Ledger",
+      "ledgerTxCount": "Ledger TX Count",
+      "ledgerOperations": "Ledger Operations",
+      "protocolVersion": "Protocol Version"
     },
     "statistics": {
       "operationsPerTx": "Operations per Transaction",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "Avg Ops/TX"
     },
     "network": {
-      "accountStats": "Account Statistics",
-      "activityStats": "Activity Statistics",
       "latestLedger": "Latest Ledger Info",
-      "totalAccounts": "Total Accounts",
-      "fundedAccounts": "Funded Accounts",
-      "deletedAccounts": "Deleted Accounts",
-      "fundedRatio": "Funded Ratio",
-      "totalOperations": "Total Operations",
-      "totalTrades": "Total Trades",
-      "totalPayments": "Total Payments",
-      "trustlines": "Trustlines",
       "sequence": "Sequence",
       "transactions": "Transactions",
       "operations": "Operations",

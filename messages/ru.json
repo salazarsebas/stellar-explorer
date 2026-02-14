@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "Просмотреть репозиторий",
     "viewCommit": "Просмотреть коммит",
-    "verifyOnStellarExpert": "Верифицировать на Stellar Expert",
     "whyVerify": "Зачем верифицировать?",
     "verifyGuidance": "Верификация контракта позволяет пользователям просмотреть исходный код и подтвердить, что он соответствует развёрнутому байткоду. Это повышает доверие и прозрачность.",
     "learnToVerify": "Узнать как верифицировать",
@@ -471,17 +470,12 @@
   },
   "networkStats": {
     "title": "Статистика сети",
-    "source": "Stellar Expert",
     "totalLedgers": "Всего реестров",
-    "totalAccounts": "Всего аккаунтов",
-    "fundedAccounts": "Активных аккаунтов",
-    "totalAssets": "Всего активов",
     "totalOperations": "Всего операций",
     "totalTransactions": "Всего транзакций",
-    "totalTrades": "Всего сделок",
-    "trustlines": "Линий доверия",
     "successRate": "Процент успеха",
-    "notAvailable": "Н/Д"
+    "baseFee": "Средняя комиссия",
+    "protocolVersion": "Протокол"
   },
   "cards": {
     "transaction": {
@@ -787,7 +781,6 @@
     "title": "Аналитика сети",
     "subtitle": "Расширенная статистика и анализ данных сети Stellar",
     "keyMetrics": "Ключевые метрики",
-    "funded": "активных",
     "tabs": {
       "overview": "Обзор",
       "transactions": "Транзакции",
@@ -804,10 +797,10 @@
       "description": "Получите доступ к детальной статистике, линиям тренда и возможностям экспорта данных."
     },
     "metrics": {
-      "totalLedgers": "Всего реестров",
-      "totalAccounts": "Всего аккаунтов",
-      "totalTransactions": "Всего транзакций",
-      "totalAssets": "Всего активов"
+      "latestLedger": "Последний реестр",
+      "ledgerTxCount": "TX в реестре",
+      "ledgerOperations": "Операции реестра",
+      "protocolVersion": "Версия протокола"
     },
     "statistics": {
       "operationsPerTx": "Операций на транзакцию",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "Сред. оп./тр."
     },
     "network": {
-      "accountStats": "Статистика аккаунтов",
-      "activityStats": "Статистика активности",
       "latestLedger": "Информация о последнем реестре",
-      "totalAccounts": "Всего аккаунтов",
-      "fundedAccounts": "Активных аккаунтов",
-      "deletedAccounts": "Удалённых аккаунтов",
-      "fundedRatio": "Доля активных",
-      "totalOperations": "Всего операций",
-      "totalTrades": "Всего сделок",
-      "totalPayments": "Всего платежей",
-      "trustlines": "Линий доверия",
       "sequence": "Последовательность",
       "transactions": "Транзакции",
       "operations": "Операции",

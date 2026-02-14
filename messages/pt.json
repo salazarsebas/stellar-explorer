@@ -224,7 +224,6 @@
     "githubActions": "GitHub Actions",
     "viewRepository": "Ver Repositório",
     "viewCommit": "Ver Commit",
-    "verifyOnStellarExpert": "Verificar no Stellar Expert",
     "whyVerify": "Por que verificar?",
     "verifyGuidance": "A verificação de contratos permite aos usuários revisar o código-fonte original e confirmar que corresponde ao bytecode implantado. Isso gera confiança e transparência.",
     "learnToVerify": "Aprenda a verificar",
@@ -389,17 +388,12 @@
   },
   "networkStats": {
     "title": "Estatísticas da Rede",
-    "source": "Stellar Expert",
     "totalLedgers": "Total de Livros",
-    "totalAccounts": "Total de Contas",
-    "fundedAccounts": "Contas Financiadas",
-    "totalAssets": "Total de Ativos",
     "totalOperations": "Total de Operações",
     "totalTransactions": "Total de Transações",
-    "totalTrades": "Total de Trades",
-    "trustlines": "Linhas de Confiança",
     "successRate": "Taxa de Sucesso",
-    "notAvailable": "N/D"
+    "baseFee": "Taxa Media",
+    "protocolVersion": "Protocolo"
   },
   "pagination": {
     "previous": "Anterior",
@@ -787,7 +781,6 @@
     "title": "Análises de Rede",
     "subtitle": "Estatísticas avançadas e análise de dados para a rede Stellar",
     "keyMetrics": "Métricas Principais",
-    "funded": "financiadas",
     "tabs": {
       "overview": "Visão Geral",
       "transactions": "Transações",
@@ -804,10 +797,10 @@
       "description": "Obtenha acesso a estatísticas detalhadas, linhas de tendência e recursos de exportação de dados."
     },
     "metrics": {
-      "totalLedgers": "Total de Ledgers",
-      "totalAccounts": "Total de Contas",
-      "totalTransactions": "Total de Transações",
-      "totalAssets": "Total de Ativos"
+      "latestLedger": "Último Ledger",
+      "ledgerTxCount": "TX do Ledger",
+      "ledgerOperations": "Operações do Ledger",
+      "protocolVersion": "Versão do Protocolo"
     },
     "statistics": {
       "operationsPerTx": "Operações por Transação",
@@ -833,17 +826,7 @@
       "avgOpsPerTx": "Ops/TX Média"
     },
     "network": {
-      "accountStats": "Estatísticas de Contas",
-      "activityStats": "Estatísticas de Atividade",
       "latestLedger": "Informação do Último Ledger",
-      "totalAccounts": "Total de Contas",
-      "fundedAccounts": "Contas Financiadas",
-      "deletedAccounts": "Contas Excluídas",
-      "fundedRatio": "Razão de Financiamento",
-      "totalOperations": "Total de Operações",
-      "totalTrades": "Total de Negociações",
-      "totalPayments": "Total de Pagamentos",
-      "trustlines": "Linhas de Confiança",
       "sequence": "Sequência",
       "transactions": "Transações",
       "operations": "Operações",

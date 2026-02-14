@@ -13,19 +13,13 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
-import {
-  useContractEvents,
-  useContractCode,
-  useContractStorage,
-  useContractVerification,
-} from "@/lib/hooks";
+import { useContractEvents, useContractCode, useContractStorage } from "@/lib/hooks";
 import { ContractVerification } from "@/components/contracts";
 import { isValidContractId, formatCompactNumber } from "@/lib/utils";
 import {
   Activity,
   Database,
   Code,
-  AlertTriangle,
   Hash,
   Copy,
   Check,
@@ -36,8 +30,6 @@ import {
   HardDrive,
   ChevronDown,
   ChevronUp,
-  ShieldCheck,
-  Loader2,
 } from "lucide-react";
 
 interface ContractContentProps {
@@ -534,28 +526,10 @@ function ContractCode({ contractId }: { contractId: string }) {
 export function ContractContent({ id }: ContractContentProps) {
   const t = useTranslations("contract");
   const tCommon = useTranslations("common");
-  const { data: verification, isLoading: verificationLoading } = useContractVerification(id);
 
   if (!isValidContractId(id)) {
     return notFound();
   }
-
-  const headerBadge = verificationLoading ? (
-    <Badge variant="outline" className="bg-muted/50">
-      <Loader2 className="mr-1 size-3 animate-spin" />
-      {t("checking")}
-    </Badge>
-  ) : verification?.isVerified ? (
-    <Badge variant="outline" className="bg-success/15 text-success border-success/25">
-      <ShieldCheck className="mr-1 size-3" />
-      {t("verified")}
-    </Badge>
-  ) : (
-    <Badge variant="outline" className="bg-warning/15 text-warning border-warning/25">
-      <AlertTriangle className="mr-1 size-3" />
-      {t("unverified")}
-    </Badge>
-  );
 
   return (
     <div className="space-y-6">
@@ -565,7 +539,6 @@ export function ContractContent({ id }: ContractContentProps) {
         backHref="/"
         backLabel={tCommon("home")}
         showQr={false}
-        badge={headerBadge}
       />
 
       <ContractSummary contractId={id} />

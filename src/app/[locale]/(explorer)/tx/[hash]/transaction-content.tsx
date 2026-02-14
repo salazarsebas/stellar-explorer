@@ -162,8 +162,9 @@ function OperationsTimeline({ hash }: { hash: string }) {
 }
 
 function OperationDetails({ operation }: { operation: Horizon.ServerApi.OperationRecord }) {
-  // Type assertion for dynamic properties - Horizon SDK types vary by operation type
-  const op = operation as Horizon.ServerApi.OperationRecord & Record<string, unknown>;
+  // Operation records have varying shapes depending on operation.type;
+  // cast through unknown to access operation-specific properties safely as a generic record
+  const op = operation as unknown as Record<string, unknown>;
   const t = useTranslations("account");
 
   switch (operation.type) {

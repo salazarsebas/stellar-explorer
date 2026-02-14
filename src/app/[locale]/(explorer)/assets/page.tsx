@@ -14,6 +14,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { useTopAssets, useAssetsList } from "@/lib/hooks";
+import { POPULAR_ASSETS } from "@/lib/constants";
 import { Coins, Search, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -210,12 +211,8 @@ function QuickAccessAssets() {
           {Object.entries(POPULAR_ASSETS_META)
             .slice(0, 3)
             .map(([code, meta]) => {
-              const issuer =
-                code === "USDC"
-                  ? "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
-                  : code === "yXLM"
-                    ? "GARDNV3Q7YGT4AKSDF25LT32YSCCW4EV22Y2TV3I2PU2MMXJTEDL5T55"
-                    : "GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA";
+              const popularAsset = POPULAR_ASSETS.find((a) => a.code === code);
+              const issuer = popularAsset?.issuer ?? "";
 
               return (
                 <Link

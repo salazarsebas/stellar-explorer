@@ -1,9 +1,14 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { TransactionContent } from "./transaction-content";
 
 type Props = {
   params: Promise<{ hash: string }>;
 };
+
+function isValidTransactionHash(hash: string): boolean {
+  return hash.length === 64 && /^[a-f0-9]+$/i.test(hash);
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { hash } = await params;
@@ -27,5 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TransactionPage({ params }: Props) {
   const { hash } = await params;
+
+  if (!isValidTransactionHash(hash)) {
+    return notFound();
+  }
+
   return <TransactionContent hash={hash} />;
 }

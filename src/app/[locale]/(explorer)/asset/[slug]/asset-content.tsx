@@ -12,7 +12,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { AssetLogo } from "@/components/common/asset-logo";
 import { useAsset, useAssetMetadata } from "@/lib/hooks";
 import { formatNumber, formatCompactNumber } from "@/lib/utils";
-import type { StellarAsset } from "@/types";
+import type { Horizon } from "@stellar/stellar-sdk";
 import {
   Coins,
   Users,
@@ -25,6 +25,13 @@ import {
   Building2,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+/** Extended asset record type for properties returned by the Horizon API but not typed in the SDK */
+type AssetRecordExtended = Horizon.ServerApi.AssetRecord & {
+  amount: string;
+  num_accounts: number;
+  _links?: { toml?: { href?: string }; [key: string]: unknown };
+};
 
 interface AssetContentProps {
   slug: string;
@@ -85,7 +92,7 @@ function FlagBadge({
   );
 }
 
-function AssetSummary({ asset }: { asset: StellarAsset }) {
+function AssetSummary({ asset }: { asset: AssetRecordExtended }) {
   const t = useTranslations("assetDetails");
 
   return (
@@ -163,7 +170,7 @@ function AssetSummary({ asset }: { asset: StellarAsset }) {
   );
 }
 
-function AssetFlags({ asset }: { asset: StellarAsset }) {
+function AssetFlags({ asset }: { asset: AssetRecordExtended }) {
   const flags = asset.flags;
   const t = useTranslations("assetDetails");
 
@@ -200,7 +207,7 @@ function AssetFlags({ asset }: { asset: StellarAsset }) {
   );
 }
 
-function AssetStats({ asset }: { asset: StellarAsset }) {
+function AssetStats({ asset }: { asset: AssetRecordExtended }) {
   const t = useTranslations("assetDetails");
 
   return (
@@ -256,7 +263,8 @@ export function AssetContent({ slug }: AssetContentProps) {
   } = useAsset(parsed?.code || "", isNative ? "" : parsed?.issuer || "");
 
   // Fetch metadata from stellar.toml - must be called unconditionally (React hooks rules)
-  const tomlUrl = (asset as unknown as StellarAsset)?._links?.toml?.href;
+  const assetRecord = asset as { _links?: { toml?: { href?: string } } } | undefined;
+  const tomlUrl = assetRecord?._links?.toml?.href;
   const { data: metadata } = useAssetMetadata(asset?.asset_code, asset?.asset_issuer, tomlUrl);
 
   if (!parsed) {
@@ -358,7 +366,7 @@ export function AssetContent({ slug }: AssetContentProps) {
         </div>
       </div>
 
-      <AssetSummary asset={asset as unknown as StellarAsset} />
+      <AssetSummary asset={asset as AssetRecordExtended} />
 
       <Tabs defaultValue="stats" className="w-full">
         <TabsList>
@@ -366,10 +374,10 @@ export function AssetContent({ slug }: AssetContentProps) {
           <TabsTrigger value="flags">{t("flags")}</TabsTrigger>
         </TabsList>
         <TabsContent value="stats" className="mt-4">
-          <AssetStats asset={asset as unknown as StellarAsset} />
+          <AssetStats asset={asset as AssetRecordExtended} />
         </TabsContent>
         <TabsContent value="flags" className="mt-4">
-          <AssetFlags asset={asset as unknown as StellarAsset} />
+          <AssetFlags asset={asset as AssetRecordExtended} />
         </TabsContent>
       </Tabs>
     </div>
