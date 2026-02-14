@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,7 +12,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { useLedger, useLedgerTransactions } from "@/lib/hooks";
-import { formatDateTime, formatLedgerSequence, stroopsToXLM } from "@/lib/utils";
+import { formatDateTime, formatLedgerSequence } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Clock, Activity, Wallet, Hash } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -92,9 +92,9 @@ function LedgerSummary({
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground flex items-center gap-2 text-sm">
                 <Wallet className="size-4" />
-                {t("totalFees")}
+                {t("feePool")}
               </span>
-              <span className="font-mono text-sm">{stroopsToXLM(ledger.total_coins)} XLM</span>
+              <span className="font-mono text-sm">{ledger.fee_pool} XLM</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">

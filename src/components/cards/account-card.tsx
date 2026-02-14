@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { HashDisplay } from "@/components/common/hash-display";
 import { formatBalance } from "@/lib/utils";

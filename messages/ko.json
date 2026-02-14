@@ -96,6 +96,8 @@
     "contractsDesc": "Soroban 탐색"
   },
   "transactions": {
+    "metaTitle": "트랜잭션 | Stellar Explorer",
+    "metaDescription": "Stellar 네트워크의 최근 트랜잭션을 탐색하세요. 트랜잭션 세부 정보, 오퍼레이션 등을 확인하세요.",
     "title": "트랜잭션",
     "recentTransactions": "최근 트랜잭션",
     "failedToLoad": "트랜잭션을 불러오는데 실패했습니다",
@@ -103,6 +105,8 @@
     "noRecentFound": "이 네트워크에서 최근 트랜잭션을 찾을 수 없습니다."
   },
   "ledgers": {
+    "metaTitle": "원장 | Stellar Explorer",
+    "metaDescription": "Stellar 네트워크의 원장 기록을 탐색하세요. 개별 원장을 검색하고 탐색하세요.",
     "title": "원장",
     "searchLedger": "원장 검색",
     "enterSequence": "원장 시퀀스 번호를 입력하세요...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Stellar 주소를 입력하여 계정 상세 정보, 잔액, 트랜잭션 및 서명자 정보를 확인하세요."
   },
   "assets": {
+    "metaTitle": "자산 | Stellar Explorer",
+    "metaDescription": "Stellar 네트워크의 자산을 탐색하세요. 상위 자산을 보고, 코드 또는 발행자로 검색하세요.",
     "title": "자산",
     "subtitle": "Stellar 네트워크의 토큰과 자산 탐색",
     "findAsset": "자산 찾기",
@@ -152,6 +158,8 @@
     "price": "가격"
   },
   "contracts": {
+    "metaTitle": "스마트 컨트랙트 | Stellar Explorer",
+    "metaDescription": "Stellar 네트워크의 Soroban 스마트 컨트랙트를 탐색하세요. 컨트랙트 세부 정보를 검색하고 확인하세요.",
     "title": "스마트 컨트랙트",
     "subtitle": "Stellar 네트워크의 Soroban 스마트 컨트랙트 탐색",
     "findContract": "컨트랙트 찾기",
@@ -513,7 +521,8 @@
     "totalHolders": "총 보유자",
     "circulating": "유통량",
     "authorized": "승인됨",
-    "verified": "검증됨",
+    "openAccess": "개방 접근",
+    "restricted": "제한됨",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Stellar 네이티브 자산",
     "aboutXlm": "XLM 소개",
@@ -534,7 +543,7 @@
     "failed": "실패",
     "operations": "오퍼레이션",
     "protocolVersion": "프로토콜 버전",
-    "totalFees": "총 수수료",
+    "feePool": "수수료 풀",
     "baseFee": "기본 수수료",
     "hash": "해시",
     "prevHash": "이전 해시",
@@ -785,12 +794,6 @@
       "overview": "개요",
       "transactions": "트랜잭션",
       "network": "네트워크"
-    },
-    "timeRange": {
-      "1h": "1시간",
-      "24h": "24시간",
-      "7d": "7일",
-      "30d": "30일"
     },
     "enableBanner": {
       "title": "고급 기능을 위해 분석 모드를 활성화하세요",

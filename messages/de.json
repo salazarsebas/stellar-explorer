@@ -96,6 +96,8 @@
     "contractsDesc": "Soroban erkunden"
   },
   "transactions": {
+    "metaTitle": "Transaktionen | Stellar Explorer",
+    "metaDescription": "Durchsuchen Sie aktuelle Transaktionen im Stellar-Netzwerk. Sehen Sie Transaktionsdetails, Operationen und mehr.",
     "title": "Transaktionen",
     "recentTransactions": "Kürzliche Transaktionen",
     "failedToLoad": "Transaktionen konnten nicht geladen werden",
@@ -103,6 +105,8 @@
     "noRecentFound": "Keine kürzlichen Transaktionen in diesem Netzwerk gefunden."
   },
   "ledgers": {
+    "metaTitle": "Ledger | Stellar Explorer",
+    "metaDescription": "Durchsuchen Sie die Ledger-Historie im Stellar-Netzwerk. Suchen und erkunden Sie einzelne Ledger.",
     "title": "Ledger",
     "searchLedger": "Ledger suchen",
     "enterSequence": "Ledger-Sequenznummer eingeben...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Geben Sie eine Stellar-Adresse ein, um Kontodetails, Guthaben, Transaktionen und Signer-Informationen anzuzeigen."
   },
   "assets": {
+    "metaTitle": "Assets | Stellar Explorer",
+    "metaDescription": "Erkunden Sie Assets im Stellar-Netzwerk. Sehen Sie Top-Assets, suchen Sie nach Code oder Emittent.",
     "title": "Assets",
     "subtitle": "Erkunden Sie Tokens und Assets im Stellar-Netzwerk",
     "findAsset": "Asset finden",
@@ -152,6 +158,8 @@
     "price": "Preis"
   },
   "contracts": {
+    "metaTitle": "Smart Contracts | Stellar Explorer",
+    "metaDescription": "Erkunden Sie Soroban Smart Contracts im Stellar-Netzwerk. Suchen und sehen Sie Vertragsdetails.",
     "title": "Smart Contracts",
     "subtitle": "Erkunden Sie Soroban Smart Contracts im Stellar-Netzwerk",
     "findContract": "Vertrag finden",
@@ -447,7 +455,8 @@
     "totalHolders": "Gesamte Inhaber",
     "circulating": "Im Umlauf",
     "authorized": "Autorisiert",
-    "verified": "Verifiziert",
+    "openAccess": "Offener Zugang",
+    "restricted": "Eingeschränkt",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Natives Stellar Asset",
     "aboutXlm": "Über XLM",
@@ -713,7 +722,7 @@
     "failed": "fehlgeschlagen",
     "operations": "Operationen",
     "protocolVersion": "Protokollversion",
-    "totalFees": "Gesamtgebühren",
+    "feePool": "Gebührenpool",
     "baseFee": "Basisgebühr",
     "hash": "Hash",
     "prevHash": "Vorheriger Hash",
@@ -785,12 +794,6 @@
       "overview": "Übersicht",
       "transactions": "Transaktionen",
       "network": "Netzwerk"
-    },
-    "timeRange": {
-      "1h": "1 Stunde",
-      "24h": "24 Stunden",
-      "7d": "7 Tage",
-      "30d": "30 Tage"
     },
     "enableBanner": {
       "title": "Aktivieren Sie den Analysemodus für erweiterte Funktionen",

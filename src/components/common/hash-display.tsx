@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { cn, truncateHash } from "@/lib/utils";
 import { useCopy } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";

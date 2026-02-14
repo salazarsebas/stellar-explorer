@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { HashDisplay } from "@/components/common";
 import { CopyButton } from "@/components/common/copy-button";
 import { QrDialog } from "@/components/common/qr-dialog";

@@ -96,6 +96,8 @@
     "contractsDesc": "Explore Soroban"
   },
   "transactions": {
+    "metaTitle": "Transactions | Stellar Explorer",
+    "metaDescription": "Browse recent transactions on the Stellar network. View transaction details, operations, and more.",
     "title": "Transactions",
     "recentTransactions": "Recent Transactions",
     "failedToLoad": "Failed to load transactions",
@@ -103,6 +105,8 @@
     "noRecentFound": "No recent transactions found on this network."
   },
   "ledgers": {
+    "metaTitle": "Ledgers | Stellar Explorer",
+    "metaDescription": "Browse ledger history on the Stellar network. Search and explore individual ledgers.",
     "title": "Ledgers",
     "searchLedger": "Search Ledger",
     "enterSequence": "Enter ledger sequence number...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Enter a Stellar address to view account details, balances, transactions, and signing information."
   },
   "assets": {
+    "metaTitle": "Assets | Stellar Explorer",
+    "metaDescription": "Explore assets on the Stellar network. View top assets, search by code or issuer.",
     "title": "Assets",
     "subtitle": "Explore tokens and assets on the Stellar network",
     "findAsset": "Find an Asset",
@@ -152,6 +158,8 @@
     "price": "Price"
   },
   "contracts": {
+    "metaTitle": "Smart Contracts | Stellar Explorer",
+    "metaDescription": "Explore Soroban smart contracts on the Stellar network. Search and view contract details.",
     "title": "Smart Contracts",
     "subtitle": "Explore Soroban smart contracts on the Stellar network",
     "findContract": "Find a Contract",
@@ -513,7 +521,8 @@
     "totalHolders": "Total Holders",
     "circulating": "Circulating",
     "authorized": "Authorized",
-    "verified": "Verified",
+    "openAccess": "Open Access",
+    "restricted": "Restricted",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Native Stellar Asset",
     "aboutXlm": "About XLM",
@@ -534,7 +543,7 @@
     "failed": "failed",
     "operations": "Operations",
     "protocolVersion": "Protocol Version",
-    "totalFees": "Total Fees",
+    "feePool": "Fee Pool",
     "baseFee": "Base Fee",
     "hash": "Hash",
     "prevHash": "Prev Hash",
@@ -785,12 +794,6 @@
       "overview": "Overview",
       "transactions": "Transactions",
       "network": "Network"
-    },
-    "timeRange": {
-      "1h": "1 Hour",
-      "24h": "24 Hours",
-      "7d": "7 Days",
-      "30d": "30 Days"
     },
     "enableBanner": {
       "title": "Enable Analytics Mode for advanced features",

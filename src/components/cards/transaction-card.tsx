@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { HashDisplay } from "@/components/common/hash-display";
 import { TimeAgo } from "@/components/common/time-ago";
@@ -85,7 +85,12 @@ interface TransactionCardSkeletonProps {
 
 export function TransactionCardSkeleton({ className }: TransactionCardSkeletonProps) {
   return (
-    <Card variant="elevated" className={cn("border-0 py-0", className)}>
+    <Card
+      variant="elevated"
+      className={cn("border-0 py-0", className)}
+      role="status"
+      aria-busy="true"
+    >
       <CardContent className="flex items-center justify-between p-4">
         <div className="flex items-center gap-4">
           <div className="bg-muted/50 size-10 animate-pulse rounded-xl" />

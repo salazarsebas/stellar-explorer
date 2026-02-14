@@ -14,7 +14,7 @@ import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { formatLedgerSequence } from "@/lib/utils";
 import { isValidLedgerSequence } from "@/lib/utils/entity";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -75,6 +75,7 @@ export default function LedgersPage() {
                 inputMode="numeric"
                 pattern="[0-9]*"
                 placeholder={t("enterSequence")}
+                aria-label={t("enterSequence")}
                 value={ledgerSequence}
                 onChange={(e) => {
                   setLedgerSequence(e.target.value);

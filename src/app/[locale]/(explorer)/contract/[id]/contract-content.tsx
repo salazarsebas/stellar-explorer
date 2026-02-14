@@ -166,7 +166,10 @@ function ContractStorage({ contractId }: { contractId: string }) {
     if (typeof value === "string") return value;
     if (typeof value === "number" || typeof value === "bigint") return value.toString();
     if (typeof value === "boolean") return value ? "true" : "false";
-    if (Buffer.isBuffer(value)) return value.toString("hex");
+    if (value instanceof Uint8Array)
+      return Array.from(value)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
     if (Array.isArray(value)) return JSON.stringify(value, null, 2);
     if (typeof value === "object") return JSON.stringify(value, null, 2);
     return String(value);

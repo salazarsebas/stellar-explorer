@@ -2,9 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { parse } from "smol-toml";
 import type { StellarTomlData, AssetMetadata } from "@/types/toml";
 
-// Cache for TOML responses (in-memory, per-instance)
-const tomlCache = new Map<string, { data: StellarTomlData; timestamp: number }>();
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+// Simple in-memory rate limiting (per serverless instance)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 30; // 30 requests per minute per IP
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -19,6 +33,12 @@ export async function GET(request: NextRequest) {
 
   if (!code || !issuer) {
     return NextResponse.json({ error: "Missing 'code' or 'issuer' parameter" }, { status: 400 });
+  }
+
+  // Rate limit check
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
   // SSRF protection: validate URL
@@ -43,40 +63,26 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Check cache first
-    const cacheKey = tomlUrl;
-    const cached = tomlCache.get(cacheKey);
-    const now = Date.now();
+    // Fetch the stellar.toml file
+    const response = await fetch(tomlUrl, {
+      headers: {
+        Accept: "text/plain, application/toml",
+      },
+      // Add timeout
+      signal: AbortSignal.timeout(10000),
+    });
 
-    let tomlData: StellarTomlData;
-
-    if (cached && now - cached.timestamp < CACHE_DURATION) {
-      tomlData = cached.data;
-    } else {
-      // Fetch the stellar.toml file
-      const response = await fetch(tomlUrl, {
-        headers: {
-          Accept: "text/plain, application/toml",
-        },
-        // Add timeout
-        signal: AbortSignal.timeout(10000),
-      });
-
-      if (!response.ok) {
-        return NextResponse.json(
-          { error: `Failed to fetch TOML: ${response.status}` },
-          { status: response.status }
-        );
-      }
-
-      const tomlText = await response.text();
-
-      // Parse TOML
-      tomlData = parse(tomlText) as StellarTomlData;
-
-      // Cache the result
-      tomlCache.set(cacheKey, { data: tomlData, timestamp: now });
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: `Failed to fetch TOML: ${response.status}` },
+        { status: response.status }
+      );
     }
+
+    const tomlText = await response.text();
+
+    // Parse TOML
+    const tomlData = parse(tomlText) as StellarTomlData;
 
     // Find the matching currency
     const currency = tomlData.CURRENCIES?.find(
@@ -99,9 +105,7 @@ export async function GET(request: NextRequest) {
         "Cache-Control": "public, max-age=86400", // 24 hours
       },
     });
-  } catch (error) {
-    console.error("Error fetching/parsing TOML:", error);
-
+  } catch {
     // Return empty metadata on error (allows graceful fallback)
     const metadata: AssetMetadata = {
       code,

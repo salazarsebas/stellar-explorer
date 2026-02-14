@@ -9,7 +9,7 @@ interface LoadingCardProps {
 
 export function LoadingCard({ className, rows = 4 }: LoadingCardProps) {
   return (
-    <Card className={cn("animate-pulse", className)}>
+    <Card className={cn("animate-pulse", className)} role="status" aria-busy="true">
       <CardHeader>
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-4 w-48" />

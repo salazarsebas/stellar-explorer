@@ -11,7 +11,7 @@ import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { AssetLogo } from "@/components/common/asset-logo";
 import { useAsset, useAssetMetadata } from "@/lib/hooks";
-import { formatNumber, formatCompactNumber } from "@/lib/utils";
+import { formatNumber, formatCompactNumber, parseAssetSlug } from "@/lib/utils";
 import type { Horizon } from "@stellar/stellar-sdk";
 import {
   Coins,
@@ -35,26 +35,6 @@ type AssetRecordExtended = Horizon.ServerApi.AssetRecord & {
 
 interface AssetContentProps {
   slug: string;
-}
-
-function parseAssetSlug(slug: string): { code: string; issuer: string } | null {
-  // Handle native XLM
-  if (slug === "XLM-native" || slug === "native") {
-    return { code: "XLM", issuer: "native" };
-  }
-
-  // Parse CODE-ISSUER format
-  const parts = slug.split("-");
-  if (parts.length < 2) return null;
-
-  const code = parts[0];
-  const issuer = parts.slice(1).join("-"); // Handle edge case where issuer might have dashes
-
-  if (!issuer.startsWith("G") || issuer.length !== 56) {
-    return null;
-  }
-
-  return { code, issuer };
 }
 
 function FlagBadge({
@@ -248,7 +228,7 @@ function AssetStats({ asset }: { asset: AssetRecordExtended }) {
 }
 
 export function AssetContent({ slug }: AssetContentProps) {
-  const parsed = parseAssetSlug(decodeURIComponent(slug));
+  const parsed = parseAssetSlug(slug);
   const t = useTranslations("assetDetails");
   const tCommon = useTranslations("common");
 
@@ -340,10 +320,15 @@ export function AssetContent({ slug }: AssetContentProps) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold">{metadata?.name || asset.asset_code}</h1>
-            {!asset.flags.auth_required && !asset.flags.auth_revocable && (
-              <Badge className="bg-success/15 text-success border-success/25">
-                <CheckCircle2 className="mr-1 size-3" />
-                {t("verified")}
+            {!asset.flags.auth_required && !asset.flags.auth_revocable ? (
+              <Badge variant="outline" className="border-blue-500/25 text-blue-500">
+                <Unlock className="mr-1 size-3" />
+                {t("openAccess")}
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="border-amber-500/25 text-amber-500">
+                <Lock className="mr-1 size-3" />
+                {t("restricted")}
               </Badge>
             )}
           </div>

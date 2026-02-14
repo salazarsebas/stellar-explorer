@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { glossaryTermsMeta, type GlossaryLevel } from "@/lib/glossary";
 import { ExternalLink, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 interface GlossaryTermProps {
   /** The glossary term ID to look up */

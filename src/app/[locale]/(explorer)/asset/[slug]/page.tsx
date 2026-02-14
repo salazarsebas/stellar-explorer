@@ -1,31 +1,10 @@
 import { Metadata } from "next";
 import { AssetContent } from "./asset-content";
+import { parseAssetSlug } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-function parseAssetSlug(slug: string): { code: string; issuer: string } | null {
-  const decodedSlug = decodeURIComponent(slug);
-
-  // Handle native XLM
-  if (decodedSlug === "XLM-native" || decodedSlug === "native") {
-    return { code: "XLM", issuer: "native" };
-  }
-
-  // Parse CODE-ISSUER format
-  const parts = decodedSlug.split("-");
-  if (parts.length < 2) return null;
-
-  const code = parts[0];
-  const issuer = parts.slice(1).join("-");
-
-  if (!issuer.startsWith("G") || issuer.length !== 56) {
-    return null;
-  }
-
-  return { code, issuer };
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

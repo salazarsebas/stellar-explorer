@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { parseAssetSlug } from "@/lib/utils";
 
 export const alt = "Stellar Asset";
 export const size = {
@@ -6,17 +7,6 @@ export const size = {
   height: 630,
 };
 export const contentType = "image/png";
-
-function parseAssetSlug(slug: string): { code: string; issuer: string } | null {
-  if (slug === "XLM-native" || slug === "native") {
-    return { code: "XLM", issuer: "native" };
-  }
-  const parts = slug.split("-");
-  if (parts.length < 2) return null;
-  const code = parts[0];
-  const issuer = parts.slice(1).join("-");
-  return { code, issuer };
-}
 
 export default async function Image({ params }: { params: { slug: string; locale: string } }) {
   const slug = params.slug;

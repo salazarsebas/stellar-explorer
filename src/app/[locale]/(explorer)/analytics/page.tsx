@@ -1,18 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   BarChart3,
   TrendingUp,
@@ -28,7 +21,7 @@ import { DashboardCharts } from "@/components/charts";
 import { NetworkStatsCard } from "@/components/stats";
 import { useLatestLedger, useRecentTransactions } from "@/lib/hooks";
 import { useAnalyticsMode, useNetwork } from "@/lib/providers";
-import { cn } from "@/lib/utils";
+import { cn, formatCompactNumber } from "@/lib/utils";
 
 // Statistical calculation functions
 function calculateMean(values: number[]): number {
@@ -154,7 +147,6 @@ export default function AnalyticsPage() {
   const t = useTranslations("analytics");
   const { isAnalyticsMode, settings } = useAnalyticsMode();
   const { network } = useNetwork();
-  const [timeRange, setTimeRange] = useState<"1h" | "24h" | "7d" | "30d">("24h");
 
   // Fetch data
   const { data: latestLedger, isLoading: ledgerLoading } = useLatestLedger();
@@ -199,7 +191,6 @@ export default function AnalyticsPage() {
     const exportPayload = {
       exportedAt: new Date().toISOString(),
       network,
-      timeRange,
       transactionStats: txStats,
       latestLedger: latestLedger
         ? {
@@ -219,7 +210,7 @@ export default function AnalyticsPage() {
     if (format === "json") {
       content = JSON.stringify(exportPayload, null, 2);
       mimeType = "application/json";
-      filename = `stellar-analytics-${network}-${timeRange}.json`;
+      filename = `stellar-analytics-${network}.json`;
     } else {
       // CSV format
       const lines: string[] = [
@@ -245,7 +236,7 @@ export default function AnalyticsPage() {
       ];
       content = lines.join("\n");
       mimeType = "text/csv";
-      filename = `stellar-analytics-${network}-${timeRange}.csv`;
+      filename = `stellar-analytics-${network}.csv`;
     }
 
     const blob = new Blob([content], { type: mimeType });
@@ -257,15 +248,6 @@ export default function AnalyticsPage() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  };
-
-  const formatNumber = (num: number | undefined | null, decimals: number = 2): string => {
-    if (num === undefined || num === null || isNaN(num)) return "-";
-    if (num >= 1e12) return `${(num / 1e12).toFixed(decimals)}T`;
-    if (num >= 1e9) return `${(num / 1e9).toFixed(decimals)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(decimals)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(decimals)}K`;
-    return num.toFixed(decimals);
   };
 
   const isLoading = ledgerLoading || txLoading;
@@ -285,19 +267,6 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Time range selector */}
-          <Select value={timeRange} onValueChange={(v) => setTimeRange(v as typeof timeRange)}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1h">{t("timeRange.1h")}</SelectItem>
-              <SelectItem value="24h">{t("timeRange.24h")}</SelectItem>
-              <SelectItem value="7d">{t("timeRange.7d")}</SelectItem>
-              <SelectItem value="30d">{t("timeRange.30d")}</SelectItem>
-            </SelectContent>
-          </Select>
-
           {/* Export buttons */}
           {settings.enableDataExport && (
             <div className="flex gap-1">
@@ -397,11 +366,11 @@ export default function AnalyticsPage() {
               <StatisticsTable
                 title={t("statistics.feesStroops")}
                 data={[
-                  { label: t("stats.mean"), value: formatNumber(txStats.fees.mean, 0) },
-                  { label: t("stats.median"), value: formatNumber(txStats.fees.median, 0) },
-                  { label: t("stats.stdDev"), value: formatNumber(txStats.fees.stdDev, 0) },
-                  { label: t("stats.min"), value: formatNumber(txStats.fees.min, 0) },
-                  { label: t("stats.max"), value: formatNumber(txStats.fees.max, 0) },
+                  { label: t("stats.mean"), value: formatCompactNumber(txStats.fees.mean) },
+                  { label: t("stats.median"), value: formatCompactNumber(txStats.fees.median) },
+                  { label: t("stats.stdDev"), value: formatCompactNumber(txStats.fees.stdDev) },
+                  { label: t("stats.min"), value: formatCompactNumber(txStats.fees.min) },
+                  { label: t("stats.max"), value: formatCompactNumber(txStats.fees.max) },
                 ]}
               />
             </div>
@@ -450,12 +419,12 @@ export default function AnalyticsPage() {
                   <StatisticsTable
                     title={t("statistics.feesStroops")}
                     data={[
-                      { label: t("stats.mean"), value: formatNumber(txStats.fees.mean, 0) },
-                      { label: t("stats.median"), value: formatNumber(txStats.fees.median, 0) },
-                      { label: t("stats.stdDev"), value: formatNumber(txStats.fees.stdDev, 0) },
+                      { label: t("stats.mean"), value: formatCompactNumber(txStats.fees.mean) },
+                      { label: t("stats.median"), value: formatCompactNumber(txStats.fees.median) },
+                      { label: t("stats.stdDev"), value: formatCompactNumber(txStats.fees.stdDev) },
                       {
                         label: t("stats.range"),
-                        value: `${txStats.fees.min} - ${formatNumber(txStats.fees.max, 0)}`,
+                        value: `${txStats.fees.min} - ${formatCompactNumber(txStats.fees.max)}`,
                       },
                     ]}
                   />

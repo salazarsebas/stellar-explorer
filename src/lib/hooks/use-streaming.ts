@@ -16,7 +16,6 @@ interface StreamingOptions {
 interface StreamingState {
   isConnected: boolean;
   error: Error | null;
-  reconnectCount: number;
 }
 
 /**
@@ -30,7 +29,6 @@ export function useLedgerStream(options: StreamingOptions = {}) {
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
-    reconnectCount: 0,
   });
 
   const connect = useCallback(() => {
@@ -133,7 +131,6 @@ export function useTransactionStream(options: StreamingOptions = {}) {
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
-    reconnectCount: 0,
   });
 
   const connect = useCallback(() => {
@@ -234,7 +231,6 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
-    reconnectCount: 0,
   });
 
   const isValidAccount = accountId?.startsWith("G") && accountId?.length === 56;

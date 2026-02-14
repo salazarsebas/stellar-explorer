@@ -96,6 +96,8 @@
     "contractsDesc": "Sorobanを探索"
   },
   "transactions": {
+    "metaTitle": "トランザクション | Stellar Explorer",
+    "metaDescription": "Stellarネットワーク上の最近のトランザクションを閲覧。トランザクションの詳細、操作などを表示。",
     "title": "トランザクション",
     "recentTransactions": "最近のトランザクション",
     "failedToLoad": "トランザクションの読み込みに失敗",
@@ -103,6 +105,8 @@
     "noRecentFound": "このネットワークで最近のトランザクションは見つかりませんでした。"
   },
   "ledgers": {
+    "metaTitle": "レジャー | Stellar Explorer",
+    "metaDescription": "Stellarネットワーク上のレジャー履歴を閲覧。個々のレジャーを検索・探索。",
     "title": "レジャー",
     "searchLedger": "レジャーを検索",
     "enterSequence": "レジャーシーケンス番号を入力...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Stellarアドレスを入力して、アカウント詳細、残高、トランザクション、署名者情報を表示。"
   },
   "assets": {
+    "metaTitle": "アセット | Stellar Explorer",
+    "metaDescription": "Stellarネットワーク上のアセットを探索。トップアセットを表示、コードや発行者で検索。",
     "title": "アセット",
     "subtitle": "Stellarネットワーク上のトークンとアセットを探索",
     "findAsset": "アセットを検索",
@@ -152,6 +158,8 @@
     "price": "価格"
   },
   "contracts": {
+    "metaTitle": "スマートコントラクト | Stellar Explorer",
+    "metaDescription": "Stellarネットワーク上のSorobanスマートコントラクトを探索。コントラクトの詳細を検索・表示。",
     "title": "スマートコントラクト",
     "subtitle": "Stellarネットワーク上のSorobanスマートコントラクトを探索",
     "findContract": "コントラクトを検索",
@@ -447,7 +455,8 @@
     "totalHolders": "総保有者数",
     "circulating": "流通量",
     "authorized": "承認済み",
-    "verified": "検証済み",
+    "openAccess": "オープンアクセス",
+    "restricted": "制限付き",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Stellarネイティブアセット",
     "aboutXlm": "XLMについて",
@@ -713,7 +722,7 @@
     "failed": "失敗",
     "operations": "操作",
     "protocolVersion": "プロトコルバージョン",
-    "totalFees": "合計手数料",
+    "feePool": "手数料プール",
     "baseFee": "基本手数料",
     "hash": "ハッシュ",
     "prevHash": "前のハッシュ",
@@ -785,12 +794,6 @@
       "overview": "概要",
       "transactions": "トランザクション",
       "network": "ネットワーク"
-    },
-    "timeRange": {
-      "1h": "1時間",
-      "24h": "24時間",
-      "7d": "7日間",
-      "30d": "30日間"
     },
     "enableBanner": {
       "title": "高度な機能のために分析モードを有効化",

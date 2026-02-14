@@ -20,17 +20,25 @@ export function NetworkProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && (stored === "public" || stored === "testnet" || stored === "futurenet")) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setNetworkState(stored as NetworkKey);
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored && (stored === "public" || stored === "testnet" || stored === "futurenet")) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setNetworkState(stored as NetworkKey);
+      }
+    } catch {
+      // localStorage may be unavailable (e.g., private browsing)
     }
     setIsHydrated(true);
   }, []);
 
   const setNetwork = useCallback((newNetwork: NetworkKey) => {
     setNetworkState(newNetwork);
-    localStorage.setItem(STORAGE_KEY, newNetwork);
+    try {
+      localStorage.setItem(STORAGE_KEY, newNetwork);
+    } catch {
+      // localStorage may be unavailable (e.g., private browsing)
+    }
   }, []);
 
   const value: NetworkContextValue = {

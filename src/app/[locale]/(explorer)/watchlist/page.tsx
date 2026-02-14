@@ -9,7 +9,7 @@ import { useWatchlist } from "@/lib/hooks";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { Star, Trash2, Users, FileCode, Coins } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 const typeIcons = {

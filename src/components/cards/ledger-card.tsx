@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { TimeAgo } from "@/components/common/time-ago";
 import { formatLedgerSequence } from "@/lib/utils";
@@ -50,7 +50,12 @@ export function LedgerCard({ ledger, className }: LedgerCardProps) {
 
 export function LedgerCardSkeleton({ className }: { className?: string }) {
   return (
-    <Card variant="elevated" className={cn("border-0 py-0", className)}>
+    <Card
+      variant="elevated"
+      className={cn("border-0 py-0", className)}
+      role="status"
+      aria-busy="true"
+    >
       <CardContent className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <div className="bg-muted/50 size-10 animate-pulse rounded-xl" />

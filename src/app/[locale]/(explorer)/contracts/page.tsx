@@ -55,6 +55,7 @@ export default function ContractsPage() {
             <div className="flex gap-2">
               <Input
                 placeholder={t("enterContractId")}
+                aria-label={t("enterContractId")}
                 value={contractId}
                 onChange={(e) => {
                   setContractId(e.target.value);

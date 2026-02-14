@@ -26,9 +26,13 @@ export function stroopsToXLM(stroops: string | number): string {
 /**
  * Format a number with locale-aware formatting
  */
-export function formatNumber(value: string | number, options?: Intl.NumberFormatOptions): string {
+export function formatNumber(
+  value: string | number,
+  options?: Intl.NumberFormatOptions,
+  locale = "en-US"
+): string {
   const num = typeof value === "string" ? parseFloat(value) : value;
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: 7,
     ...options,
   }).format(num);
@@ -37,9 +41,14 @@ export function formatNumber(value: string | number, options?: Intl.NumberFormat
 /**
  * Format a large number with suffix (K, M, B, T)
  */
-export function formatCompactNumber(value: string | number): string {
+export function formatCompactNumber(
+  value: string | number | null | undefined,
+  locale = "en-US"
+): string {
+  if (value === null || value === undefined) return "-";
   const num = typeof value === "string" ? parseFloat(value) : value;
-  return new Intl.NumberFormat("en-US", {
+  if (isNaN(num)) return "-";
+  return new Intl.NumberFormat(locale, {
     notation: "compact",
     maximumFractionDigits: 2,
   }).format(num);
@@ -76,7 +85,7 @@ export function parseAssetString(assetString: string): {
 /**
  * Format a date to relative time (e.g., "5m ago", "2h ago")
  */
-export function formatTimeAgo(date: string | Date): string {
+export function formatTimeAgo(date: string | Date, locale = "en-US"): string {
   const now = new Date();
   const then = typeof date === "string" ? new Date(date) : date;
   const seconds = Math.floor((now.getTime() - then.getTime()) / 1000);
@@ -101,7 +110,7 @@ export function formatTimeAgo(date: string | Date): string {
   }
 
   // For older dates, show the actual date
-  return then.toLocaleDateString("en-US", {
+  return then.toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
     year: then.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
@@ -111,9 +120,9 @@ export function formatTimeAgo(date: string | Date): string {
 /**
  * Format a date to full timestamp
  */
-export function formatDateTime(date: string | Date): string {
+export function formatDateTime(date: string | Date, locale = "en-US"): string {
   const d = typeof date === "string" ? new Date(date) : date;
-  return d.toLocaleString("en-US", {
+  return d.toLocaleString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -127,7 +136,30 @@ export function formatDateTime(date: string | Date): string {
 /**
  * Format ledger sequence number with commas
  */
-export function formatLedgerSequence(sequence: number | string): string {
+export function formatLedgerSequence(sequence: number | string, locale = "en-US"): string {
   const num = typeof sequence === "string" ? parseInt(sequence, 10) : sequence;
-  return num.toLocaleString("en-US");
+  return num.toLocaleString(locale);
+}
+
+/**
+ * Parse an asset slug in format "CODE-ISSUER" or "XLM-native"
+ */
+export function parseAssetSlug(slug: string): { code: string; issuer: string } | null {
+  const decoded = decodeURIComponent(slug);
+
+  if (decoded === "XLM-native" || decoded === "native") {
+    return { code: "XLM", issuer: "native" };
+  }
+
+  const parts = decoded.split("-");
+  if (parts.length < 2) return null;
+
+  const code = parts[0];
+  const issuer = parts.slice(1).join("-");
+
+  if (!issuer.startsWith("G") || issuer.length !== 56) {
+    return null;
+  }
+
+  return { code, issuer };
 }

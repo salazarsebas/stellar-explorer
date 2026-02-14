@@ -96,6 +96,8 @@
     "contractsDesc": "Explorar Soroban"
   },
   "transactions": {
+    "metaTitle": "Transacciones | Stellar Explorer",
+    "metaDescription": "Explora transacciones recientes en la red Stellar. Ve detalles de transacciones, operaciones y más.",
     "title": "Transacciones",
     "recentTransactions": "Transacciones recientes",
     "failedToLoad": "Error al cargar transacciones",
@@ -103,6 +105,8 @@
     "noRecentFound": "No se encontraron transacciones recientes en esta red."
   },
   "ledgers": {
+    "metaTitle": "Libros | Stellar Explorer",
+    "metaDescription": "Explora el historial de libros en la red Stellar. Busca y explora libros individuales.",
     "title": "Libros",
     "searchLedger": "Buscar libro",
     "enterSequence": "Ingresa el número de secuencia del libro...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Ingresa una dirección Stellar para ver detalles de la cuenta, balances, transacciones e información de firmantes."
   },
   "assets": {
+    "metaTitle": "Activos | Stellar Explorer",
+    "metaDescription": "Explora activos en la red Stellar. Ve los principales activos, busca por código o emisor.",
     "title": "Activos",
     "subtitle": "Explora tokens y activos en la red Stellar",
     "findAsset": "Encontrar un activo",
@@ -152,6 +158,8 @@
     "price": "Precio"
   },
   "contracts": {
+    "metaTitle": "Contratos inteligentes | Stellar Explorer",
+    "metaDescription": "Explora contratos inteligentes Soroban en la red Stellar. Busca y ve detalles de contratos.",
     "title": "Contratos inteligentes",
     "subtitle": "Explora contratos inteligentes Soroban en la red Stellar",
     "findContract": "Encontrar un contrato",
@@ -513,7 +521,8 @@
     "totalHolders": "Total de Holders",
     "circulating": "Circulante",
     "authorized": "Autorizados",
-    "verified": "Verificado",
+    "openAccess": "Acceso Abierto",
+    "restricted": "Restringido",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Activo Nativo de Stellar",
     "aboutXlm": "Acerca de XLM",
@@ -534,7 +543,7 @@
     "failed": "fallidas",
     "operations": "Operaciones",
     "protocolVersion": "Versión del Protocolo",
-    "totalFees": "Tarifas Totales",
+    "feePool": "Pool de Comisiones",
     "baseFee": "Tarifa Base",
     "hash": "Hash",
     "prevHash": "Hash Anterior",
@@ -785,12 +794,6 @@
       "overview": "Resumen",
       "transactions": "Transacciones",
       "network": "Red"
-    },
-    "timeRange": {
-      "1h": "1 Hora",
-      "24h": "24 Horas",
-      "7d": "7 Días",
-      "30d": "30 Días"
     },
     "enableBanner": {
       "title": "Activa el Modo Analítico para funciones avanzadas",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useNetwork } from "@/lib/providers";
 import { useLatestLedger, useRecentTransactions } from "./use-stellar-query";
 import {
@@ -140,7 +140,7 @@ export function useTxChartData(): TxChartData {
 export function useOperationsChartData(): OperationsChartData {
   const { data: txs, isLoading } = useRecentTransactions(100);
 
-  const chartData = useCallback(() => {
+  const result = useMemo(() => {
     if (!txs?.records?.length) {
       return { data: [], total: 0, successRate: 0 };
     }
@@ -159,8 +159,6 @@ export function useOperationsChartData(): OperationsChartData {
       successRate,
     };
   }, [txs]);
-
-  const result = chartData();
 
   return {
     ...result,

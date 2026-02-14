@@ -1,13 +1,13 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { EmptyState } from "@/components/common/empty-state";
 import { detectEntityType, getEntityRoute } from "@/lib/utils";
 import { Search, ArrowRightLeft, Users, FileCode, Coins, Layers, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { EntityType } from "@/types";
 import { useTranslations } from "next-intl";
 
@@ -27,16 +27,24 @@ function SearchResultsContent() {
   const t = useTranslations("searchPage");
   const tEntity = useTranslations("entityTypes");
 
+  const detectedType = query ? detectEntityType(query) : "unknown";
+  const route = query ? getEntityRoute(detectedType, query) : null;
+  const shouldRedirect = !!route && detectedType !== "unknown";
+  const hasRedirected = useRef(false);
+
+  // Redirect in an effect to avoid calling router.replace during render
+  useEffect(() => {
+    if (shouldRedirect && route && !hasRedirected.current) {
+      hasRedirected.current = true;
+      router.replace(route);
+    }
+  }, [shouldRedirect, route, router]);
+
   if (!query) {
     return <EmptyState title={t("noQuery")} description={t("noQueryHint")} icon="search" />;
   }
 
-  const detectedType = detectEntityType(query);
-  const route = getEntityRoute(detectedType, query);
-
-  // If we can determine the type, redirect directly
-  if (route && detectedType !== "unknown") {
-    router.replace(route);
+  if (shouldRedirect) {
     return (
       <Card>
         <CardContent className="py-12 text-center">

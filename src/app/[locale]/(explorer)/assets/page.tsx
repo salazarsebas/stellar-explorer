@@ -17,7 +17,7 @@ import { useTopAssets, useAssetsList } from "@/lib/hooks";
 import { POPULAR_ASSETS } from "@/lib/constants";
 import { Coins, Search, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 // Native XLM asset for display
 const XLM_ASSET = {
@@ -150,6 +150,7 @@ function AssetSearchForm() {
           <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
             <Input
               placeholder={t("assetCode")}
+              aria-label={t("assetCode")}
               value={assetCode}
               onChange={(e) => {
                 setAssetCode(e.target.value);
@@ -158,6 +159,7 @@ function AssetSearchForm() {
             />
             <Input
               placeholder={t("issuerAddress")}
+              aria-label={t("issuerAddress")}
               value={issuer}
               onChange={(e) => {
                 setIssuer(e.target.value);

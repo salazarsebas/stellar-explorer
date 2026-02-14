@@ -96,6 +96,8 @@
     "contractsDesc": "Исследуйте Soroban"
   },
   "transactions": {
+    "metaTitle": "Транзакции | Stellar Explorer",
+    "metaDescription": "Просматривайте недавние транзакции в сети Stellar. Смотрите детали транзакций, операции и многое другое.",
     "title": "Транзакции",
     "recentTransactions": "Недавние транзакции",
     "failedToLoad": "Не удалось загрузить транзакции",
@@ -103,6 +105,8 @@
     "noRecentFound": "Недавние транзакции в этой сети не найдены."
   },
   "ledgers": {
+    "metaTitle": "Реестры | Stellar Explorer",
+    "metaDescription": "Просматривайте историю реестров в сети Stellar. Ищите и исследуйте отдельные реестры.",
     "title": "Реестры",
     "searchLedger": "Поиск реестра",
     "enterSequence": "Введите номер реестра...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Введите адрес Stellar для просмотра деталей аккаунта, балансов, транзакций и информации о подписантах."
   },
   "assets": {
+    "metaTitle": "Активы | Stellar Explorer",
+    "metaDescription": "Исследуйте активы в сети Stellar. Просматривайте топ активов, ищите по коду или эмитенту.",
     "title": "Активы",
     "subtitle": "Исследуйте токены и активы в сети Stellar",
     "findAsset": "Найти актив",
@@ -152,6 +158,8 @@
     "price": "Цена"
   },
   "contracts": {
+    "metaTitle": "Смарт-контракты | Stellar Explorer",
+    "metaDescription": "Исследуйте смарт-контракты Soroban в сети Stellar. Ищите и просматривайте детали контрактов.",
     "title": "Смарт-контракты",
     "subtitle": "Исследуйте смарт-контракты Soroban в сети Stellar",
     "findContract": "Найти контракт",
@@ -513,7 +521,8 @@
     "totalHolders": "Всего держателей",
     "circulating": "В обращении",
     "authorized": "Авторизовано",
-    "verified": "Верифицирован",
+    "openAccess": "Открытый доступ",
+    "restricted": "Ограниченный",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM — Нативный актив Stellar",
     "aboutXlm": "О XLM",
@@ -534,7 +543,7 @@
     "failed": "неудачных",
     "operations": "Операции",
     "protocolVersion": "Версия протокола",
-    "totalFees": "Общие комиссии",
+    "feePool": "Пул комиссий",
     "baseFee": "Базовая комиссия",
     "hash": "Хеш",
     "prevHash": "Предыдущий хеш",
@@ -785,12 +794,6 @@
       "overview": "Обзор",
       "transactions": "Транзакции",
       "network": "Сеть"
-    },
-    "timeRange": {
-      "1h": "1 Час",
-      "24h": "24 Часа",
-      "7d": "7 Дней",
-      "30d": "30 Дней"
     },
     "enableBanner": {
       "title": "Включите режим аналитики для расширенных функций",

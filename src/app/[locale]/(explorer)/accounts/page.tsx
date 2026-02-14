@@ -54,6 +54,7 @@ export default function AccountsPage() {
             <div className="flex gap-2">
               <Input
                 placeholder={t("enterAddress")}
+                aria-label={t("enterAddress")}
                 value={accountId}
                 onChange={(e) => {
                   setAccountId(e.target.value);

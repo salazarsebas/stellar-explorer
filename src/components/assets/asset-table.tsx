@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -60,7 +60,7 @@ function PriceChange({ change }: { change: number }) {
 
 export function AssetTableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
-    <Card>
+    <Card role="status" aria-busy="true">
       <CardHeader>
         <Skeleton className="h-5 w-32" />
       </CardHeader>

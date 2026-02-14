@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -114,7 +114,7 @@ function AccountBalances({ account }: { account: Horizon.ServerApi.AccountRecord
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {account.balances.map((balance, index) => {
+          {account.balances.map((balance) => {
             const isNative = balance.asset_type === "native";
             const assetCode = isNative
               ? "XLM"
@@ -125,7 +125,7 @@ function AccountBalances({ account }: { account: Horizon.ServerApi.AccountRecord
 
             return (
               <div
-                key={index}
+                key={`${balance.asset_type}-${assetCode}-${issuer || "native"}`}
                 className="bg-card/50 flex items-center justify-between rounded-lg p-3"
               >
                 <div className="flex items-center gap-3">

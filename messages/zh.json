@@ -96,6 +96,8 @@
     "contractsDesc": "探索 Soroban"
   },
   "transactions": {
+    "metaTitle": "交易 | Stellar Explorer",
+    "metaDescription": "浏览 Stellar 网络上的最近交易。查看交易详情、操作等。",
     "title": "交易",
     "recentTransactions": "最近交易",
     "failedToLoad": "交易加载失败",
@@ -103,6 +105,8 @@
     "noRecentFound": "此网络未找到最近交易。"
   },
   "ledgers": {
+    "metaTitle": "账本 | Stellar Explorer",
+    "metaDescription": "浏览 Stellar 网络上的账本历史。搜索和探索各个账本。",
     "title": "账本",
     "searchLedger": "搜索账本",
     "enterSequence": "输入账本序号...",
@@ -125,6 +129,8 @@
     "accountsDescription": "输入 Stellar 地址以查看账户详情、余额、交易和签名者信息。"
   },
   "assets": {
+    "metaTitle": "资产 | Stellar Explorer",
+    "metaDescription": "探索 Stellar 网络上的资产。查看热门资产，按代码或发行方搜索。",
     "title": "资产",
     "subtitle": "探索 Stellar 网络上的代币和资产",
     "findAsset": "查找资产",
@@ -152,6 +158,8 @@
     "price": "价格"
   },
   "contracts": {
+    "metaTitle": "智能合约 | Stellar Explorer",
+    "metaDescription": "探索 Stellar 网络上的 Soroban 智能合约。搜索和查看合约详情。",
     "title": "智能合约",
     "subtitle": "探索 Stellar 网络上的 Soroban 智能合约",
     "findContract": "查找合约",
@@ -447,7 +455,8 @@
     "totalHolders": "持有者总数",
     "circulating": "流通中",
     "authorized": "已授权",
-    "verified": "已验证",
+    "openAccess": "开放访问",
+    "restricted": "受限",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Stellar 原生资产",
     "aboutXlm": "关于 XLM",
@@ -713,7 +722,7 @@
     "failed": "失败",
     "operations": "操作",
     "protocolVersion": "协议版本",
-    "totalFees": "总费用",
+    "feePool": "手续费池",
     "baseFee": "基础费用",
     "hash": "哈希",
     "prevHash": "前一个哈希",
@@ -785,12 +794,6 @@
       "overview": "概览",
       "transactions": "交易",
       "network": "网络"
-    },
-    "timeRange": {
-      "1h": "1 小时",
-      "24h": "24 小时",
-      "7d": "7 天",
-      "30d": "30 天"
     },
     "enableBanner": {
       "title": "启用分析模式以获取高级功能",

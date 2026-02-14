@@ -2,16 +2,12 @@ export * from "./networks";
 
 // Stellar-specific constants
 export const STROOPS_PER_XLM = 10_000_000;
-export const MIN_BALANCE_XLM = 1;
-export const BASE_RESERVE_XLM = 0.5;
 
 // Pagination defaults
 export const DEFAULT_PAGE_SIZE = 20;
-export const MAX_PAGE_SIZE = 200;
 
 // Polling intervals (ms)
 export const LIVE_LEDGER_POLL_INTERVAL = 5000;
-export const TRANSACTION_POLL_INTERVAL = 10000;
 
 // Cache times (ms)
 export const STALE_TIME = 10_000;
@@ -19,7 +15,6 @@ export const GC_TIME = 5 * 60_000;
 
 // UI constants
 export const HASH_TRUNCATE_LENGTH = 8;
-export const ADDRESS_TRUNCATE_LENGTH = 8;
 
 // Popular assets with their issuers (single source of truth)
 export const POPULAR_ASSETS = [

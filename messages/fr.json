@@ -96,6 +96,8 @@
     "contractsDesc": "Explorer Soroban"
   },
   "transactions": {
+    "metaTitle": "Transactions | Stellar Explorer",
+    "metaDescription": "Parcourez les transactions récentes sur le réseau Stellar. Consultez les détails des transactions, opérations et plus.",
     "title": "Transactions",
     "recentTransactions": "Transactions Récentes",
     "failedToLoad": "Échec du chargement des transactions",
@@ -103,6 +105,8 @@
     "noRecentFound": "Aucune transaction récente trouvée sur ce réseau."
   },
   "ledgers": {
+    "metaTitle": "Registres | Stellar Explorer",
+    "metaDescription": "Parcourez l'historique des registres sur le réseau Stellar. Recherchez et explorez des registres individuels.",
     "title": "Registres",
     "searchLedger": "Rechercher un Registre",
     "enterSequence": "Entrez le numéro de séquence du registre...",
@@ -125,6 +129,8 @@
     "accountsDescription": "Entrez une adresse Stellar pour voir les détails du compte, les soldes, les transactions et les informations des signataires."
   },
   "assets": {
+    "metaTitle": "Actifs | Stellar Explorer",
+    "metaDescription": "Explorez les actifs sur le réseau Stellar. Consultez les principaux actifs, recherchez par code ou émetteur.",
     "title": "Actifs",
     "subtitle": "Explorez les tokens et actifs sur le réseau Stellar",
     "findAsset": "Trouver un Actif",
@@ -152,6 +158,8 @@
     "price": "Prix"
   },
   "contracts": {
+    "metaTitle": "Contrats Intelligents | Stellar Explorer",
+    "metaDescription": "Explorez les contrats intelligents Soroban sur le réseau Stellar. Recherchez et consultez les détails des contrats.",
     "title": "Contrats Intelligents",
     "subtitle": "Explorez les contrats intelligents Soroban sur le réseau Stellar",
     "findContract": "Trouver un Contrat",
@@ -447,7 +455,8 @@
     "totalHolders": "Total des Détenteurs",
     "circulating": "En Circulation",
     "authorized": "Autorisé",
-    "verified": "Vérifié",
+    "openAccess": "Accès Ouvert",
+    "restricted": "Restreint",
     "xlmTitle": "Stellar Lumens",
     "xlmSubtitle": "XLM - Actif Natif Stellar",
     "aboutXlm": "À propos du XLM",
@@ -713,7 +722,7 @@
     "failed": "échouées",
     "operations": "Opérations",
     "protocolVersion": "Version du Protocole",
-    "totalFees": "Frais Totaux",
+    "feePool": "Pool de Frais",
     "baseFee": "Frais de Base",
     "hash": "Hash",
     "prevHash": "Hash Précédent",
@@ -785,12 +794,6 @@
       "overview": "Aperçu",
       "transactions": "Transactions",
       "network": "Réseau"
-    },
-    "timeRange": {
-      "1h": "1 Heure",
-      "24h": "24 Heures",
-      "7d": "7 Jours",
-      "30d": "30 Jours"
     },
     "enableBanner": {
       "title": "Activez le Mode Analytique pour des fonctionnalités avancées",
