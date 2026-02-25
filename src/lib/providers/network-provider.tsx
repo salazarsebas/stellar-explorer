@@ -1,8 +1,10 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { useParams } from "next/navigation";
 import type { NetworkKey } from "@/types";
 import { DEFAULT_NETWORK, NETWORKS } from "@/lib/constants";
+import { usePathname } from "@/i18n/navigation";
 
 interface NetworkContextValue {
   network: NetworkKey;
@@ -12,49 +14,29 @@ interface NetworkContextValue {
 
 const NetworkContext = createContext<NetworkContextValue | null>(null);
 
-const STORAGE_KEY = "stellar-explorer-network";
+const VALID_NETWORKS: NetworkKey[] = ["public", "testnet", "futurenet"];
 
 export function NetworkProvider({ children }: { children: ReactNode }) {
-  const [network, setNetworkState] = useState<NetworkKey>(DEFAULT_NETWORK);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const params = useParams();
+  const pathname = usePathname();
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && (stored === "public" || stored === "testnet" || stored === "futurenet")) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setNetworkState(stored as NetworkKey);
-      }
-    } catch {
-      // localStorage may be unavailable (e.g., private browsing)
-    }
-    setIsHydrated(true);
-  }, []);
+  // Read network from URL params, fallback to default
+  const rawNetwork = params?.network as string | undefined;
+  const network: NetworkKey =
+    rawNetwork && VALID_NETWORKS.includes(rawNetwork as NetworkKey)
+      ? (rawNetwork as NetworkKey)
+      : DEFAULT_NETWORK;
 
-  const setNetwork = useCallback((newNetwork: NetworkKey) => {
-    setNetworkState(newNetwork);
-    try {
-      localStorage.setItem(STORAGE_KEY, newNetwork);
-    } catch {
-      // localStorage may be unavailable (e.g., private browsing)
-    }
-  }, []);
+  const setNetwork = (newNetwork: NetworkKey) => {
+    const newPath = `/${newNetwork}${pathname}`;
+    window.location.href = `/${(params?.locale as string) || "en"}${newPath}`;
+  };
 
   const value: NetworkContextValue = {
     network,
     setNetwork,
     networkConfig: NETWORKS[network],
   };
-
-  // Prevent hydration mismatch by only rendering children after hydration
-  if (!isHydrated) {
-    return (
-      <NetworkContext.Provider value={value}>
-        <div className="bg-background min-h-screen" />
-      </NetworkContext.Provider>
-    );
-  }
 
   return <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>;
 }

@@ -16,7 +16,7 @@ import { NetworkBadge } from "@/components/common/network-badge";
 import { useTopAssets, useAssetsList } from "@/lib/hooks";
 import { POPULAR_ASSETS } from "@/lib/constants";
 import { Coins, Search, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 
 // Native XLM asset for display
