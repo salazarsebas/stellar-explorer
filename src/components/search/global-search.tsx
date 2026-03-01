@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { Search, ArrowRightLeft, Users, FileCode, Coins, Layers, Clock } from "lucide-react";
 import {
   CommandDialog,
