@@ -63,3 +63,7 @@ Context hooks exported: `useNetwork`, `useTheme`, `useDeveloperMode`, `useAnalyt
 ### Prettier Config
 
 Double quotes, semicolons, 100 char print width, trailing commas (es5), Tailwind CSS plugin for class sorting.
+
+## Git
+
+- Never add `Co-Authored-By` to commit messages.
