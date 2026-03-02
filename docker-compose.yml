@@ -2,7 +2,7 @@ services:
   postgres:
     image: timescale/timescaledb:latest-pg16
     ports:
-      - "5432:5432"
+      - "54320:5432"
     environment:
       POSTGRES_DB: stellar_explorer
       POSTGRES_USER: explorer
@@ -19,7 +19,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "63790:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -31,7 +31,7 @@ services:
   typesense:
     image: typesense/typesense:27.1
     ports:
-      - "8108:8108"
+      - "18108:8108"
     environment:
       TYPESENSE_API_KEY: explorer_dev_key
       TYPESENSE_DATA_DIR: /data

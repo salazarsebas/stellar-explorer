@@ -21,9 +21,9 @@ type Config struct {
 
 func Load() (*Config, error) {
 	cfg := &Config{
-		DatabaseURL:  getEnv("DATABASE_URL", "postgresql://explorer:explorer_dev@localhost:5432/stellar_explorer?sslmode=disable"),
-		RedisURL:     getEnv("REDIS_URL", "redis://localhost:6379"),
-		TypesenseURL: getEnv("TYPESENSE_URL", "http://localhost:8108"),
+		DatabaseURL:  getEnv("DATABASE_URL", "postgresql://explorer:explorer_dev@localhost:54320/stellar_explorer?sslmode=disable"),
+		RedisURL:     getEnv("REDIS_URL", "redis://localhost:63790"),
+		TypesenseURL: getEnv("TYPESENSE_URL", "http://localhost:18108"),
 		TypesenseKey: getEnv("TYPESENSE_KEY", "explorer_dev_key"),
 		RPCEndpoint:  getEnv("RPC_ENDPOINT", ""),
 		DataLakePath: getEnv("DATA_LAKE_PATH", "s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet"),
