@@ -1,6 +1,6 @@
 # Stellar Explorer Indexer
 
-Go service that ingests Stellar network data (ledgers, transactions, operations) from the Stellar RPC into PostgreSQL, with real-time event publishing via Redis.
+Go service that ingests Stellar network data (ledgers, transactions, operations) into PostgreSQL, with real-time event publishing via Redis. Supports two data sources: Stellar JSON-RPC (for any network) and the AWS public S3 data lake (for pubnet historical backfill).
 
 ## Prerequisites
 
@@ -59,12 +59,36 @@ RPC_ENDPOINT=https://soroban-testnet.stellar.org ./bin/indexer live
 
 Stop with `Ctrl+C` — the indexer shuts down gracefully and resumes from the last ingested ledger on restart.
 
-### Historical backfill
+### Historical backfill (RPC)
 
-Processes a range of ledgers using parallel workers:
+Processes a range of ledgers using parallel workers. Works with any network (pubnet, testnet, futurenet):
 
 ```bash
 RPC_ENDPOINT=https://soroban-testnet.stellar.org ./bin/indexer backfill --start 1288000 --end 1288100
+```
+
+### S3 data lake backfill (pubnet only)
+
+Backfills historical pubnet data directly from the [Stellar AWS public data lake](https://github.com/stellar/stellar-etl) -- no RPC endpoint or AWS credentials needed. The data lake covers ledger 3 through the latest pubnet ledger (~61.5M+).
+
+```bash
+./bin/indexer s3backfill --start 3 --end 1000000
+```
+
+Key details:
+
+- **Pubnet only** -- for testnet/futurenet historical data, use the `backfill` command with an RPC endpoint instead.
+- **No `RPC_ENDPOINT` required** -- data is read from a public S3 bucket using anonymous access.
+- **No AWS credentials required** -- the bucket is publicly accessible.
+- **Resume support** -- if interrupted, re-run with `--start` set to the last successfully ingested ledger.
+- **Worker count** -- controlled by the `WORKER_COUNT` env var (default `8`).
+
+```bash
+# Resume from where you left off
+./bin/indexer s3backfill --start 500001 --end 1000000
+
+# Use more workers for faster throughput
+WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 ```
 
 ## Validating it works
@@ -120,13 +144,13 @@ Tests skip gracefully if Docker services are unavailable. Override connection st
 ## Architecture
 
 ```
-Stellar RPC ──> source/rpc.go ──> transform/ ──> store/postgres.go ──> PostgreSQL
-                (JSON-RPC 2.0)    (XDR parsing)   (batch inserts)
-                                                         │
-                                                         ▼
-                                                  publisher/redis.go ──> Redis pub/sub
-                                                  (stream:ledgers,
-                                                   stream:transactions)
+Stellar RPC ──> source/rpc.go ──────> transform/ ──> store/postgres.go ──> PostgreSQL
+                (JSON-RPC 2.0)        (XDR parsing)   (batch inserts)
+                                          ▲                   │
+AWS S3 ─────> source/datalake.go ─────────┘                   ▼
+              (public data lake)                       publisher/redis.go ──> Redis pub/sub
+                                                       (stream:ledgers,
+                                                        stream:transactions)
 ```
 
 | Package              | Purpose                                                                 |
