@@ -5,6 +5,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stellar/go-stellar-sdk/network"
+
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
 )
 
@@ -92,7 +94,7 @@ func TestTransactionFromRPC(t *testing.T) {
 	}
 
 	for i, entry := range result.Transactions {
-		tx, err := TransactionFromRPC(entry)
+		tx, err := TransactionFromRPC(entry, network.TestNetworkPassphrase)
 		if err != nil {
 			t.Fatalf("TransactionFromRPC[%d] failed: %v", i, err)
 		}
@@ -144,7 +146,7 @@ func TestOperationsFromRPC(t *testing.T) {
 
 	totalOps := 0
 	for i, entry := range result.Transactions {
-		ops, err := OperationsFromRPC(entry)
+		ops, err := OperationsFromRPC(entry, network.TestNetworkPassphrase)
 		if err != nil {
 			t.Fatalf("OperationsFromRPC[%d] failed: %v", i, err)
 		}

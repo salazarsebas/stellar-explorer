@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stellar/go-stellar-sdk/network"
+
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/store"
 )
@@ -42,7 +44,7 @@ func TestProcessLedgerBatch(t *testing.T) {
 	}
 
 	// Process 2 ledgers from near the tip
-	p := NewLivePipeline(rpc, db, 10)
+	p := NewLivePipeline(rpc, db, network.TestNetworkPassphrase, 10)
 	start := latest.Sequence - 3
 	count, err := p.processLedgerBatch(ctx, start, 2)
 	if err != nil {
@@ -73,7 +75,7 @@ func TestLivePipelineRunAndStop(t *testing.T) {
 	rpc, db := getTestDeps(t)
 	defer db.Close()
 
-	p := NewLivePipeline(rpc, db, 5)
+	p := NewLivePipeline(rpc, db, network.TestNetworkPassphrase, 5)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

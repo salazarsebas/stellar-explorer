@@ -82,7 +82,11 @@ func runLive(cfg *config.Config) {
 	db, rpc := initDeps(cfg)
 	defer db.Close()
 
-	p := pipeline.NewLivePipeline(rpc, db, cfg.BatchSize)
+	passphrase, err := cfg.NetworkPassphrase()
+	if err != nil {
+		log.Fatalf("Failed to resolve network passphrase: %v", err)
+	}
+	p := pipeline.NewLivePipeline(rpc, db, passphrase, cfg.BatchSize)
 
 	// Attach Redis publisher if configured
 	if cfg.RedisURL != "" {
@@ -112,7 +116,11 @@ func runBackfill(cfg *config.Config) {
 	db, rpc := initDeps(cfg)
 	defer db.Close()
 
-	p := pipeline.NewBackfillPipeline(rpc, db, cfg.BatchSize, cfg.WorkerCount)
+	passphrase, err := cfg.NetworkPassphrase()
+	if err != nil {
+		log.Fatalf("Failed to resolve network passphrase: %v", err)
+	}
+	p := pipeline.NewBackfillPipeline(rpc, db, passphrase, cfg.BatchSize, cfg.WorkerCount)
 
 	log.Printf("Starting backfill from ledger %d to %d...", startLedger, endLedger)
 	if err := p.Run(ctx, startLedger, endLedger); err != nil && err != context.Canceled {

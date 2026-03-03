@@ -19,17 +19,19 @@ type Publisher interface {
 
 // LivePipeline polls the Stellar RPC for new ledgers and ingests them.
 type LivePipeline struct {
-	rpc       *source.RPCClient
-	store     *store.PostgresStore
-	publisher Publisher
-	batchSize int
+	rpc               *source.RPCClient
+	store             *store.PostgresStore
+	publisher         Publisher
+	networkPassphrase string
+	batchSize         int
 }
 
-func NewLivePipeline(rpc *source.RPCClient, store *store.PostgresStore, batchSize int) *LivePipeline {
+func NewLivePipeline(rpc *source.RPCClient, store *store.PostgresStore, networkPassphrase string, batchSize int) *LivePipeline {
 	return &LivePipeline{
-		rpc:       rpc,
-		store:     store,
-		batchSize: batchSize,
+		rpc:               rpc,
+		store:             store,
+		networkPassphrase: networkPassphrase,
+		batchSize:         batchSize,
 	}
 }
 
@@ -186,12 +188,12 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 }
 
 func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
-	return ProcessOneLedger(ctx, p.store, p.publisher, ledgerEntry, txEntries)
+	return ProcessOneLedger(ctx, p.store, p.publisher, p.networkPassphrase, ledgerEntry, txEntries)
 }
 
 // ProcessOneLedger transforms and stores a single ledger with its transactions and operations.
 // It is exported so that different pipeline implementations (live, backfill, S3) can reuse it.
-func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publisher, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
+func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publisher, networkPassphrase string, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
 	// Transform ledger
 	ledger, err := transform.LedgerFromRPC(ledgerEntry)
 	if err != nil {
@@ -217,14 +219,14 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 	var opCount int32
 
 	for _, txEntry := range txEntries {
-		tx, err := transform.TransactionFromRPC(txEntry)
+		tx, err := transform.TransactionFromRPC(txEntry, networkPassphrase)
 		if err != nil {
 			log.Printf("ledger %d: skip tx: %v", ledgerEntry.Sequence, err)
 			continue
 		}
 		storeTxs = append(storeTxs, *tx)
 
-		ops, err := transform.OperationsFromRPC(txEntry)
+		ops, err := transform.OperationsFromRPC(txEntry, networkPassphrase)
 		if err != nil {
 			log.Printf("ledger %d: skip ops for tx %s: %v", ledgerEntry.Sequence, tx.Hash, err)
 			continue
