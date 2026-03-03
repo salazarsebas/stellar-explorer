@@ -142,6 +142,12 @@ func (s *PostgresStore) CleanupTestData(ctx context.Context, sequence uint32) {
 	_, _ = s.db.ExecContext(ctx, "DELETE FROM ledgers WHERE sequence = $1", sequence)
 }
 
+// QueryRow executes a query that returns at most one row, exposing the
+// underlying *sql.DB.QueryRowContext for ad-hoc queries (e.g. in tests).
+func (s *PostgresStore) QueryRow(ctx context.Context, query string, args ...interface{}) *sql.Row {
+	return s.db.QueryRowContext(ctx, query, args...)
+}
+
 func (s *PostgresStore) Close() error {
 	return s.db.Close()
 }
