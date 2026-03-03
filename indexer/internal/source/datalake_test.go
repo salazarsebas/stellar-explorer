@@ -2,7 +2,6 @@ package source
 
 import (
 	"context"
-	"errors"
 	"io"
 	"testing"
 	"time"
@@ -18,31 +17,29 @@ func fetchTestLedgerCloseMeta(t *testing.T, seq uint32) xdr.LedgerCloseMeta {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	var result xdr.LedgerCloseMeta
-	found := false
+	ds, err := NewAnonymousPubnetDataStore(ctx)
+	if err != nil {
+		t.Fatalf("create anonymous datastore: %v", err)
+	}
 
-	// ApplyLedgerMetadata requires To > From for bounded ranges, so we use
-	// BoundedRange(seq, seq+1) and stop after capturing the target ledger.
-	err := ingest.ApplyLedgerMetadata(
-		ledgerbackend.BoundedRange(seq, seq+1),
-		PubnetPublisherConfig(),
-		ctx,
-		func(lcm xdr.LedgerCloseMeta) error {
-			if lcm.LedgerSequence() == seq {
-				result = lcm
-				found = true
-				return context.Canceled
-			}
-			return nil
-		},
-	)
-	if err != nil && !errors.Is(err, context.Canceled) && ctx.Err() == nil {
+	schema := PubnetDataLakeConfig().Schema
+	bufConfig := ingest.DefaultBufferedStorageBackendConfig(schema.LedgersPerFile)
+
+	backend, err := ledgerbackend.NewBufferedStorageBackend(bufConfig, ds, schema)
+	if err != nil {
+		t.Fatalf("create buffered storage backend: %v", err)
+	}
+	defer backend.Close()
+
+	if err := backend.PrepareRange(ctx, ledgerbackend.BoundedRange(seq, seq+1)); err != nil {
+		t.Fatalf("prepare range: %v", err)
+	}
+
+	lcm, err := backend.GetLedger(ctx, seq)
+	if err != nil {
 		t.Fatalf("fetch ledger %d from S3: %v", seq, err)
 	}
-	if !found {
-		t.Fatalf("ledger %d not found in S3 range", seq)
-	}
-	return result
+	return lcm
 }
 
 func TestLedgerEntryFromCloseMeta(t *testing.T) {
@@ -107,31 +104,45 @@ func TestTransactionEntriesWithContent(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
+	ds, err := NewAnonymousPubnetDataStore(ctx)
+	if err != nil {
+		t.Fatalf("create anonymous datastore: %v", err)
+	}
+
+	schema := PubnetDataLakeConfig().Schema
+	bufConfig := ingest.DefaultBufferedStorageBackendConfig(schema.LedgersPerFile)
+
+	backend, err := ledgerbackend.NewBufferedStorageBackend(bufConfig, ds, schema)
+	if err != nil {
+		t.Fatalf("create buffered storage backend: %v", err)
+	}
+	defer backend.Close()
+
+	startSeq := uint32(30_000_000)
+	endSeq := uint32(30_000_010)
+	if err := backend.PrepareRange(ctx, ledgerbackend.BoundedRange(startSeq, endSeq)); err != nil {
+		t.Fatalf("prepare range: %v", err)
+	}
+
 	var foundLCM xdr.LedgerCloseMeta
 	found := false
 
-	err := ingest.ApplyLedgerMetadata(
-		ledgerbackend.BoundedRange(30_000_000, 30_000_010),
-		PubnetPublisherConfig(),
-		ctx,
-		func(lcm xdr.LedgerCloseMeta) error {
-			reader, err := ingest.NewLedgerTransactionReaderFromLedgerCloseMeta(
-				network.PublicNetworkPassphrase, lcm,
-			)
-			if err != nil {
-				return err
-			}
-			if _, readErr := reader.Read(); readErr != io.EOF {
-				foundLCM = lcm
-				found = true
-				return context.Canceled
-			}
-			return nil
-		},
-	)
-	if err != nil && !errors.Is(err, context.Canceled) && ctx.Err() == nil {
-		if !found {
-			t.Fatalf("ApplyLedgerMetadata: %v", err)
+	for seq := startSeq; seq <= endSeq; seq++ {
+		lcm, err := backend.GetLedger(ctx, seq)
+		if err != nil {
+			t.Fatalf("get ledger %d: %v", seq, err)
+		}
+
+		reader, err := ingest.NewLedgerTransactionReaderFromLedgerCloseMeta(
+			network.PublicNetworkPassphrase, lcm,
+		)
+		if err != nil {
+			t.Fatalf("create tx reader for ledger %d: %v", seq, err)
+		}
+		if _, readErr := reader.Read(); readErr != io.EOF {
+			foundLCM = lcm
+			found = true
+			break
 		}
 	}
 

@@ -10,7 +10,6 @@ import (
 	"github.com/stellar/go-stellar-sdk/ingest"
 	"github.com/stellar/go-stellar-sdk/ingest/ledgerbackend"
 	"github.com/stellar/go-stellar-sdk/network"
-	"github.com/stellar/go-stellar-sdk/xdr"
 
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/store"
@@ -90,39 +89,53 @@ func (p *S3BackfillPipeline) Run(ctx context.Context, startLedger, endLedger uin
 func (p *S3BackfillPipeline) runWorker(ctx context.Context, id int, start, end uint32, processed *atomic.Int64) error {
 	log.Printf("s3 backfill worker %d: processing ledgers %d to %d", id, start, end)
 
-	pubConfig := source.PubnetPublisherConfig()
-
-	err := ingest.ApplyLedgerMetadata(
-		ledgerbackend.BoundedRange(start, end),
-		pubConfig,
-		ctx,
-		func(lcm xdr.LedgerCloseMeta) error {
-			ledgerEntry, err := source.LedgerEntryFromCloseMeta(lcm)
-			if err != nil {
-				return fmt.Errorf("convert ledger %d: %w", lcm.LedgerSequence(), err)
-			}
-
-			txEntries, err := source.TransactionEntriesFromCloseMeta(lcm, network.PublicNetworkPassphrase)
-			if err != nil {
-				return fmt.Errorf("convert transactions for ledger %d: %w", lcm.LedgerSequence(), err)
-			}
-
-			if err := ProcessOneLedger(ctx, p.store, nil, ledgerEntry, txEntries); err != nil {
-				return fmt.Errorf("process ledger %d: %w", lcm.LedgerSequence(), err)
-			}
-
-			total := processed.Add(1)
-			if total%1000 == 0 {
-				log.Printf("s3 backfill worker %d: progress %d (total across workers: %d)",
-					id, lcm.LedgerSequence(), total)
-			}
-
-			return nil
-		},
-	)
-
+	// Create DataStore with anonymous credentials for public S3 bucket.
+	// This bypasses the default AWS credential chain which may pick up
+	// stale credentials from ~/.aws/ and cause 403 errors.
+	ds, err := source.NewAnonymousPubnetDataStore(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("create datastore: %w", err)
+	}
+
+	schema := source.PubnetDataLakeConfig().Schema
+	bufConfig := ingest.DefaultBufferedStorageBackendConfig(schema.LedgersPerFile)
+
+	backend, err := ledgerbackend.NewBufferedStorageBackend(bufConfig, ds, schema)
+	if err != nil {
+		return fmt.Errorf("create buffered storage backend: %w", err)
+	}
+	defer backend.Close()
+
+	ledgerRange := ledgerbackend.BoundedRange(start, end)
+	if err := backend.PrepareRange(ctx, ledgerRange); err != nil {
+		return fmt.Errorf("prepare range: %w", err)
+	}
+
+	for seq := start; seq <= end; seq++ {
+		lcm, err := backend.GetLedger(ctx, seq)
+		if err != nil {
+			return fmt.Errorf("get ledger %d: %w", seq, err)
+		}
+
+		ledgerEntry, err := source.LedgerEntryFromCloseMeta(lcm)
+		if err != nil {
+			return fmt.Errorf("convert ledger %d: %w", seq, err)
+		}
+
+		txEntries, err := source.TransactionEntriesFromCloseMeta(lcm, network.PublicNetworkPassphrase)
+		if err != nil {
+			return fmt.Errorf("convert transactions for ledger %d: %w", seq, err)
+		}
+
+		if err := ProcessOneLedger(ctx, p.store, nil, ledgerEntry, txEntries); err != nil {
+			return fmt.Errorf("process ledger %d: %w", seq, err)
+		}
+
+		total := processed.Add(1)
+		if total%1000 == 0 {
+			log.Printf("s3 backfill worker %d: progress %d (total across workers: %d)",
+				id, seq, total)
+		}
 	}
 
 	log.Printf("s3 backfill worker %d: done", id)

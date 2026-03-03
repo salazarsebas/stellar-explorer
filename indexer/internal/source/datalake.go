@@ -1,11 +1,15 @@
 package source
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"io"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	awsconfig "github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/stellar/go-stellar-sdk/ingest"
 	"github.com/stellar/go-stellar-sdk/support/datastore"
 	"github.com/stellar/go-stellar-sdk/xdr"
@@ -25,11 +29,23 @@ func PubnetDataLakeConfig() datastore.DataStoreConfig {
 	}
 }
 
-func PubnetPublisherConfig() ingest.PublisherConfig {
-	return ingest.PublisherConfig{
-		DataStoreConfig:       PubnetDataLakeConfig(),
-		BufferedStorageConfig: ingest.DefaultBufferedStorageBackendConfig(1),
+// NewAnonymousPubnetDataStore creates an S3 DataStore for the Stellar public data lake
+// using anonymous credentials, bypassing the default AWS credential chain.
+// This is necessary because the SDK's default behavior picks up stale credentials
+// from ~/.aws/ which causes 403 errors against the public bucket.
+func NewAnonymousPubnetDataStore(ctx context.Context) (datastore.DataStore, error) {
+	cfg, err := awsconfig.LoadDefaultConfig(ctx, awsconfig.WithRegion("us-east-2"))
+	if err != nil {
+		return nil, fmt.Errorf("load AWS config: %w", err)
 	}
+
+	client := s3.NewFromConfig(cfg, func(o *s3.Options) {
+		o.Credentials = aws.AnonymousCredentials{}
+		o.UsePathStyle = true
+	})
+
+	dlConfig := PubnetDataLakeConfig()
+	return datastore.FromS3Client(ctx, client, dlConfig.Params["destination_bucket_path"])
 }
 
 func LedgerEntryFromCloseMeta(lcm xdr.LedgerCloseMeta) (LedgerEntry, error) {
