@@ -91,6 +91,24 @@ Key details:
 WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 ```
 
+## Resetting the database
+
+To wipe all ingested data and start fresh (useful after testing with different networks or ledger ranges):
+
+```bash
+docker compose exec postgres psql -U explorer -d stellar_explorer -c "
+  TRUNCATE ledgers, transactions, operations, ingestion_state CASCADE;
+"
+```
+
+To reset only the ingestion cursor (keeps existing data but allows re-ingestion):
+
+```bash
+docker compose exec postgres psql -U explorer -d stellar_explorer -c "
+  DELETE FROM ingestion_state;
+"
+```
+
 ## Validating it works
 
 After running the indexer for a few seconds, check that data landed in PostgreSQL:
