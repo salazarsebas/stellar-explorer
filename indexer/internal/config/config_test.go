@@ -5,12 +5,15 @@ import (
 	"testing"
 )
 
-func TestLoad_RequiresRPCEndpoint(t *testing.T) {
+func TestLoad_RPCEndpointOptional(t *testing.T) {
 	os.Unsetenv("RPC_ENDPOINT")
 
-	_, err := Load()
-	if err == nil {
-		t.Fatal("expected error when RPC_ENDPOINT is not set")
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cfg.RPCEndpoint != "" {
+		t.Errorf("expected empty RPCEndpoint, got '%s'", cfg.RPCEndpoint)
 	}
 }
 

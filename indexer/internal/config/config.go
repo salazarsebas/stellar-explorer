@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 )
@@ -30,10 +29,6 @@ func Load() (*Config, error) {
 		Network:      getEnv("NETWORK", "public"),
 		BatchSize:    getEnvInt("BATCH_SIZE", 100),
 		WorkerCount:  getEnvInt("WORKER_COUNT", 8),
-	}
-
-	if cfg.RPCEndpoint == "" {
-		return nil, fmt.Errorf("RPC_ENDPOINT is required")
 	}
 
 	return cfg, nil
