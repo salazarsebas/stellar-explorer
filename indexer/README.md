@@ -45,7 +45,9 @@ make clean          # Remove bin/
 
 ### Live ingestion
 
-Continuously polls the RPC for new ledgers and ingests them in real-time (~1 ledger every 5 seconds):
+Continuously polls the RPC for new ledgers and ingests them in real-time (~1 ledger every 5 seconds).
+
+> **Important:** `NETWORK` must match your RPC endpoint. It determines the network passphrase used to compute transaction hashes. Defaults to `public` (mainnet). Set `NETWORK=testnet` for testnet or `NETWORK=futurenet` for futurenet.
 
 ```bash
 RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make run-live
@@ -54,7 +56,7 @@ RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make run-live
 Or directly:
 
 ```bash
-RPC_ENDPOINT=https://soroban-testnet.stellar.org ./bin/indexer live
+RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet ./bin/indexer live
 ```
 
 Stop with `Ctrl+C` — the indexer shuts down gracefully and resumes from the last ingested ledger on restart.
@@ -64,7 +66,7 @@ Stop with `Ctrl+C` — the indexer shuts down gracefully and resumes from the la
 Processes a range of ledgers using parallel workers. Works with any network (pubnet, testnet, futurenet):
 
 ```bash
-RPC_ENDPOINT=https://soroban-testnet.stellar.org ./bin/indexer backfill --start 1288000 --end 1288100
+RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet ./bin/indexer backfill --start 1288000 --end 1288100
 ```
 
 ### S3 data lake backfill (pubnet only)
