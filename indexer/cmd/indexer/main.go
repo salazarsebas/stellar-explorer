@@ -1,11 +1,19 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
 
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/config"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/pipeline"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/publisher"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/store"
 )
 
 func main() {
@@ -20,21 +28,114 @@ func main() {
 	fmt.Printf("  Database:   %s\n", cfg.DatabaseURL)
 	fmt.Printf("  Workers:    %d\n", cfg.WorkerCount)
 
-	if len(os.Args) > 1 {
-		switch os.Args[1] {
-		case "live":
-			fmt.Println("Starting live ingestion...")
-			// TODO: implement
-		case "backfill":
-			fmt.Println("Starting historical backfill...")
-			// TODO: implement
-		case "migrate":
-			fmt.Println("Running migrations...")
-			// TODO: implement
-		default:
-			log.Fatalf("Unknown command: %s. Use: live, backfill, migrate", os.Args[1])
-		}
-	} else {
-		fmt.Println("Usage: indexer <live|backfill|migrate>")
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: indexer <live|backfill --start <N> --end <N>|migrate>")
+		os.Exit(1)
 	}
+
+	switch os.Args[1] {
+	case "live":
+		runLive(cfg)
+	case "backfill":
+		runBackfill(cfg)
+	case "migrate":
+		fmt.Println("Running migrations...")
+		// TODO: implement
+	default:
+		log.Fatalf("Unknown command: %s. Use: live, backfill, migrate", os.Args[1])
+	}
+}
+
+func setupContext() (context.Context, context.CancelFunc) {
+	ctx, cancel := context.WithCancel(context.Background())
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		sig := <-sigCh
+		log.Printf("Received signal %v, shutting down...", sig)
+		cancel()
+	}()
+	return ctx, cancel
+}
+
+func initDeps(cfg *config.Config) (*store.PostgresStore, *source.RPCClient) {
+	db, err := store.NewPostgresStore(cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	rpc := source.NewRPCClient(cfg.RPCEndpoint)
+	return db, rpc
+}
+
+func runLive(cfg *config.Config) {
+	ctx, cancel := setupContext()
+	defer cancel()
+
+	db, rpc := initDeps(cfg)
+	defer db.Close()
+
+	p := pipeline.NewLivePipeline(rpc, db, cfg.BatchSize)
+
+	// Attach Redis publisher if configured
+	if cfg.RedisURL != "" {
+		pub, err := publisher.NewRedisPublisher(cfg.RedisURL)
+		if err != nil {
+			log.Printf("Warning: Redis publisher unavailable: %v", err)
+		} else {
+			defer pub.Close()
+			p.SetPublisher(pub)
+			log.Println("Redis publisher attached")
+		}
+	}
+
+	log.Println("Starting live ingestion...")
+	if err := p.Run(ctx); err != nil && err != context.Canceled {
+		log.Fatalf("Live pipeline failed: %v", err)
+	}
+	log.Println("Shutdown complete.")
+}
+
+func runBackfill(cfg *config.Config) {
+	startLedger, endLedger := parseBackfillFlags()
+
+	ctx, cancel := setupContext()
+	defer cancel()
+
+	db, rpc := initDeps(cfg)
+	defer db.Close()
+
+	p := pipeline.NewBackfillPipeline(rpc, db, cfg.BatchSize, cfg.WorkerCount)
+
+	log.Printf("Starting backfill from ledger %d to %d...", startLedger, endLedger)
+	if err := p.Run(ctx, startLedger, endLedger); err != nil && err != context.Canceled {
+		log.Fatalf("Backfill failed: %v", err)
+	}
+	log.Println("Backfill complete.")
+}
+
+func parseBackfillFlags() (uint32, uint32) {
+	var startLedger, endLedger uint32
+
+	for i := 2; i < len(os.Args)-1; i++ {
+		switch os.Args[i] {
+		case "--start":
+			n, err := strconv.ParseUint(os.Args[i+1], 10, 32)
+			if err != nil {
+				log.Fatalf("Invalid --start value: %v", err)
+			}
+			startLedger = uint32(n)
+		case "--end":
+			n, err := strconv.ParseUint(os.Args[i+1], 10, 32)
+			if err != nil {
+				log.Fatalf("Invalid --end value: %v", err)
+			}
+			endLedger = uint32(n)
+		}
+	}
+
+	if startLedger == 0 || endLedger == 0 {
+		log.Fatal("Usage: indexer backfill --start <ledger> --end <ledger>")
+	}
+
+	return startLedger, endLedger
 }

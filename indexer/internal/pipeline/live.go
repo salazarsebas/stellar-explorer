@@ -1,0 +1,265 @@
+package pipeline
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/store"
+	"github.com/miguelnietoa/stellar-explorer/indexer/internal/transform"
+)
+
+// Publisher is an optional interface for publishing new data after DB writes.
+type Publisher interface {
+	PublishLedger(ctx context.Context, ledger *store.Ledger) error
+	PublishTransactions(ctx context.Context, txs []store.Transaction) error
+}
+
+// LivePipeline polls the Stellar RPC for new ledgers and ingests them.
+type LivePipeline struct {
+	rpc       *source.RPCClient
+	store     *store.PostgresStore
+	publisher Publisher
+	batchSize int
+}
+
+func NewLivePipeline(rpc *source.RPCClient, store *store.PostgresStore, batchSize int) *LivePipeline {
+	return &LivePipeline{
+		rpc:       rpc,
+		store:     store,
+		batchSize: batchSize,
+	}
+}
+
+func (p *LivePipeline) SetPublisher(pub Publisher) {
+	p.publisher = pub
+}
+
+// Run starts the live ingestion loop. It blocks until the context is cancelled.
+func (p *LivePipeline) Run(ctx context.Context) error {
+	log.Println("live pipeline: starting")
+
+	gapTicker := time.NewTicker(5 * time.Minute)
+	defer gapTicker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("live pipeline: stopping")
+			return ctx.Err()
+		case <-gapTicker.C:
+			p.detectAndFillGaps(ctx)
+		default:
+		}
+
+		ingested, err := p.ingestNewLedgers(ctx)
+		if err != nil {
+			log.Printf("live pipeline: ingestion error: %v", err)
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(5 * time.Second):
+				continue
+			}
+		}
+
+		if ingested == 0 {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(1 * time.Second):
+			}
+		}
+	}
+}
+
+func (p *LivePipeline) ingestNewLedgers(ctx context.Context) (int, error) {
+	latest, err := p.rpc.GetLatestLedger(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("getLatestLedger: %w", err)
+	}
+
+	lastIngested, err := p.store.GetLastIngestedLedger(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("getLastIngestedLedger: %w", err)
+	}
+
+	// If first run, start from latest ledger (don't try to catch up all history)
+	if lastIngested == 0 {
+		lastIngested = latest.Sequence - 1
+		log.Printf("live pipeline: first run, starting from ledger %d", lastIngested+1)
+	}
+
+	if latest.Sequence <= lastIngested {
+		return 0, nil
+	}
+
+	gap := latest.Sequence - lastIngested
+	log.Printf("live pipeline: latest=%d last_ingested=%d gap=%d", latest.Sequence, lastIngested, gap)
+
+	// Process in batches
+	totalIngested := 0
+	cursor := lastIngested + 1
+
+	for cursor <= latest.Sequence {
+		remaining := int(latest.Sequence - cursor + 1)
+		limit := p.batchSize
+		if remaining < limit {
+			limit = remaining
+		}
+
+		count, err := p.processLedgerBatch(ctx, cursor, limit)
+		if err != nil {
+			return totalIngested, fmt.Errorf("processLedgerBatch at %d: %w", cursor, err)
+		}
+
+		cursor += uint32(count)
+		totalIngested += count
+	}
+
+	return totalIngested, nil
+}
+
+func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint32, limit int) (int, error) {
+	// Fetch ledgers
+	ledgerResult, err := p.rpc.GetLedgers(ctx, source.GetLedgersParams{
+		StartLedger: startLedger,
+		Pagination:  &source.Pagination{Limit: limit},
+	})
+	if err != nil {
+		return 0, fmt.Errorf("getLedgers: %w", err)
+	}
+
+	if len(ledgerResult.Ledgers) == 0 {
+		return 0, nil
+	}
+
+	// Fetch transactions for this ledger range
+	txResult, err := p.rpc.GetTransactions(ctx, source.GetTransactionsParams{
+		StartLedger: startLedger,
+		Pagination:  &source.Pagination{Limit: 200},
+	})
+	if err != nil {
+		return 0, fmt.Errorf("getTransactions: %w", err)
+	}
+
+	// Paginate through all transactions in this range
+	allTxEntries := txResult.Transactions
+	for txResult.Cursor != "" {
+		lastTxLedger := uint32(0)
+		if len(txResult.Transactions) > 0 {
+			lastTxLedger = txResult.Transactions[len(txResult.Transactions)-1].Ledger
+		}
+		// Stop paginating when we've passed our ledger range
+		endLedger := ledgerResult.Ledgers[len(ledgerResult.Ledgers)-1].Sequence
+		if lastTxLedger > endLedger {
+			break
+		}
+
+		txResult, err = p.rpc.GetTransactions(ctx, source.GetTransactionsParams{
+			Pagination: &source.Pagination{Cursor: txResult.Cursor, Limit: 200},
+		})
+		if err != nil {
+			return 0, fmt.Errorf("getTransactions (pagination): %w", err)
+		}
+		allTxEntries = append(allTxEntries, txResult.Transactions...)
+	}
+
+	// Group transactions by ledger
+	txByLedger := make(map[uint32][]source.TransactionEntry)
+	for _, tx := range allTxEntries {
+		txByLedger[tx.Ledger] = append(txByLedger[tx.Ledger], tx)
+	}
+
+	// Process each ledger
+	processed := 0
+	for _, ledgerEntry := range ledgerResult.Ledgers {
+		if err := p.processOneLedger(ctx, ledgerEntry, txByLedger[ledgerEntry.Sequence]); err != nil {
+			return processed, fmt.Errorf("processLedger %d: %w", ledgerEntry.Sequence, err)
+		}
+		processed++
+	}
+
+	return processed, nil
+}
+
+func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
+	// Transform ledger
+	ledger, err := transform.LedgerFromRPC(ledgerEntry)
+	if err != nil {
+		return fmt.Errorf("transform ledger: %w", err)
+	}
+	ledger.TransactionCount = int32(len(txEntries))
+
+	// Count successes/failures
+	var successCount, failCount int32
+	for _, tx := range txEntries {
+		if tx.Status == "SUCCESS" {
+			successCount++
+		} else {
+			failCount++
+		}
+	}
+	ledger.SuccessfulTxCount = successCount
+	ledger.FailedTxCount = failCount
+
+	// Transform transactions and operations
+	var storeTxs []store.Transaction
+	var storeOps []store.Operation
+	var opCount int32
+
+	for _, txEntry := range txEntries {
+		tx, err := transform.TransactionFromRPC(txEntry)
+		if err != nil {
+			log.Printf("live pipeline: skip tx in ledger %d: %v", ledgerEntry.Sequence, err)
+			continue
+		}
+		storeTxs = append(storeTxs, *tx)
+
+		ops, err := transform.OperationsFromRPC(txEntry)
+		if err != nil {
+			log.Printf("live pipeline: skip ops for tx %s: %v", tx.Hash, err)
+			continue
+		}
+		storeOps = append(storeOps, ops...)
+		opCount += int32(len(ops))
+	}
+	ledger.OperationCount = opCount
+
+	// Write to database
+	if err := p.store.InsertLedger(ctx, ledger); err != nil {
+		return fmt.Errorf("insert ledger: %w", err)
+	}
+	if err := p.store.InsertTransactionBatch(ctx, storeTxs); err != nil {
+		return fmt.Errorf("insert transactions: %w", err)
+	}
+	if err := p.store.InsertOperationBatch(ctx, storeOps); err != nil {
+		return fmt.Errorf("insert operations: %w", err)
+	}
+
+	// Update cursor
+	if err := p.store.SetLastIngestedLedger(ctx, ledgerEntry.Sequence); err != nil {
+		return fmt.Errorf("update cursor: %w", err)
+	}
+
+	// Publish if publisher is set
+	if p.publisher != nil {
+		_ = p.publisher.PublishLedger(ctx, ledger)
+		_ = p.publisher.PublishTransactions(ctx, storeTxs)
+	}
+
+	log.Printf("live pipeline: ingested ledger %d (%d txs, %d ops)",
+		ledgerEntry.Sequence, len(storeTxs), len(storeOps))
+
+	return nil
+}
+
+func (p *LivePipeline) detectAndFillGaps(ctx context.Context) {
+	// Simple gap detection: check if there are missing sequences
+	// between the oldest and latest ingested ledgers
+	log.Println("live pipeline: running gap detection")
+	// Gap filling would query the DB for missing sequences and re-fetch from RPC.
+	// For now this is a placeholder — full implementation comes when we have more data.
+}
