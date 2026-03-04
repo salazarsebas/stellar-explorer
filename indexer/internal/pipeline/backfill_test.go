@@ -3,6 +3,8 @@ package pipeline
 import (
 	"context"
 	"testing"
+
+	"github.com/stellar/go-stellar-sdk/network"
 )
 
 func TestBackfillSmallRange(t *testing.T) {
@@ -20,7 +22,7 @@ func TestBackfillSmallRange(t *testing.T) {
 	// Backfill 5 ledgers with 2 workers
 	start := latest.Sequence - 6
 	end := latest.Sequence - 2
-	p := NewBackfillPipeline(rpc, db, 3, 2)
+	p := NewBackfillPipeline(rpc, db, network.TestNetworkPassphrase, 3, 2)
 
 	err = p.Run(ctx, start, end)
 	if err != nil {

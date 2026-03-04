@@ -1,13 +1,13 @@
 package transform
 
 import (
-	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
 
+	"github.com/stellar/go-stellar-sdk/network"
 	"github.com/stellar/go-stellar-sdk/xdr"
 
 	"github.com/miguelnietoa/stellar-explorer/indexer/internal/source"
@@ -44,7 +44,7 @@ func LedgerFromRPC(entry source.LedgerEntry) (*store.Ledger, error) {
 }
 
 // TransactionFromRPC converts an RPC TransactionEntry into a store.Transaction.
-func TransactionFromRPC(entry source.TransactionEntry) (*store.Transaction, error) {
+func TransactionFromRPC(entry source.TransactionEntry, networkPassphrase string) (*store.Transaction, error) {
 	var envelope xdr.TransactionEnvelope
 	if err := xdr.SafeUnmarshalBase64(entry.EnvelopeXDR, &envelope); err != nil {
 		return nil, fmt.Errorf("unmarshal envelope: %w", err)
@@ -55,7 +55,7 @@ func TransactionFromRPC(entry source.TransactionEntry) (*store.Transaction, erro
 		return nil, fmt.Errorf("unmarshal result: %w", err)
 	}
 
-	txHash, err := computeTransactionHash(entry.EnvelopeXDR)
+	txHash, err := computeTransactionHash(envelope, networkPassphrase)
 	if err != nil {
 		return nil, fmt.Errorf("compute tx hash: %w", err)
 	}
@@ -131,13 +131,13 @@ func TransactionFromRPC(entry source.TransactionEntry) (*store.Transaction, erro
 }
 
 // OperationsFromRPC extracts operations from a transaction entry.
-func OperationsFromRPC(entry source.TransactionEntry) ([]store.Operation, error) {
+func OperationsFromRPC(entry source.TransactionEntry, networkPassphrase string) ([]store.Operation, error) {
 	var envelope xdr.TransactionEnvelope
 	if err := xdr.SafeUnmarshalBase64(entry.EnvelopeXDR, &envelope); err != nil {
 		return nil, fmt.Errorf("unmarshal envelope: %w", err)
 	}
 
-	txHash, err := computeTransactionHash(entry.EnvelopeXDR)
+	txHash, err := computeTransactionHash(envelope, networkPassphrase)
 	if err != nil {
 		return nil, fmt.Errorf("compute tx hash: %w", err)
 	}
@@ -180,18 +180,11 @@ func OperationsFromRPC(entry source.TransactionEntry) ([]store.Operation, error)
 	return result, nil
 }
 
-func computeTransactionHash(envelopeXDR string) (string, error) {
-	var envelope xdr.TransactionEnvelope
-	if err := xdr.SafeUnmarshalBase64(envelopeXDR, &envelope); err != nil {
-		return "", err
-	}
-
-	envelopeBytes, err := envelope.MarshalBinary()
+func computeTransactionHash(envelope xdr.TransactionEnvelope, networkPassphrase string) (string, error) {
+	hash, err := network.HashTransactionInEnvelope(envelope, networkPassphrase)
 	if err != nil {
-		return "", fmt.Errorf("marshal envelope: %w", err)
+		return "", fmt.Errorf("hash transaction: %w", err)
 	}
-
-	hash := sha256.Sum256(envelopeBytes)
 	return hex.EncodeToString(hash[:]), nil
 }
 

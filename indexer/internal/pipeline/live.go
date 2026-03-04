@@ -19,17 +19,19 @@ type Publisher interface {
 
 // LivePipeline polls the Stellar RPC for new ledgers and ingests them.
 type LivePipeline struct {
-	rpc       *source.RPCClient
-	store     *store.PostgresStore
-	publisher Publisher
-	batchSize int
+	rpc               *source.RPCClient
+	store             *store.PostgresStore
+	publisher         Publisher
+	networkPassphrase string
+	batchSize         int
 }
 
-func NewLivePipeline(rpc *source.RPCClient, store *store.PostgresStore, batchSize int) *LivePipeline {
+func NewLivePipeline(rpc *source.RPCClient, store *store.PostgresStore, networkPassphrase string, batchSize int) *LivePipeline {
 	return &LivePipeline{
-		rpc:       rpc,
-		store:     store,
-		batchSize: batchSize,
+		rpc:               rpc,
+		store:             store,
+		networkPassphrase: networkPassphrase,
+		batchSize:         batchSize,
 	}
 }
 
@@ -186,6 +188,12 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 }
 
 func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
+	return ProcessOneLedger(ctx, p.store, p.publisher, p.networkPassphrase, ledgerEntry, txEntries)
+}
+
+// ProcessOneLedger transforms and stores a single ledger with its transactions and operations.
+// It is exported so that different pipeline implementations (live, backfill, S3) can reuse it.
+func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publisher, networkPassphrase string, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
 	// Transform ledger
 	ledger, err := transform.LedgerFromRPC(ledgerEntry)
 	if err != nil {
@@ -211,16 +219,16 @@ func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.
 	var opCount int32
 
 	for _, txEntry := range txEntries {
-		tx, err := transform.TransactionFromRPC(txEntry)
+		tx, err := transform.TransactionFromRPC(txEntry, networkPassphrase)
 		if err != nil {
-			log.Printf("live pipeline: skip tx in ledger %d: %v", ledgerEntry.Sequence, err)
+			log.Printf("ledger %d: skip tx: %v", ledgerEntry.Sequence, err)
 			continue
 		}
 		storeTxs = append(storeTxs, *tx)
 
-		ops, err := transform.OperationsFromRPC(txEntry)
+		ops, err := transform.OperationsFromRPC(txEntry, networkPassphrase)
 		if err != nil {
-			log.Printf("live pipeline: skip ops for tx %s: %v", tx.Hash, err)
+			log.Printf("ledger %d: skip ops for tx %s: %v", ledgerEntry.Sequence, tx.Hash, err)
 			continue
 		}
 		storeOps = append(storeOps, ops...)
@@ -229,28 +237,28 @@ func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.
 	ledger.OperationCount = opCount
 
 	// Write to database
-	if err := p.store.InsertLedger(ctx, ledger); err != nil {
+	if err := db.InsertLedger(ctx, ledger); err != nil {
 		return fmt.Errorf("insert ledger: %w", err)
 	}
-	if err := p.store.InsertTransactionBatch(ctx, storeTxs); err != nil {
+	if err := db.InsertTransactionBatch(ctx, storeTxs); err != nil {
 		return fmt.Errorf("insert transactions: %w", err)
 	}
-	if err := p.store.InsertOperationBatch(ctx, storeOps); err != nil {
+	if err := db.InsertOperationBatch(ctx, storeOps); err != nil {
 		return fmt.Errorf("insert operations: %w", err)
 	}
 
 	// Update cursor
-	if err := p.store.SetLastIngestedLedger(ctx, ledgerEntry.Sequence); err != nil {
+	if err := db.SetLastIngestedLedger(ctx, ledgerEntry.Sequence); err != nil {
 		return fmt.Errorf("update cursor: %w", err)
 	}
 
 	// Publish if publisher is set
-	if p.publisher != nil {
-		_ = p.publisher.PublishLedger(ctx, ledger)
-		_ = p.publisher.PublishTransactions(ctx, storeTxs)
+	if pub != nil {
+		_ = pub.PublishLedger(ctx, ledger)
+		_ = pub.PublishTransactions(ctx, storeTxs)
 	}
 
-	log.Printf("live pipeline: ingested ledger %d (%d txs, %d ops)",
+	log.Printf("ingested ledger %d (%d txs, %d ops)",
 		ledgerEntry.Sequence, len(storeTxs), len(storeOps))
 
 	return nil

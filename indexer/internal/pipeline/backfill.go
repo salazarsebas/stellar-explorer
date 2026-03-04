@@ -13,18 +13,20 @@ import (
 
 // BackfillPipeline processes a historical range of ledgers using parallel workers.
 type BackfillPipeline struct {
-	rpc         *source.RPCClient
-	store       *store.PostgresStore
-	batchSize   int
-	workerCount int
+	rpc               *source.RPCClient
+	store             *store.PostgresStore
+	networkPassphrase string
+	batchSize         int
+	workerCount       int
 }
 
-func NewBackfillPipeline(rpc *source.RPCClient, store *store.PostgresStore, batchSize, workerCount int) *BackfillPipeline {
+func NewBackfillPipeline(rpc *source.RPCClient, store *store.PostgresStore, networkPassphrase string, batchSize, workerCount int) *BackfillPipeline {
 	return &BackfillPipeline{
-		rpc:         rpc,
-		store:       store,
-		batchSize:   batchSize,
-		workerCount: workerCount,
+		rpc:               rpc,
+		store:             store,
+		networkPassphrase: networkPassphrase,
+		batchSize:         batchSize,
+		workerCount:       workerCount,
 	}
 }
 
@@ -88,7 +90,7 @@ func (p *BackfillPipeline) runWorker(ctx context.Context, id int, start, end uin
 	log.Printf("backfill worker %d: processing ledgers %d to %d", id, start, end)
 
 	// Reuse the live pipeline's processing logic via a temporary LivePipeline
-	live := NewLivePipeline(p.rpc, p.store, p.batchSize)
+	live := NewLivePipeline(p.rpc, p.store, p.networkPassphrase, p.batchSize)
 
 	cursor := start
 	for cursor <= end {

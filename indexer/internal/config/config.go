@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/stellar/go-stellar-sdk/network"
 )
 
 type Config struct {
@@ -32,11 +34,21 @@ func Load() (*Config, error) {
 		WorkerCount:  getEnvInt("WORKER_COUNT", 8),
 	}
 
-	if cfg.RPCEndpoint == "" {
-		return nil, fmt.Errorf("RPC_ENDPOINT is required")
-	}
-
 	return cfg, nil
+}
+
+// NetworkPassphrase returns the Stellar network passphrase for the configured network.
+func (c *Config) NetworkPassphrase() (string, error) {
+	switch c.Network {
+	case "public":
+		return network.PublicNetworkPassphrase, nil
+	case "testnet":
+		return network.TestNetworkPassphrase, nil
+	case "futurenet":
+		return network.FutureNetworkPassphrase, nil
+	default:
+		return "", fmt.Errorf("unknown network: %s", c.Network)
+	}
 }
 
 func getEnv(key, fallback string) string {

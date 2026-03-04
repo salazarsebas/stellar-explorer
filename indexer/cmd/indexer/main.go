@@ -29,20 +29,28 @@ func main() {
 	fmt.Printf("  Workers:    %d\n", cfg.WorkerCount)
 
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: indexer <live|backfill --start <N> --end <N>|migrate>")
+		fmt.Println("Usage: indexer <live|backfill|s3backfill|migrate>")
 		os.Exit(1)
 	}
 
 	switch os.Args[1] {
 	case "live":
+		if cfg.RPCEndpoint == "" {
+			log.Fatal("RPC_ENDPOINT is required for live command")
+		}
 		runLive(cfg)
 	case "backfill":
+		if cfg.RPCEndpoint == "" {
+			log.Fatal("RPC_ENDPOINT is required for backfill command")
+		}
 		runBackfill(cfg)
+	case "s3backfill":
+		runS3Backfill(cfg)
 	case "migrate":
 		fmt.Println("Running migrations...")
 		// TODO: implement
 	default:
-		log.Fatalf("Unknown command: %s. Use: live, backfill, migrate", os.Args[1])
+		log.Fatalf("Unknown command: %s. Use: live, backfill, s3backfill, migrate", os.Args[1])
 	}
 }
 
@@ -74,7 +82,11 @@ func runLive(cfg *config.Config) {
 	db, rpc := initDeps(cfg)
 	defer db.Close()
 
-	p := pipeline.NewLivePipeline(rpc, db, cfg.BatchSize)
+	passphrase, err := cfg.NetworkPassphrase()
+	if err != nil {
+		log.Fatalf("Failed to resolve network passphrase: %v", err)
+	}
+	p := pipeline.NewLivePipeline(rpc, db, passphrase, cfg.BatchSize)
 
 	// Attach Redis publisher if configured
 	if cfg.RedisURL != "" {
@@ -104,13 +116,38 @@ func runBackfill(cfg *config.Config) {
 	db, rpc := initDeps(cfg)
 	defer db.Close()
 
-	p := pipeline.NewBackfillPipeline(rpc, db, cfg.BatchSize, cfg.WorkerCount)
+	passphrase, err := cfg.NetworkPassphrase()
+	if err != nil {
+		log.Fatalf("Failed to resolve network passphrase: %v", err)
+	}
+	p := pipeline.NewBackfillPipeline(rpc, db, passphrase, cfg.BatchSize, cfg.WorkerCount)
 
 	log.Printf("Starting backfill from ledger %d to %d...", startLedger, endLedger)
 	if err := p.Run(ctx, startLedger, endLedger); err != nil && err != context.Canceled {
 		log.Fatalf("Backfill failed: %v", err)
 	}
 	log.Println("Backfill complete.")
+}
+
+func runS3Backfill(cfg *config.Config) {
+	startLedger, endLedger := parseBackfillFlags()
+
+	ctx, cancel := setupContext()
+	defer cancel()
+
+	db, err := store.NewPostgresStore(cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close()
+
+	p := pipeline.NewS3BackfillPipeline(db, cfg.WorkerCount)
+
+	log.Printf("Starting S3 data lake backfill from ledger %d to %d...", startLedger, endLedger)
+	if err := p.Run(ctx, startLedger, endLedger); err != nil && err != context.Canceled {
+		log.Fatalf("S3 backfill failed: %v", err)
+	}
+	log.Println("S3 backfill complete.")
 }
 
 func parseBackfillFlags() (uint32, uint32) {
