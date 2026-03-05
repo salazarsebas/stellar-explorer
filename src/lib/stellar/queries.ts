@@ -442,15 +442,30 @@ export const stellarQueries = {
     queryKey: stellarKeys.contractEvents(network, contractId),
     queryFn: async () => {
       const rpc = getRpcClient(network);
+      const { scValToNative } = await import("@stellar/stellar-sdk");
 
-      // Get latest ledger if startLedger not provided
+      // Determine start ledger: use the retention window from getEvents
+      // to maximize the lookback. Default fallback is ~24h (~17,280 ledgers).
       let ledger = startLedger;
       if (!ledger) {
-        const latestLedger = await rpc.getLatestLedger();
-        ledger = latestLedger.sequence - 1000; // Last ~1000 ledgers
+        // First, do a minimal getEvents call to discover the retention window
+        const probe = await rpc.getEvents({
+          startLedger: (await rpc.getLatestLedger()).sequence - 10,
+          filters: [{ type: "contract", contractIds: [contractId] }],
+          limit: 1,
+        });
+        const oldest = probe.oldestLedger;
+        const latest = probe.latestLedger;
+        if (oldest && latest) {
+          // Use the full retention window (typically ~7 days)
+          ledger = oldest;
+        } else {
+          const latestLedger = await rpc.getLatestLedger();
+          ledger = latestLedger.sequence - 17_280; // ~24h fallback
+        }
       }
 
-      return rpc.getEvents({
+      const response = await rpc.getEvents({
         startLedger: ledger,
         filters: [
           {
@@ -460,6 +475,74 @@ export const stellarQueries = {
         ],
         limit: 100,
       });
+
+      // If we got the max limit, there may be more recent events.
+      // Use cursor-based pagination to fetch the latest events.
+      let allEvents = response.events ?? [];
+      if (allEvents.length === 100) {
+        let cursor = response.cursor;
+        let lastBatch = allEvents;
+        // Keep fetching until we get a non-full batch (max 10 pages = 1000 events)
+        for (let i = 0; i < 9 && lastBatch.length === 100 && cursor; i++) {
+          const nextPage = await rpc.getEvents({
+            cursor,
+            filters: [{ type: "contract", contractIds: [contractId] }],
+            limit: 100,
+          });
+          lastBatch = nextPage.events ?? [];
+          allEvents = allEvents.concat(lastBatch);
+          cursor = nextPage.cursor;
+        }
+        // Keep only the most recent 100 events
+        if (allEvents.length > 100) {
+          allEvents = allEvents.slice(-100);
+        }
+      }
+
+      // SDK already parses topic and value as xdr.ScVal objects
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const decodeScValSafe = (scVal: any): { type: string; value: unknown } => {
+        if (!scVal || typeof scVal.switch !== "function") {
+          return { type: "unknown", value: String(scVal) };
+        }
+        const type = scVal.switch().name;
+        try {
+          const native = scValToNative(scVal);
+          // Convert BigInt to string to avoid serialization issues
+          if (typeof native === "bigint") {
+            return { type, value: native.toString() };
+          }
+          return { type, value: native };
+        } catch {
+          return { type, value: scVal.toXDR("base64") };
+        }
+      };
+
+      return {
+        events: allEvents.map((event) => {
+          try {
+            return {
+              id: event.id,
+              type: event.type,
+              ledger: event.ledger,
+              ledgerClosedAt: event.ledgerClosedAt,
+              txHash: event.txHash,
+              decodedTopics: event.topic?.map((t) => decodeScValSafe(t)) ?? [],
+              decodedValue: event.value ? decodeScValSafe(event.value) : null,
+            };
+          } catch {
+            return {
+              id: event.id,
+              type: event.type,
+              ledger: event.ledger,
+              ledgerClosedAt: event.ledgerClosedAt,
+              txHash: event.txHash,
+              decodedTopics: [],
+              decodedValue: null,
+            };
+          }
+        }),
+      };
     },
     staleTime: STALE_TIME,
   }),

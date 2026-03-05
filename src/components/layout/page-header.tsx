@@ -6,8 +6,12 @@ import { HashDisplay } from "@/components/common";
 import { CopyButton } from "@/components/common/copy-button";
 import { QrDialog } from "@/components/common/qr-dialog";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
+
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 interface PageHeaderProps {
   title: string;
@@ -38,6 +42,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   const t = useTranslations("common");
   const tQr = useTranslations("components.qrDialog");
+  const isMounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
 
   return (
     <div className={cn("mb-6", className)}>
@@ -65,7 +70,7 @@ export function PageHeader({
             {showCopy && (copyValue || hash) && (
               <CopyButton value={copyValue || hash || ""} variant="text" label={t("copy")} />
             )}
-            {showCopy && typeof window !== "undefined" && (copyValue || hash) && (
+            {showCopy && isMounted && (copyValue || hash) && (
               <CopyButton
                 value={`${window.location.origin}${window.location.pathname}`}
                 variant="text"
