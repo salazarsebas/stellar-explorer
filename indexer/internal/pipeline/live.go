@@ -139,9 +139,10 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 	}
 
 	// Fetch transactions for this ledger range
+	const txPageLimit = 200
 	txResult, err := p.rpc.GetTransactions(ctx, source.GetTransactionsParams{
 		StartLedger: startLedger,
-		Pagination:  &source.Pagination{Limit: 200},
+		Pagination:  &source.Pagination{Limit: txPageLimit},
 	})
 	if err != nil {
 		return 0, fmt.Errorf("getTransactions: %w", err)
@@ -150,6 +151,13 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 	// Paginate through all transactions in this range
 	allTxEntries := txResult.Transactions
 	for txResult.Cursor != "" {
+		// If the previous page was not full, we've exhausted all available data.
+		// This also handles the edge case where the target ledger IS the latest
+		// ledger: the RPC returns a partial page with only that ledger's txs and
+		// a cursor that loops back, causing infinite duplicate fetches.
+		if len(txResult.Transactions) < txPageLimit {
+			break
+		}
 		lastTxLedger := uint32(0)
 		if len(txResult.Transactions) > 0 {
 			lastTxLedger = txResult.Transactions[len(txResult.Transactions)-1].Ledger
@@ -161,7 +169,7 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 		}
 
 		txResult, err = p.rpc.GetTransactions(ctx, source.GetTransactionsParams{
-			Pagination: &source.Pagination{Cursor: txResult.Cursor, Limit: 200},
+			Pagination: &source.Pagination{Cursor: txResult.Cursor, Limit: txPageLimit},
 		})
 		if err != nil {
 			return 0, fmt.Errorf("getTransactions (pagination): %w", err)
