@@ -89,9 +89,6 @@ func (p *BackfillPipeline) Run(ctx context.Context, startLedger, endLedger uint3
 func (p *BackfillPipeline) runWorker(ctx context.Context, id int, start, end uint32, processed *atomic.Int64) error {
 	log.Printf("backfill worker %d: processing ledgers %d to %d", id, start, end)
 
-	// Reuse the live pipeline's processing logic via a temporary LivePipeline
-	live := NewLivePipeline(p.rpc, p.store, p.networkPassphrase, p.batchSize)
-
 	cursor := start
 	for cursor <= end {
 		select {
@@ -106,7 +103,7 @@ func (p *BackfillPipeline) runWorker(ctx context.Context, id int, start, end uin
 			limit = remaining
 		}
 
-		count, err := live.processLedgerBatch(ctx, cursor, limit)
+		count, err := p.processLedgerBatch(ctx, cursor, limit)
 		if err != nil {
 			return fmt.Errorf("batch at ledger %d: %w", cursor, err)
 		}
@@ -126,4 +123,40 @@ func (p *BackfillPipeline) runWorker(ctx context.Context, id int, start, end uin
 
 	log.Printf("backfill worker %d: done", id)
 	return nil
+}
+
+// processLedgerBatch fetches a batch of ledgers via getLedgers and extracts
+// transactions from each ledger's MetadataXDR (LedgerCloseMeta).
+func (p *BackfillPipeline) processLedgerBatch(ctx context.Context, startLedger uint32, limit int) (int, error) {
+	ledgerResult, err := p.rpc.GetLedgers(ctx, source.GetLedgersParams{
+		StartLedger: startLedger,
+		Pagination:  &source.Pagination{Limit: limit},
+	})
+	if err != nil {
+		return 0, fmt.Errorf("getLedgers: %w", err)
+	}
+
+	if len(ledgerResult.Ledgers) == 0 {
+		return 0, nil
+	}
+
+	processed := 0
+	for _, rpcLedger := range ledgerResult.Ledgers {
+		lcm, err := source.DecodeMetadataXDR(rpcLedger.MetadataXDR)
+		if err != nil {
+			return processed, fmt.Errorf("decode ledger %d: %w", rpcLedger.Sequence, err)
+		}
+
+		txEntries, err := source.TransactionEntriesFromCloseMeta(lcm, p.networkPassphrase)
+		if err != nil {
+			return processed, fmt.Errorf("extract txs ledger %d: %w", rpcLedger.Sequence, err)
+		}
+
+		if err := ProcessOneLedger(ctx, p.store, nil, p.networkPassphrase, rpcLedger, txEntries); err != nil {
+			return processed, fmt.Errorf("process ledger %d: %w", rpcLedger.Sequence, err)
+		}
+		processed++
+	}
+
+	return processed, nil
 }
