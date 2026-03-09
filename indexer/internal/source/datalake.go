@@ -48,6 +48,16 @@ func NewAnonymousPubnetDataStore(ctx context.Context) (datastore.DataStore, erro
 	return datastore.FromS3Client(ctx, client, dlConfig.Params["destination_bucket_path"])
 }
 
+// DecodeMetadataXDR decodes a base64-encoded MetadataXDR string (from getLedgers RPC)
+// into an xdr.LedgerCloseMeta.
+func DecodeMetadataXDR(metadataXDR string) (xdr.LedgerCloseMeta, error) {
+	var lcm xdr.LedgerCloseMeta
+	if err := xdr.SafeUnmarshalBase64(metadataXDR, &lcm); err != nil {
+		return lcm, fmt.Errorf("unmarshal MetadataXDR: %w", err)
+	}
+	return lcm, nil
+}
+
 func LedgerEntryFromCloseMeta(lcm xdr.LedgerCloseMeta) (LedgerEntry, error) {
 	headerEntry := lcm.LedgerHeaderHistoryEntry()
 	header := headerEntry.Header
