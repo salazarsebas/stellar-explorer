@@ -96,6 +96,20 @@ func TestTransactionEntriesFromCloseMeta(t *testing.T) {
 	}
 }
 
+func TestDecodeMetadataXDR_Invalid(t *testing.T) {
+	_, err := DecodeMetadataXDR("not-valid-xdr")
+	if err == nil {
+		t.Error("expected error for invalid MetadataXDR")
+	}
+}
+
+func TestDecodeMetadataXDR_Empty(t *testing.T) {
+	_, err := DecodeMetadataXDR("")
+	if err == nil {
+		t.Error("expected error for empty MetadataXDR")
+	}
+}
+
 func TestTransactionEntriesWithContent(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping S3 integration test")
