@@ -162,7 +162,7 @@ export function ContractEventDetails({ contractId }: { contractId: string }) {
   }
 
   if (!data?.events?.length) {
-    return <EmptyState title={t("noEvents")} description={t("noEventsDescription")} />;
+    return <EmptyState title={t("noEvents")} description={t("noEventsDescription")} icon="search" />;
   }
 
   return (

@@ -67,7 +67,7 @@ export function ContractTransactions({ contractId }: { contractId: string }) {
   }
 
   if (transactions.length === 0) {
-    return <EmptyState title={t("noTransactions")} description={t("noTransactionsDesc")} />;
+    return <EmptyState title={t("noTransactions")} description={t("noTransactionsDesc")} icon="search" />;
   }
 
   return (

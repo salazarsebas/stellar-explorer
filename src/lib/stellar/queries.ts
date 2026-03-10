@@ -425,14 +425,12 @@ export const stellarQueries = {
   contractInfo: (network: NetworkKey, contractId: string) => ({
     queryKey: stellarKeys.contract(network, contractId),
     queryFn: async () => {
-      const rpc = getRpcClient(network);
       const { Contract } = await import("@stellar/stellar-sdk");
       const contract = new Contract(contractId);
-
-      // Get ledger entries for the contract
       const ledgerKey = contract.getFootprint();
-      const response = await rpc.getLedgerEntries(ledgerKey);
 
+      const rpcClient = getRpcClient(network);
+      const response = await rpcClient.getLedgerEntries(ledgerKey);
       return response.entries;
     },
     staleTime: STALE_TIME,
@@ -441,63 +439,7 @@ export const stellarQueries = {
   contractEvents: (network: NetworkKey, contractId: string, startLedger?: number) => ({
     queryKey: stellarKeys.contractEvents(network, contractId),
     queryFn: async () => {
-      const rpc = getRpcClient(network);
       const { scValToNative } = await import("@stellar/stellar-sdk");
-
-      // Determine start ledger: use the retention window from getEvents
-      // to maximize the lookback. Default fallback is ~24h (~17,280 ledgers).
-      let ledger = startLedger;
-      if (!ledger) {
-        // First, do a minimal getEvents call to discover the retention window
-        const probe = await rpc.getEvents({
-          startLedger: (await rpc.getLatestLedger()).sequence - 10,
-          filters: [{ type: "contract", contractIds: [contractId] }],
-          limit: 1,
-        });
-        const oldest = probe.oldestLedger;
-        const latest = probe.latestLedger;
-        if (oldest && latest) {
-          // Use the full retention window (typically ~7 days)
-          ledger = oldest;
-        } else {
-          const latestLedger = await rpc.getLatestLedger();
-          ledger = latestLedger.sequence - 17_280; // ~24h fallback
-        }
-      }
-
-      const response = await rpc.getEvents({
-        startLedger: ledger,
-        filters: [
-          {
-            type: "contract",
-            contractIds: [contractId],
-          },
-        ],
-        limit: 100,
-      });
-
-      // If we got the max limit, there may be more recent events.
-      // Use cursor-based pagination to fetch the latest events.
-      let allEvents = response.events ?? [];
-      if (allEvents.length === 100) {
-        let cursor = response.cursor;
-        let lastBatch = allEvents;
-        // Keep fetching until we get a non-full batch (max 10 pages = 1000 events)
-        for (let i = 0; i < 9 && lastBatch.length === 100 && cursor; i++) {
-          const nextPage = await rpc.getEvents({
-            cursor,
-            filters: [{ type: "contract", contractIds: [contractId] }],
-            limit: 100,
-          });
-          lastBatch = nextPage.events ?? [];
-          allEvents = allEvents.concat(lastBatch);
-          cursor = nextPage.cursor;
-        }
-        // Keep only the most recent 100 events
-        if (allEvents.length > 100) {
-          allEvents = allEvents.slice(-100);
-        }
-      }
 
       // SDK already parses topic and value as xdr.ScVal objects
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -508,7 +450,6 @@ export const stellarQueries = {
         const type = scVal.switch().name;
         try {
           const native = scValToNative(scVal);
-          // Convert BigInt to string to avoid serialization issues
           if (typeof native === "bigint") {
             return { type, value: native.toString() };
           }
@@ -517,6 +458,50 @@ export const stellarQueries = {
           return { type, value: scVal.toXDR("base64") };
         }
       };
+
+      const rpc = getRpcClient(network);
+
+      // Determine start ledger from the RPC retention window (~7 days)
+      let ledger = startLedger;
+      if (!ledger) {
+        const probe = await rpc.getEvents({
+          startLedger: (await rpc.getLatestLedger()).sequence - 10,
+          filters: [{ type: "contract", contractIds: [contractId] }],
+          limit: 1,
+        });
+        if (probe.oldestLedger && probe.latestLedger) {
+          ledger = probe.oldestLedger;
+        } else {
+          const latest = await rpc.getLatestLedger();
+          ledger = latest.sequence - 17_280; // ~24h fallback
+        }
+      }
+
+      // Fetch events with cursor-based pagination (up to 1000 events, keep latest 100)
+      const response = await rpc.getEvents({
+        startLedger: ledger,
+        filters: [{ type: "contract", contractIds: [contractId] }],
+        limit: 100,
+      });
+
+      let allEvents = response.events ?? [];
+      if (allEvents.length === 100) {
+        let cursor = response.cursor;
+        let lastBatch = allEvents;
+        for (let i = 0; i < 9 && lastBatch.length === 100 && cursor; i++) {
+          const nextPage = await rpc.getEvents({
+            cursor,
+            filters: [{ type: "contract", contractIds: [contractId] }],
+            limit: 100,
+          });
+          lastBatch = nextPage.events ?? [];
+          allEvents = allEvents.concat(lastBatch);
+          cursor = nextPage.cursor;
+        }
+        if (allEvents.length > 100) {
+          allEvents = allEvents.slice(-100);
+        }
+      }
 
       return {
         events: allEvents.map((event) => {
@@ -550,13 +535,9 @@ export const stellarQueries = {
   contractCode: (network: NetworkKey, contractId: string) => ({
     queryKey: stellarKeys.contractCode(network, contractId),
     queryFn: async () => {
-      const rpc = getRpcClient(network);
       const { Contract, xdr } = await import("@stellar/stellar-sdk");
 
-      // Create contract instance
       const contract = new Contract(contractId);
-
-      // Get the contract instance ledger entry
       const contractInstanceKey = xdr.LedgerKey.contractData(
         new xdr.LedgerKeyContractData({
           contract: contract.address().toScAddress(),
@@ -565,19 +546,18 @@ export const stellarQueries = {
         })
       );
 
+      const rpc = getRpcClient(network);
       const instanceResponse = await rpc.getLedgerEntries(contractInstanceKey);
 
       if (!instanceResponse.entries || instanceResponse.entries.length === 0) {
         throw new Error("Contract instance not found");
       }
 
-      // Extract the WASM hash from the contract instance
       const instanceEntry = instanceResponse.entries[0];
       const contractData = instanceEntry.val.contractData();
       const contractInstance = contractData.val().instance();
       const executable = contractInstance.executable();
 
-      // Check if it's a WASM contract (not a Stellar Asset Contract)
       if (executable.switch().name !== "contractExecutableWasm") {
         return {
           type: "sac" as const,
@@ -591,11 +571,8 @@ export const stellarQueries = {
       const wasmHash = executable.wasmHash();
       const wasmHashHex = wasmHash.toString("hex");
 
-      // Now get the WASM code using the hash
       const wasmCodeKey = xdr.LedgerKey.contractCode(
-        new xdr.LedgerKeyContractCode({
-          hash: wasmHash,
-        })
+        new xdr.LedgerKeyContractCode({ hash: wasmHash })
       );
 
       const codeResponse = await rpc.getLedgerEntries(wasmCodeKey);
@@ -623,13 +600,9 @@ export const stellarQueries = {
   contractStorage: (network: NetworkKey, contractId: string) => ({
     queryKey: stellarKeys.contractStorage(network, contractId),
     queryFn: async () => {
-      const rpc = getRpcClient(network);
       const { Contract, xdr, scValToNative } = await import("@stellar/stellar-sdk");
 
-      // Create contract instance
       const contract = new Contract(contractId);
-
-      // Get the contract instance ledger entry
       const contractInstanceKey = xdr.LedgerKey.contractData(
         new xdr.LedgerKeyContractData({
           contract: contract.address().toScAddress(),
@@ -638,6 +611,19 @@ export const stellarQueries = {
         })
       );
 
+      const decodeScVal = (val: xdr.ScVal): { type: string; value: unknown; raw: string } => {
+        const type = val.switch().name;
+        let value: unknown;
+        const raw = val.toXDR("base64");
+        try {
+          value = scValToNative(val);
+        } catch {
+          value = raw;
+        }
+        return { type, value, raw };
+      };
+
+      const rpc = getRpcClient(network);
       const instanceResponse = await rpc.getLedgerEntries(contractInstanceKey);
 
       if (!instanceResponse.entries || instanceResponse.entries.length === 0) {
@@ -648,23 +634,6 @@ export const stellarQueries = {
       const contractData = instanceEntry.val.contractData();
       const contractInstance = contractData.val().instance();
 
-      // Helper to decode ScVal to readable format
-      const decodeScVal = (val: xdr.ScVal): { type: string; value: unknown; raw: string } => {
-        const type = val.switch().name;
-        let value: unknown;
-        const raw = val.toXDR("base64");
-
-        try {
-          value = scValToNative(val);
-        } catch {
-          // If native conversion fails, try to get a string representation
-          value = raw;
-        }
-
-        return { type, value, raw };
-      };
-
-      // Extract instance storage
       const instanceStorage: Array<{
         key: { type: string; value: unknown; raw: string };
         value: { type: string; value: unknown; raw: string };
@@ -682,10 +651,7 @@ export const stellarQueries = {
         }
       }
 
-      // Get live until ledger (TTL info)
       const liveUntilLedger = instanceEntry.liveUntilLedgerSeq;
-
-      // Get latest ledger for TTL calculation
       const latestLedger = await rpc.getLatestLedger();
 
       return {
