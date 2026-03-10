@@ -1,11 +1,11 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 import { RefreshCw, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "./network-selector";
 import { MobileNav } from "./mobile-nav";
-import { StellarLogo } from "./stellar-icon";
 import { GlobalSearch } from "@/components/search/global-search";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
 import { ViewModesToggle } from "@/components/common/view-modes-toggle";
@@ -33,23 +33,26 @@ export function Header() {
 
   return (
     <header className="glass-effect sticky top-0 z-50 border-b border-white/5">
-      <div className="flex h-16 items-center gap-4 px-4 md:px-6">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-4 px-4 md:px-6 lg:px-8">
         {/* Mobile menu */}
         <MobileNav />
 
         {/* Logo (mobile only) */}
         <Link href="/" className="group flex items-center gap-2.5 font-semibold md:hidden">
-          <div className="relative">
-            <div className="bg-primary/40 absolute inset-0 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100" />
-            <StellarLogo className="relative size-8" />
-          </div>
+          <Image
+            src="/stellar-explorer.png"
+            alt="Stellar Explorer"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
         </Link>
 
         {/* Spacer for mobile to push actions to right */}
         <div className="flex-1 md:hidden" />
 
         {/* Global Search */}
-        <GlobalSearch className="md:max-w-2xl md:flex-1" />
+        <GlobalSearch className="md:flex-1" />
 
         {/* Right side actions */}
         <div className="flex items-center gap-1">

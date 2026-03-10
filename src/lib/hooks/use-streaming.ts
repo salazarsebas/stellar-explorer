@@ -26,6 +26,7 @@ export function useLedgerStream(options: StreamingOptions = {}) {
   const { network } = useNetwork();
   const queryClient = useQueryClient();
   const closeRef = useRef<(() => void) | null>(null);
+  const disconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
@@ -48,6 +49,12 @@ export function useLedgerStream(options: StreamingOptions = {}) {
         .cursor("now")
         .stream({
           onmessage: (ledger: Horizon.ServerApi.LedgerRecord) => {
+            // Clear any pending disconnect timeout
+            if (disconnectTimeoutRef.current) {
+              clearTimeout(disconnectTimeoutRef.current);
+              disconnectTimeoutRef.current = null;
+            }
+
             // Update the latest ledger in the query cache
             queryClient.setQueryData(stellarKeys.latestLedger(network), ledger);
 
@@ -73,11 +80,16 @@ export function useLedgerStream(options: StreamingOptions = {}) {
                 error,
               }));
             } else {
-              // Silent reconnection - just update connection state
-              setState((prev) => ({
-                ...prev,
-                isConnected: false,
-              }));
+              // Debounce silent reconnections to avoid flickering
+              if (!disconnectTimeoutRef.current) {
+                disconnectTimeoutRef.current = setTimeout(() => {
+                  setState((prev) => ({
+                    ...prev,
+                    isConnected: false,
+                  }));
+                  disconnectTimeoutRef.current = null;
+                }, 8000);
+              }
             }
           },
         });
@@ -128,6 +140,7 @@ export function useTransactionStream(options: StreamingOptions = {}) {
   const { network } = useNetwork();
   const queryClient = useQueryClient();
   const closeRef = useRef<(() => void) | null>(null);
+  const disconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
@@ -150,6 +163,12 @@ export function useTransactionStream(options: StreamingOptions = {}) {
         .cursor("now")
         .stream({
           onmessage: (transaction: Horizon.ServerApi.TransactionRecord) => {
+            // Clear any pending disconnect timeout
+            if (disconnectTimeoutRef.current) {
+              clearTimeout(disconnectTimeoutRef.current);
+              disconnectTimeoutRef.current = null;
+            }
+
             // Invalidate recent transactions to refetch
             queryClient.invalidateQueries({
               queryKey: stellarKeys.transactions(network),
@@ -175,10 +194,16 @@ export function useTransactionStream(options: StreamingOptions = {}) {
                 error,
               }));
             } else {
-              setState((prev) => ({
-                ...prev,
-                isConnected: false,
-              }));
+              // Debounce silent reconnections to avoid flickering
+              if (!disconnectTimeoutRef.current) {
+                disconnectTimeoutRef.current = setTimeout(() => {
+                  setState((prev) => ({
+                    ...prev,
+                    isConnected: false,
+                  }));
+                  disconnectTimeoutRef.current = null;
+                }, 8000);
+              }
             }
           },
         });
@@ -228,6 +253,7 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
   const { network } = useNetwork();
   const queryClient = useQueryClient();
   const closeRef = useRef<(() => void) | null>(null);
+  const disconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [state, setState] = useState<StreamingState>({
     isConnected: false,
     error: null,
@@ -253,6 +279,12 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
         .cursor("now")
         .stream({
           onmessage: (operation: Horizon.ServerApi.OperationRecord) => {
+            // Clear any pending disconnect timeout
+            if (disconnectTimeoutRef.current) {
+              clearTimeout(disconnectTimeoutRef.current);
+              disconnectTimeoutRef.current = null;
+            }
+
             // Invalidate account operations to refetch
             queryClient.invalidateQueries({
               queryKey: stellarKeys.accountOperations(network, accountId),
@@ -283,10 +315,16 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
                 error,
               }));
             } else {
-              setState((prev) => ({
-                ...prev,
-                isConnected: false,
-              }));
+              // Debounce silent reconnections to avoid flickering
+              if (!disconnectTimeoutRef.current) {
+                disconnectTimeoutRef.current = setTimeout(() => {
+                  setState((prev) => ({
+                    ...prev,
+                    isConnected: false,
+                  }));
+                  disconnectTimeoutRef.current = null;
+                }, 8000);
+              }
             }
           },
         });

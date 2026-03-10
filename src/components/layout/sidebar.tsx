@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { StellarLogo } from "./stellar-icon";
+import Image from "next/image";
 import { useState } from "react";
 
 export function Sidebar() {
@@ -53,10 +53,13 @@ export function Sidebar() {
       {/* Logo */}
       <div className="border-border/50 flex h-16 items-center border-b px-4">
         <Link href="/" className="group flex items-center gap-3">
-          <div className="relative">
-            <div className="bg-primary/30 absolute inset-0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-            <StellarLogo className="relative size-9 shrink-0 transition-transform duration-300 group-hover:scale-110" />
-          </div>
+          <Image
+            src="/stellar-explorer.png"
+            alt="Stellar Explorer"
+            width={36}
+            height={36}
+            className="shrink-0 rounded-lg transition-transform duration-300 group-hover:scale-110"
+          />
           {!collapsed && <span className="text-foreground text-lg font-bold">Stellar</span>}
         </Link>
       </div>

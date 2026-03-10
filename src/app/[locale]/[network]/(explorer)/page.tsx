@@ -162,13 +162,13 @@ function RecentLedgers() {
 
 export default function HomePage() {
   const { network } = useNetwork();
-  const { isConnected: ledgerConnected } = useLedgerStream({ enabled: true });
+  const { isConnected: ledgerConnected, error: ledgerError } = useLedgerStream({ enabled: true });
   const t = useTranslations("home");
   const tCommon = useTranslations("common");
   const tExplore = useTranslations("exploreCards");
 
-  // Determine streaming status
-  const streamingStatus = ledgerConnected ? "connected" : "connecting";
+  // Determine streaming status with disconnected support
+  const streamingStatus = ledgerConnected ? "connected" : ledgerError ? "disconnected" : "connecting";
 
   return (
     <div className="space-y-10">
