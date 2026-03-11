@@ -13,8 +13,12 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
-import { useContractEvents, useContractCode, useContractStorage } from "@/lib/hooks";
-import { ContractVerification } from "@/components/contracts";
+import { useContractCode, useContractStorage } from "@/lib/hooks";
+import {
+  ContractVerification,
+  ContractEventDetails,
+  ContractTransactions,
+} from "@/components/contracts";
 import { isValidContractId, formatCompactNumber } from "@/lib/utils";
 import {
   Activity,
@@ -30,6 +34,7 @@ import {
   HardDrive,
   ChevronDown,
   ChevronUp,
+  ArrowRightLeft,
 } from "lucide-react";
 
 interface ContractContentProps {
@@ -77,62 +82,6 @@ function ContractSummary({ contractId }: { contractId: string }) {
           <div className="space-y-4">
             <ContractVerification contractId={contractId} />
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function ContractEvents({ contractId }: { contractId: string }) {
-  const t = useTranslations("contract");
-  const { data, isLoading, error, refetch } = useContractEvents(contractId);
-
-  if (isLoading) {
-    return <LoadingCard rows={5} />;
-  }
-
-  if (error) {
-    return <ErrorState title={t("failedToLoadEvents")} message={error.message} onRetry={refetch} />;
-  }
-
-  if (!data?.events?.length) {
-    return <EmptyState title={t("noEvents")} description={t("noEventsDescription")} />;
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">
-          {t("recentEvents")} ({data.events.length})
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          {data.events.map(
-            (event: { id?: string; type?: string; ledger?: number }, index: number) => (
-              <div
-                key={`${event.id || index}`}
-                className="bg-card/50 flex items-center justify-between rounded-lg p-3"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="bg-chart-1/10 flex size-8 items-center justify-center rounded-md">
-                    <Activity className="text-chart-1 size-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">
-                      {event.type || t("contractEvent")}
-                    </p>
-                    <p className="text-muted-foreground text-xs">
-                      {t("ledger")} {event.ledger}
-                    </p>
-                  </div>
-                </div>
-                <Badge variant="outline" className="shrink-0">
-                  {event.type === "contract" ? t("contract") : t("system")}
-                </Badge>
-              </div>
-            )
-          )}
         </div>
       </CardContent>
     </Card>
@@ -552,6 +501,10 @@ export function ContractContent({ id }: ContractContentProps) {
             <Activity className="mr-2 size-4" />
             {t("events")}
           </TabsTrigger>
+          <TabsTrigger value="transactions">
+            <ArrowRightLeft className="mr-2 size-4" />
+            {t("contractTransactions")}
+          </TabsTrigger>
           <TabsTrigger value="storage">
             <Database className="mr-2 size-4" />
             {t("storage")}
@@ -562,7 +515,10 @@ export function ContractContent({ id }: ContractContentProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="events" className="mt-4">
-          <ContractEvents contractId={id} />
+          <ContractEventDetails contractId={id} />
+        </TabsContent>
+        <TabsContent value="transactions" className="mt-4">
+          <ContractTransactions contractId={id} />
         </TabsContent>
         <TabsContent value="storage" className="mt-4">
           <ContractStorage contractId={id} />

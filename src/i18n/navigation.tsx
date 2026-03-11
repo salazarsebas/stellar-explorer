@@ -36,7 +36,7 @@ export const Link = forwardRef<HTMLAnchorElement, ComponentProps<typeof nav.Link
 
     const prefixedHref = typeof href === "string" ? `${prefix}${href}` : href;
 
-    return <nav.Link ref={ref} href={prefixedHref} {...props} />;
+    return <nav.Link ref={ref} href={prefixedHref} suppressHydrationWarning {...props} />;
   }
 );
 

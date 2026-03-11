@@ -23,9 +23,10 @@ import {
   formatNumber,
   truncateHash,
 } from "@/lib/utils";
-import { ArrowRight, Code } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
+import { OperationDetails } from "@/components/operations/operation-details";
+import { OperationSummary } from "@/components/operations/operation-summary";
 import { useTranslations } from "next-intl";
 
 interface TransactionContentProps {
@@ -150,7 +151,12 @@ function OperationsTimeline({ hash }: { hash: string }) {
                     <OperationBadge type={op.type} />
                   </div>
 
-                  <OperationDetails operation={op} />
+                  <OperationSummary
+                    operation={op as unknown as Record<string, unknown> & { type: string }}
+                  />
+                  <OperationDetails
+                    operation={op as unknown as Record<string, unknown> & { type: string }}
+                  />
                 </div>
               </div>
             </div>
@@ -161,91 +167,29 @@ function OperationsTimeline({ hash }: { hash: string }) {
   );
 }
 
-function OperationDetails({ operation }: { operation: Horizon.ServerApi.OperationRecord }) {
-  // Operation records have varying shapes depending on operation.type;
-  // cast through unknown to access operation-specific properties safely as a generic record
-  const op = operation as unknown as Record<string, unknown>;
-  const t = useTranslations("account");
-
-  switch (operation.type) {
-    case "payment":
-      return (
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <HashDisplay
-              hash={op.from as string}
-              truncate
-              startLength={6}
-              endLength={4}
-              linkTo={`/account/${op.from}`}
-            />
-            <ArrowRight className="text-muted-foreground size-4" />
-            <HashDisplay
-              hash={op.to as string}
-              truncate
-              startLength={6}
-              endLength={4}
-              linkTo={`/account/${op.to}`}
-            />
-          </div>
-          <div className="text-foreground font-mono">
-            {formatNumber(op.amount as string)}{" "}
-            {op.asset_type === "native" ? "XLM" : (op.asset_code as string)}
-          </div>
-        </div>
-      );
-
-    case "create_account":
-      return (
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">{t("newAccount")}</span>
-            <HashDisplay hash={op.account as string} truncate linkTo={`/account/${op.account}`} />
-          </div>
-          <div className="text-foreground font-mono">
-            {t("startingBalance", { amount: formatNumber(op.starting_balance as string) })}
-          </div>
-        </div>
-      );
-
-    case "change_trust":
-      return (
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">{t("asset")}</span>
-            <span className="font-medium">
-              {op.asset_type === "native" ? "XLM" : (op.asset_code as string)}
-            </span>
-            {typeof op.asset_issuer === "string" && (
-              <HashDisplay hash={op.asset_issuer} truncate startLength={4} endLength={4} />
-            )}
-          </div>
-          {typeof op.limit === "string" && (
-            <div className="text-muted-foreground">
-              {t("limit")} {op.limit === "922337203685.4775807" ? t("max") : formatNumber(op.limit)}
-            </div>
-          )}
-        </div>
-      );
-
-    case "invoke_host_function":
-      return (
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2">
-            <Code className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">{t("sorobanCall")}</span>
-          </div>
-          {typeof op.function === "string" && (
-            <div className="bg-muted/50 rounded p-2 font-mono text-xs">{op.function}</div>
-          )}
-        </div>
-      );
-
-    default:
-      return (
-        <div className="text-muted-foreground text-sm">{operation.type.replace(/_/g, " ")}</div>
-      );
+function getEffectColorClass(effectType: string): string {
+  if (
+    effectType.includes("created") ||
+    effectType.includes("credited") ||
+    effectType.includes("claimed")
+  ) {
+    return "bg-success/5";
   }
+  if (
+    effectType.includes("removed") ||
+    effectType.includes("debited") ||
+    effectType.includes("clawed")
+  ) {
+    return "bg-destructive/5";
+  }
+  if (
+    effectType.includes("updated") ||
+    effectType.includes("trade") ||
+    effectType.includes("changed")
+  ) {
+    return "bg-primary/5";
+  }
+  return "bg-card/50";
 }
 
 function TransactionEffects({ hash }: { hash: string }) {
@@ -281,42 +225,56 @@ function TransactionEffects({ hash }: { hash: string }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {data.records.map((effect: Horizon.ServerApi.EffectRecord) => (
-            <div
-              key={effect.id}
-              className="bg-card/50 flex items-center justify-between rounded-lg p-3"
-            >
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="capitalize">
-                  {effect.type.replace(/_/g, " ")}
-                </Badge>
-                {(effect as Horizon.ServerApi.EffectRecord & { account?: string }).account && (
-                  <HashDisplay
-                    hash={
-                      (effect as Horizon.ServerApi.EffectRecord & { account?: string }).account!
-                    }
-                    truncate
-                    startLength={6}
-                    endLength={4}
-                    linkTo={`/account/${(effect as Horizon.ServerApi.EffectRecord & { account?: string }).account}`}
-                    className="text-sm"
-                  />
+          {data.records.map((effect: Horizon.ServerApi.EffectRecord) => {
+            const eff = effect as unknown as Record<string, unknown>;
+            const effectType = eff.type as string;
+            const colorClass = getEffectColorClass(effectType);
+
+            return (
+              <div
+                key={effect.id}
+                className={`flex items-center justify-between rounded-lg p-3 ${colorClass}`}
+              >
+                <div className="flex items-center gap-3">
+                  <Badge variant="outline" className="capitalize">
+                    {effectType.replace(/_/g, " ")}
+                  </Badge>
+                  {typeof eff.account === "string" && (
+                    <HashDisplay
+                      hash={eff.account}
+                      truncate
+                      startLength={6}
+                      endLength={4}
+                      linkTo={`/account/${eff.account}`}
+                      className="text-sm"
+                    />
+                  )}
+                  {typeof eff.sold_asset_code === "string" && (
+                    <span className="text-muted-foreground text-xs">
+                      {formatNumber(eff.sold_amount as string)}{" "}
+                      {eff.sold_asset_type === "native" ? "XLM" : eff.sold_asset_code}
+                      {" → "}
+                      {formatNumber(eff.bought_amount as string)}{" "}
+                      {eff.bought_asset_type === "native"
+                        ? "XLM"
+                        : (eff.bought_asset_code as string)}
+                    </span>
+                  )}
+                  {typeof eff.weight === "number" && (
+                    <span className="text-muted-foreground text-xs">weight: {eff.weight}</span>
+                  )}
+                </div>
+                {typeof eff.amount === "string" && (
+                  <span className="font-mono text-sm">
+                    {formatNumber(eff.amount)}{" "}
+                    {(eff.asset_type as string) === "native"
+                      ? "XLM"
+                      : (eff.asset_code as string) || ""}
+                  </span>
                 )}
               </div>
-              {(effect as Horizon.ServerApi.EffectRecord & { amount?: string }).amount && (
-                <span className="font-mono text-sm">
-                  {formatNumber(
-                    (effect as Horizon.ServerApi.EffectRecord & { amount?: string }).amount!
-                  )}{" "}
-                  {(effect as Horizon.ServerApi.EffectRecord & { asset_type?: string })
-                    .asset_type === "native"
-                    ? "XLM"
-                    : (effect as Horizon.ServerApi.EffectRecord & { asset_code?: string })
-                        .asset_code || ""}
-                </span>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>

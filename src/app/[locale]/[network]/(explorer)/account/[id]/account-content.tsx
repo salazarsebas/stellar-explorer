@@ -26,6 +26,8 @@ import { formatNumber, truncateHash } from "@/lib/utils";
 import { Star, StarOff, Key, Coins } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
+import { OperationDetails } from "@/components/operations/operation-details";
+import { OperationSummary } from "@/components/operations/operation-summary";
 import { useTranslations } from "next-intl";
 
 interface AccountContentProps {
@@ -211,25 +213,27 @@ function AccountOperations({ accountId }: { accountId: string }) {
     <Card>
       <CardContent className="p-0">
         <div className="divide-border divide-y">
-          {data.records.map((op: Horizon.ServerApi.OperationRecord) => (
-            <div
-              key={op.id}
-              className="hover:bg-card-hover flex items-center justify-between p-4 transition-colors"
-            >
-              <div className="flex min-w-0 items-center gap-3">
-                <OperationBadge type={op.type} />
-                <div className="min-w-0">
-                  <Link
-                    href={`/tx/${op.transaction_hash}`}
-                    className="hover:text-primary font-mono text-sm transition-colors"
-                  >
-                    {truncateHash(op.transaction_hash, 8, 4)}
-                  </Link>
+          {data.records.map((op: Horizon.ServerApi.OperationRecord) => {
+            const opRecord = op as unknown as Record<string, unknown> & { type: string };
+            return (
+              <div key={op.id} className="hover:bg-card-hover p-4 transition-colors">
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <OperationBadge type={op.type} />
+                    <Link
+                      href={`/tx/${op.transaction_hash}`}
+                      className="hover:text-primary font-mono text-sm transition-colors"
+                    >
+                      {truncateHash(op.transaction_hash, 8, 4)}
+                    </Link>
+                  </div>
+                  <TimeAgo timestamp={op.created_at} className="text-xs" />
                 </div>
+                <OperationSummary operation={opRecord} />
+                <OperationDetails operation={opRecord} />
               </div>
-              <TimeAgo timestamp={op.created_at} className="text-xs" />
-            </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>

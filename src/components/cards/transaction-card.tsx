@@ -1,13 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { HashDisplay } from "@/components/common/hash-display";
 import { TimeAgo } from "@/components/common/time-ago";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, XCircle, ChevronRight } from "lucide-react";
+import { CheckCircle2, XCircle, ChevronRight, ArrowRight } from "lucide-react";
 import type { Horizon } from "@stellar/stellar-sdk";
 import { useTranslations } from "next-intl";
+import { decodeTransactionEnvelope } from "@/lib/utils/xdr-decoder";
+import { useNetwork } from "@/lib/providers";
 
 interface TransactionCardProps {
   transaction: Horizon.ServerApi.TransactionRecord;
@@ -18,6 +21,23 @@ interface TransactionCardProps {
 export function TransactionCard({ transaction, className, animationDelay }: TransactionCardProps) {
   const isSuccess = transaction.successful;
   const t = useTranslations("cards.transaction");
+  const tOps = useTranslations("operations");
+  const { network } = useNetwork();
+
+  const decoded = useMemo(() => {
+    const envelopeXdr = (transaction as unknown as { envelope_xdr: string }).envelope_xdr;
+    return decodeTransactionEnvelope(envelopeXdr, network);
+  }, [transaction, network]);
+
+  const operationLabel = useMemo(() => {
+    if (!decoded) return t("unknownOp");
+    const key = decoded.operationType as Parameters<typeof tOps>[0];
+    try {
+      return tOps(key);
+    } catch {
+      return t("unknownOp");
+    }
+  }, [decoded, t, tOps]);
 
   return (
     <Link href={`/tx/${transaction.hash}`}>
@@ -32,7 +52,7 @@ export function TransactionCard({ transaction, className, animationDelay }: Tran
             {/* Status icon with glow */}
             <div
               className={cn(
-                "relative flex size-10 items-center justify-center rounded-xl transition-all duration-300",
+                "relative flex size-10 shrink-0 items-center justify-center rounded-xl transition-all duration-300",
                 isSuccess ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
               )}
             >
@@ -51,28 +71,73 @@ export function TransactionCard({ transaction, className, animationDelay }: Tran
             </div>
 
             {/* Transaction info */}
-            <div className="min-w-0 space-y-1">
-              <HashDisplay
-                hash={transaction.hash}
-                truncate
-                startLength={10}
-                endLength={6}
-                copyable={false}
-                className="font-mono text-sm font-medium"
-              />
-              <div className="text-muted-foreground flex items-center gap-2 text-xs">
+            <div className="min-w-0 flex-1 space-y-1">
+              {/* Row 1: Operation type + amount/asset */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm font-medium">{operationLabel}</span>
+                {decoded?.amount && decoded?.asset && (
+                  <span className="text-muted-foreground shrink-0 text-sm font-medium">
+                    {decoded.amount} {decoded.asset}
+                  </span>
+                )}
+              </div>
+
+              {/* Row 2: Source → Destination */}
+              <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                <HashDisplay
+                  hash={decoded?.sourceAccount ?? transaction.source_account}
+                  truncate
+                  startLength={4}
+                  endLength={4}
+                  copyable={false}
+                  className="text-xs"
+                />
+                {decoded?.destination && (
+                  <>
+                    <ArrowRight className="size-3 shrink-0" />
+                    <HashDisplay
+                      hash={decoded.destination}
+                      truncate
+                      startLength={4}
+                      endLength={4}
+                      copyable={false}
+                      className="text-xs"
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Row 3: Hash, op count, timestamp, memo */}
+              <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-xs">
+                <HashDisplay
+                  hash={transaction.hash}
+                  truncate
+                  startLength={6}
+                  endLength={4}
+                  copyable={false}
+                  className="font-mono text-xs opacity-60"
+                />
+                <span className="opacity-30">|</span>
                 <span>
                   {transaction.operation_count}{" "}
                   {transaction.operation_count !== 1 ? t("operations") : t("operation")}
                 </span>
                 <span className="opacity-30">|</span>
                 <TimeAgo timestamp={transaction.created_at} />
+                {decoded?.memo && decoded.memoType !== "none" && (
+                  <>
+                    <span className="opacity-30">|</span>
+                    <span>
+                      {t("memo")}: &ldquo;{decoded.memo}&rdquo;
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
 
           {/* Arrow indicator */}
-          <ChevronRight className="text-muted-foreground size-5 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+          <ChevronRight className="text-muted-foreground ml-2 size-5 shrink-0 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
         </CardContent>
       </Card>
     </Link>
