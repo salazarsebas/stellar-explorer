@@ -449,8 +449,10 @@
     "averageFee": "Tarifa Promedio",
     "min": "Mín",
     "max": "Máx",
-    "successRate": "Tasa de Éxito de Transacciones",
-    "last100": "Últimas 100 transacciones",
+    "opsPerLedger": "Operaciones por Registro",
+    "avgOps": "Promedio {count} ops/registro",
+    "operationsLabel": "Operaciones",
+    "transactionsLabel": "Transacciones",
     "successful": "Exitosas",
     "total": "Total",
     "transactionVolume": "Volumen de Transacciones",
@@ -590,7 +592,11 @@
   "cards": {
     "transaction": {
       "operation": "operación",
-      "operations": "operaciones"
+      "operations": "operaciones",
+      "from": "De",
+      "to": "Para",
+      "memo": "Memo",
+      "unknownOp": "Transacción"
     },
     "ledger": {
       "txs": "txs",

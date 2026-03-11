@@ -449,8 +449,10 @@
     "averageFee": "平均手数料",
     "min": "最小",
     "max": "最大",
-    "successRate": "トランザクション成功率",
-    "last100": "直近100トランザクション",
+    "opsPerLedger": "レジャーあたりの操作数",
+    "avgOps": "平均 {count} 操作/レジャー",
+    "operationsLabel": "操作",
+    "transactionsLabel": "トランザクション",
     "successful": "成功",
     "total": "合計",
     "transactionVolume": "トランザクション量",
@@ -587,7 +589,11 @@
   "cards": {
     "transaction": {
       "operation": "操作",
-      "operations": "操作"
+      "operations": "操作",
+      "from": "送信元",
+      "to": "送信先",
+      "memo": "メモ",
+      "unknownOp": "トランザクション"
     },
     "ledger": {
       "txs": "txs",

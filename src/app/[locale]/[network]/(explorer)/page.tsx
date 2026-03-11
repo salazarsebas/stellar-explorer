@@ -168,7 +168,11 @@ export default function HomePage() {
   const tExplore = useTranslations("exploreCards");
 
   // Determine streaming status with disconnected support
-  const streamingStatus = ledgerConnected ? "connected" : ledgerError ? "disconnected" : "connecting";
+  const streamingStatus = ledgerConnected
+    ? "connected"
+    : ledgerError
+      ? "disconnected"
+      : "connecting";
 
   return (
     <div className="space-y-10">

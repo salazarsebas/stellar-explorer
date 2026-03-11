@@ -4,6 +4,7 @@ import type { NetworkKey } from "@/types";
 const STORAGE_KEYS = {
   tpsData: (network: NetworkKey) => `stellar_charts_tps_${network}`,
   txHourly: (network: NetworkKey) => `stellar_charts_tx_hourly_${network}`,
+  opsPerLedger: (network: NetworkKey) => `stellar_charts_ops_ledger_${network}`,
 } as const;
 
 export interface TPSDataPoint {
@@ -71,6 +72,21 @@ export function setTxHourlyData(network: NetworkKey, data: TxHourlyDataPoint[]):
   const cutoff = Date.now() - 24 * 60 * 60 * 1000;
   const pruned = data.filter((d) => d.timestamp > cutoff);
   setStoredData(STORAGE_KEYS.txHourly(network), pruned);
+}
+
+export interface OpsPerLedgerDataPoint {
+  ledger: number;
+  ops: number;
+  txs: number;
+}
+
+export function getOpsPerLedgerData(network: NetworkKey): OpsPerLedgerDataPoint[] {
+  return getStoredData<OpsPerLedgerDataPoint[]>(STORAGE_KEYS.opsPerLedger(network)) || [];
+}
+
+export function setOpsPerLedgerData(network: NetworkKey, data: OpsPerLedgerDataPoint[]): void {
+  const trimmed = data.slice(-20);
+  setStoredData(STORAGE_KEYS.opsPerLedger(network), trimmed);
 }
 
 // Get hour start timestamp

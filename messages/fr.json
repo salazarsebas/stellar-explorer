@@ -449,8 +449,10 @@
     "averageFee": "Frais Moyen",
     "min": "Min",
     "max": "Max",
-    "successRate": "Taux de Réussite des Transactions",
-    "last100": "100 dernières transactions",
+    "opsPerLedger": "Opérations par Registre",
+    "avgOps": "Moy. {count} ops/registre",
+    "operationsLabel": "Opérations",
+    "transactionsLabel": "Transactions",
     "successful": "Réussies",
     "total": "Total",
     "transactionVolume": "Volume de Transactions",
@@ -587,7 +589,11 @@
   "cards": {
     "transaction": {
       "operation": "opération",
-      "operations": "opérations"
+      "operations": "opérations",
+      "from": "De",
+      "to": "Vers",
+      "memo": "Mémo",
+      "unknownOp": "Transaction"
     },
     "ledger": {
       "txs": "txs",

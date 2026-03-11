@@ -449,8 +449,10 @@
     "averageFee": "Durchschnittliche Gebühr",
     "min": "Min",
     "max": "Max",
-    "successRate": "Transaktions-Erfolgsrate",
-    "last100": "Letzte 100 Transaktionen",
+    "opsPerLedger": "Operationen pro Ledger",
+    "avgOps": "Durchschn. {count} Ops/Ledger",
+    "operationsLabel": "Operationen",
+    "transactionsLabel": "Transaktionen",
     "successful": "Erfolgreich",
     "total": "Gesamt",
     "transactionVolume": "Transaktionsvolumen",
@@ -587,7 +589,11 @@
   "cards": {
     "transaction": {
       "operation": "Operation",
-      "operations": "Operationen"
+      "operations": "Operationen",
+      "from": "Von",
+      "to": "An",
+      "memo": "Memo",
+      "unknownOp": "Transaktion"
     },
     "ledger": {
       "txs": "Txs",

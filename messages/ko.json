@@ -449,8 +449,10 @@
     "averageFee": "평균 수수료",
     "min": "최소",
     "max": "최대",
-    "successRate": "트랜잭션 성공률",
-    "last100": "최근 100개 트랜잭션",
+    "opsPerLedger": "원장당 작업 수",
+    "avgOps": "평균 {count} 작업/원장",
+    "operationsLabel": "작업",
+    "transactionsLabel": "트랜잭션",
     "successful": "성공",
     "total": "전체",
     "transactionVolume": "트랜잭션 볼륨",
@@ -590,7 +592,11 @@
   "cards": {
     "transaction": {
       "operation": "오퍼레이션",
-      "operations": "오퍼레이션"
+      "operations": "오퍼레이션",
+      "from": "보낸 사람",
+      "to": "받는 사람",
+      "memo": "메모",
+      "unknownOp": "트랜잭션"
     },
     "ledger": {
       "txs": "트랜잭션",

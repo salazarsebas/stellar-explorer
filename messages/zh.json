@@ -449,8 +449,10 @@
     "averageFee": "平均费用",
     "min": "最低",
     "max": "最高",
-    "successRate": "交易成功率",
-    "last100": "最近 100 笔交易",
+    "opsPerLedger": "每账本操作数",
+    "avgOps": "平均 {count} 操作/账本",
+    "operationsLabel": "操作",
+    "transactionsLabel": "交易",
     "successful": "成功",
     "total": "总计",
     "transactionVolume": "交易量",
@@ -587,7 +589,11 @@
   "cards": {
     "transaction": {
       "operation": "操作",
-      "operations": "操作"
+      "operations": "操作",
+      "from": "从",
+      "to": "到",
+      "memo": "备注",
+      "unknownOp": "交易"
     },
     "ledger": {
       "txs": "交易",

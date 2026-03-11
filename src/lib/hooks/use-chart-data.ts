@@ -2,13 +2,15 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useNetwork } from "@/lib/providers";
-import { useLatestLedger, useRecentTransactions } from "./use-stellar-query";
+import { useLatestLedger } from "./use-stellar-query";
 import {
   getTPSData,
   setTPSData,
   getTxHourlyData,
   setTxHourlyData,
   getHourTimestamp,
+  getOpsPerLedgerData,
+  setOpsPerLedgerData,
   type TPSDataPoint,
   type TxHourlyDataPoint,
 } from "@/lib/utils/chart-storage";
@@ -25,10 +27,9 @@ export interface TxChartData {
   isCollecting: boolean;
 }
 
-export interface OperationsChartData {
-  data: { name: string; value: number; color: string }[];
-  total: number;
-  successRate: number;
+export interface OpsPerLedgerChartData {
+  data: { ledger: number; ops: number; txs: number }[];
+  avgOps: number;
   isLoading: boolean;
 }
 
@@ -136,32 +137,38 @@ export function useTxChartData(): TxChartData {
   };
 }
 
-// Hook for operations distribution chart
-export function useOperationsChartData(): OperationsChartData {
-  const { data: txs, isLoading } = useRecentTransactions(100);
+// Hook for ops-per-ledger chart data
+export function useOpsPerLedgerChartData(): OpsPerLedgerChartData {
+  const { network } = useNetwork();
+  const { data: ledger, isLoading } = useLatestLedger();
+  const [ledgerData, setLedgerData] = useState<{ ledger: number; ops: number; txs: number }[]>([]);
 
-  const result = useMemo(() => {
-    if (!txs?.records?.length) {
-      return { data: [], total: 0, successRate: 0 };
-    }
+  useEffect(() => {
+    setLedgerData(getOpsPerLedgerData(network));
+  }, [network]);
 
-    const successful = txs.records.filter((tx) => tx.successful).length;
-    const failed = txs.records.length - successful;
-    const total = txs.records.length;
-    const successRate = Math.round((successful / total) * 100);
+  useEffect(() => {
+    if (!ledger) return;
 
-    return {
-      data: [
-        { name: "Successful", value: successful, color: "hsl(var(--chart-2))" },
-        { name: "Failed", value: failed, color: "hsl(var(--chart-5))" },
-      ],
-      total,
-      successRate,
-    };
-  }, [txs]);
+    setLedgerData((prev) => {
+      if (prev.some((d) => d.ledger === ledger.sequence)) return prev;
 
-  return {
-    ...result,
-    isLoading,
-  };
+      const newPoint = {
+        ledger: ledger.sequence,
+        ops: ledger.operation_count,
+        txs: ledger.successful_transaction_count + ledger.failed_transaction_count,
+      };
+
+      const updated = [...prev, newPoint].slice(-20);
+      setOpsPerLedgerData(network, updated);
+      return updated;
+    });
+  }, [ledger, network]);
+
+  const avgOps = useMemo(() => {
+    if (ledgerData.length === 0) return 0;
+    return Math.round(ledgerData.reduce((sum, d) => sum + d.ops, 0) / ledgerData.length);
+  }, [ledgerData]);
+
+  return { data: ledgerData, avgOps, isLoading };
 }
