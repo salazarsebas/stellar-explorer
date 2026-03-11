@@ -1,0 +1,49 @@
+direction: right
+
+user: User {
+  shape: person
+  style: {
+    fill: "#f8f9fa"
+    stroke: "#495057"
+  }
+}
+
+frontend: Frontend {
+  style: {
+    fill: "#e7f5ff"
+    stroke: "#1971c2"
+  }
+  next: Next.js App
+  ui: React UI
+  query: TanStack Query
+  next -> ui
+  ui -> query
+}
+
+services: Backend Services {
+  style: {
+    fill: "#f8f9fa"
+    stroke: "#495057"
+  }
+  indexer: Go Indexer
+  pg: PostgreSQL
+  redis: Redis
+  search: Typesense
+  indexer -> pg
+  indexer -> redis
+  indexer -> search
+}
+
+stellar: Stellar Network {
+  style: {
+    fill: "#fff3bf"
+    stroke: "#e67700"
+  }
+  horizon: Horizon API
+  rpc: Soroban RPC
+}
+
+user -> frontend.next: Browse
+frontend.query -> stellar.horizon: REST API
+frontend.query -> stellar.rpc: JSON-RPC
+services.indexer -> stellar.horizon: Ingest
