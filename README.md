@@ -18,15 +18,15 @@ The app is **live today**, powered entirely by the Stellar Horizon API and Sorob
 
 The current version is fully operational and covers:
 
-| Feature | Details |
-|---|---|
-| 🔴 **Real-time data** | Live ledger and transaction streaming from Horizon |
-| 🌐 **Multi-network** | Public mainnet, Testnet, and Futurenet |
-| 🪙 **Asset discovery** | Token metadata and logos via `stellar.toml` |
-| 📜 **Smart contracts** | Browse Soroban contract events, code, and storage |
-| 📌 **Watchlist** | Track accounts and assets across sessions |
-| 🌗 **Dark / Light mode** | Optimized for both themes |
-| 🌍 **9 languages** | EN, ES, PT, FR, DE, ZH, JA, KO, RU |
+| Feature                  | Details                                            |
+| ------------------------ | -------------------------------------------------- |
+| 🔴 **Real-time data**    | Live ledger and transaction streaming from Horizon |
+| 🌐 **Multi-network**     | Public mainnet, Testnet, and Futurenet             |
+| 🪙 **Asset discovery**   | Token metadata and logos via `stellar.toml`        |
+| 📜 **Smart contracts**   | Browse Soroban contract events, code, and storage  |
+| 📌 **Watchlist**         | Track accounts and assets across sessions          |
+| 🌗 **Dark / Light mode** | Optimized for both themes                          |
+| 🌍 **9 languages**       | EN, ES, PT, FR, DE, ZH, JA, KO, RU                 |
 
 ---
 
@@ -104,6 +104,7 @@ WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 ## Tech Stack
 
 **Frontend**
+
 - [Next.js 16](https://nextjs.org/) (App Router) + React 19
 - [TanStack Query](https://tanstack.com/query) for data fetching and caching
 - [Tailwind CSS 4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
@@ -111,6 +112,7 @@ WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 - [Bun](https://bun.sh/) as package manager and runtime
 
 **Indexer**
+
 - [Go 1.24](https://go.dev/)
 - [PostgreSQL](https://www.postgresql.org/) + [TimescaleDB](https://www.timescale.com/) for time-series data
 - [Redis](https://redis.io/) for real-time pub/sub
@@ -153,14 +155,14 @@ See [`indexer/README.md`](./indexer/README.md) for the full configuration refere
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `bun run dev` | Start development server |
-| `bun run build` | Build for production |
-| `bun run start` | Start production server |
-| `bun run lint` | Run ESLint |
+| Command          | Description               |
+| ---------------- | ------------------------- |
+| `bun run dev`    | Start development server  |
+| `bun run build`  | Build for production      |
+| `bun run start`  | Start production server   |
+| `bun run lint`   | Run ESLint                |
 | `bun run format` | Format code with Prettier |
-| `bun run test` | Run tests with Vitest |
+| `bun run test`   | Run tests with Vitest     |
 
 ---
 
