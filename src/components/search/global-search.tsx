@@ -146,7 +146,17 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
 
       {/* Search dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder={t("inputPlaceholder")} value={query} onValueChange={setQuery} />
+        <CommandInput
+          placeholder={t("inputPlaceholder")}
+          value={query}
+          onValueChange={setQuery}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && query.trim()) {
+              e.preventDefault();
+              handleSearch(query);
+            }
+          }}
+        />
         <CommandList>
           <CommandEmpty>
             <div className="py-6 text-center">
@@ -158,7 +168,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
           {/* Current query suggestion */}
           {query && (
             <CommandGroup heading={tComponents("search")}>
-              <CommandItem onSelect={() => handleSearch(query)} className="gap-3">
+              <CommandItem value={query} onSelect={() => handleSearch(query)} className="gap-3">
                 <Icon className="size-4" />
                 <div className="flex-1 overflow-hidden">
                   <p className="truncate font-mono text-sm">{truncateHash(query, 16, 16)}</p>
