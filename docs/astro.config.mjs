@@ -6,9 +6,9 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Stellar Explorer",
-      defaultLocale: "en",
+      defaultLocale: "root",
       locales: {
-        en: { label: "English", lang: "en" },
+        root: { label: "English", lang: "en" },
         es: { label: "Español", lang: "es" },
       },
       social: [
