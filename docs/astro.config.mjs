@@ -15,6 +15,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Stellar Explorer",
+      favicon: "/favicon.png",
       customCss: ["./src/styles/custom.css"],
       defaultLocale: "root",
       locales: {
