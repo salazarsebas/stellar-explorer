@@ -5,8 +5,15 @@ stellar: Stellar Network {
     fill: "#fff3bf"
     stroke: "#e67700"
   }
-  horizon: Horizon API
+  node: Stellar Node
   rpc: Soroban RPC
+}
+
+indexer: Indexer API {
+  style: {
+    fill: "#f8f9fa"
+    stroke: "#495057"
+  }
 }
 
 client: "client.ts" {
@@ -14,7 +21,7 @@ client: "client.ts" {
     fill: "#e7f5ff"
     stroke: "#1971c2"
   }
-  horizon_client: getHorizonClient()
+  indexer_client: getIndexerClient()
   rpc_client: getRpcClient()
 }
 
@@ -43,7 +50,8 @@ components: React Components {
   }
 }
 
-stellar.horizon -> client.horizon_client: HTTP
+stellar.node -> indexer: Ingest
+indexer -> client.indexer_client: HTTP
 stellar.rpc -> client.rpc_client: JSON-RPC
 client -> queries: Cached clients
 queries -> hooks: Query options

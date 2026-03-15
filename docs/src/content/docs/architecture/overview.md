@@ -3,7 +3,11 @@ title: Architecture Overview
 description: High-level architecture of Stellar Explorer.
 ---
 
-Stellar Explorer is a Next.js 16 application that reads data from the Stellar network through two APIs: Horizon (REST) and Soroban RPC (JSON-RPC).
+:::caution[Construction in Progress]
+Currently, the production version of Stellar Explorer relies on the **Horizon API** for data retrieval. The custom Indexer architecture described in this section is under active development and will replace direct Horizon calls in future updates to enable advanced features.
+:::
+
+Stellar Explorer is a Next.js 16 application that reads data from the Stellar network through two main interfaces: the **Indexer API** (for optimized historical and real-time data) and **Soroban RPC** (for smart contract interactions).
 
 ![Architecture Overview](../../../assets/diagrams/architecture-overview.svg)
 
@@ -15,22 +19,22 @@ The frontend is a React 19 application built with the Next.js App Router. It use
 
 All pages are server-side rendered on first load and then hydrated for client-side navigation.
 
-### Stellar Network
-
-The application connects directly to Stellar's public infrastructure:
-
-- **Horizon API** — REST API for transactions, accounts, assets, ledgers, and effects
-- **Soroban RPC** — JSON-RPC for smart contract data (code, storage, events)
-
-No custom backend is required for basic explorer functionality.
-
 ### Backend Services (Indexer)
 
-An optional Go-based indexer service processes Stellar ledger data into PostgreSQL (with TimescaleDB), Redis, and Typesense for advanced queries, full-text search, and analytics. See [Indexer Pipeline](/architecture/indexer/) for details.
+The Go-based indexer service processes Stellar ledger data into PostgreSQL (with TimescaleDB), Redis, and Typesense. This architecture enables advanced queries, full-text search, and analytics that are not possible with Horizon alone.
+
+See the [Indexer Pipeline](/architecture/indexer/) for detailed implementation.
+
+### Stellar Network
+
+The system interacts with the Stellar network at two levels:
+
+- **Stellar Node** — Ingested by the Indexer for high-performance data serving.
+- **Soroban RPC** — Queried directly by the frontend for smart contract data (code, storage, events).
 
 ## Key Design Decisions
 
-- **No custom API server** — The frontend queries Stellar directly, reducing infrastructure
-- **Network-agnostic** — All data fetching includes the network parameter, enabling seamless switching
-- **Cached SDK clients** — Horizon and RPC clients are created once per network and reused
-- **Immutable data caching** — Ledgers, transactions, and contract code use `staleTime: Infinity` since they never change
+- **Indexer-first architecture** — Optimized for speed and complex relational queries.
+- **Network-agnostic** — All data fetching includes the network parameter, enabling seamless switching.
+- **Cached SDK clients** — Indexer and RPC clients are created once per network and reused.
+- **Immutable data caching** — Ledgers, transactions, and contract code use `staleTime: Infinity` since they never change.

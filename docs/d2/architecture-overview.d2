@@ -39,11 +39,11 @@ stellar: Stellar Network {
     fill: "#fff3bf"
     stroke: "#e67700"
   }
-  horizon: Horizon API
+  node: Stellar Node
   rpc: Soroban RPC
 }
 
 user -> frontend.next: Browse
-frontend.query -> stellar.horizon: REST API
+frontend.query -> services.indexer: API Requests
 frontend.query -> stellar.rpc: JSON-RPC
-services.indexer -> stellar.horizon: Ingest
+services.indexer -> stellar.node: Ingest
