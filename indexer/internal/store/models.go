@@ -96,6 +96,34 @@ type TokenEvent struct {
 	CreatedAt       time.Time `db:"created_at"`
 }
 
+// Contract represents a row in the contracts table.
+type Contract struct {
+	ContractID         string    `db:"contract_id"`
+	WasmHash           *string   `db:"wasm_hash"`
+	CreatorAccount     *string   `db:"creator_account"`
+	CreatedLedger      uint32    `db:"created_ledger"`
+	CreatedAt          time.Time `db:"created_at"`
+	LastModifiedLedger uint32    `db:"last_modified_ledger"`
+	ContractType       int16     `db:"contract_type"` // 0=wasm, 1=stellar_asset, 2=custom
+	IsSep41Token       bool      `db:"is_sep41_token"`
+	IsSep50NFT         bool      `db:"is_sep50_nft"`
+	TokenName          *string   `db:"token_name"`
+	TokenSymbol        *string   `db:"token_symbol"`
+	TokenDecimals      *int32    `db:"token_decimals"`
+	ContractSpec       *string   `db:"contract_spec"` // JSON
+}
+
+// ContractCode represents a row in the contract_code table.
+type ContractCode struct {
+	WasmHash      string    `db:"wasm_hash"`
+	WasmBytecode  []byte    `db:"wasm_bytecode"`
+	WasmSize      int32     `db:"wasm_size"`
+	SpecXDR       *string   `db:"spec_xdr"`    // base64-encoded raw spec XDR
+	SpecParsed    *string   `db:"spec_parsed"` // JSON parsed spec
+	CreatedLedger uint32    `db:"created_ledger"`
+	CreatedAt     time.Time `db:"created_at"`
+}
+
 // ContractEvent represents a row in the contract_events hypertable.
 type ContractEvent struct {
 	ContractID      string    `db:"contract_id"`

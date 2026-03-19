@@ -184,6 +184,46 @@ func (s *PostgresStore) InsertContractEventBatch(ctx context.Context, events []C
 	return dbTx.Commit()
 }
 
+func (s *PostgresStore) UpsertContract(ctx context.Context, c *Contract) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO contracts (
+			contract_id, wasm_hash, creator_account, created_ledger, created_at,
+			last_modified_ledger, contract_type, is_sep41_token, is_sep50_nft,
+			token_name, token_symbol, token_decimals, contract_spec, updated_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())
+		ON CONFLICT (contract_id) DO UPDATE SET
+			wasm_hash            = EXCLUDED.wasm_hash,
+			last_modified_ledger = EXCLUDED.last_modified_ledger,
+			contract_type        = EXCLUDED.contract_type,
+			is_sep41_token       = EXCLUDED.is_sep41_token,
+			is_sep50_nft         = EXCLUDED.is_sep50_nft,
+			token_name           = COALESCE(EXCLUDED.token_name, contracts.token_name),
+			token_symbol         = COALESCE(EXCLUDED.token_symbol, contracts.token_symbol),
+			token_decimals       = COALESCE(EXCLUDED.token_decimals, contracts.token_decimals),
+			contract_spec        = COALESCE(EXCLUDED.contract_spec, contracts.contract_spec),
+			updated_at           = NOW()`,
+		c.ContractID, c.WasmHash, c.CreatorAccount, c.CreatedLedger, c.CreatedAt,
+		c.LastModifiedLedger, c.ContractType, c.IsSep41Token, c.IsSep50NFT,
+		c.TokenName, c.TokenSymbol, c.TokenDecimals, c.ContractSpec,
+	)
+	return err
+}
+
+func (s *PostgresStore) UpsertContractCode(ctx context.Context, code *ContractCode) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO contract_code (
+			wasm_hash, wasm_bytecode, wasm_size, spec_xdr, spec_parsed, created_ledger, created_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7)
+		ON CONFLICT (wasm_hash) DO UPDATE SET
+			spec_xdr    = COALESCE(EXCLUDED.spec_xdr, contract_code.spec_xdr),
+			spec_parsed = COALESCE(EXCLUDED.spec_parsed, contract_code.spec_parsed),
+			contract_count = contract_code.contract_count + 1`,
+		code.WasmHash, code.WasmBytecode, code.WasmSize,
+		code.SpecXDR, code.SpecParsed, code.CreatedLedger, code.CreatedAt,
+	)
+	return err
+}
+
 // GetLastIngestedLedger returns the last processed ledger sequence.
 func (s *PostgresStore) GetLastIngestedLedger(ctx context.Context) (uint32, error) {
 	var seq uint32

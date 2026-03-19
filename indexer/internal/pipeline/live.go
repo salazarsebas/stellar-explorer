@@ -196,12 +196,13 @@ func (p *LivePipeline) processLedgerBatch(ctx context.Context, startLedger uint3
 }
 
 func (p *LivePipeline) processOneLedger(ctx context.Context, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
-	return ProcessOneLedger(ctx, p.store, p.publisher, p.networkPassphrase, ledgerEntry, txEntries)
+	return ProcessOneLedger(ctx, p.rpc, p.store, p.publisher, p.networkPassphrase, ledgerEntry, txEntries)
 }
 
 // ProcessOneLedger transforms and stores a single ledger with its transactions and operations.
 // It is exported so that different pipeline implementations (live, backfill, S3) can reuse it.
-func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publisher, networkPassphrase string, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
+// rpc may be nil — when provided, new contracts discovered in the ledger are processed asynchronously.
+func ProcessOneLedger(ctx context.Context, rpc *source.RPCClient, db *store.PostgresStore, pub Publisher, networkPassphrase string, ledgerEntry source.LedgerEntry, txEntries []source.TransactionEntry) error {
 	// Transform ledger
 	ledger, err := transform.LedgerFromRPC(ledgerEntry)
 	if err != nil {
@@ -273,6 +274,18 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 	if err := db.InsertOperationBatch(ctx, storeOps); err != nil {
 		return fmt.Errorf("insert operations: %w", err)
 	}
+	// Detect newly created contracts and process their specs asynchronously
+	if rpc != nil && ledgerEntry.MetadataXDR != "" {
+		closedAt := ledger.ClosedAt
+		if detected, err := transform.DetectNewContracts(ledgerEntry.MetadataXDR, ledgerEntry.Sequence, closedAt); err != nil {
+			log.Printf("ledger %d: detect contracts warning: %v", ledgerEntry.Sequence, err)
+		} else {
+			for _, c := range detected {
+				go transform.ProcessContractSpec(context.Background(), rpc, db, c)
+			}
+		}
+	}
+
 	if err := db.InsertTokenEventBatch(ctx, tokenEvents); err != nil {
 		return fmt.Errorf("insert token events: %w", err)
 	}
