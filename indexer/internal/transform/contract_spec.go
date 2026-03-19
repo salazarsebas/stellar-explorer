@@ -298,14 +298,15 @@ func contractCodeLedgerKey(wasmHash xdr.Hash) (string, error) {
 // --- XDR extraction helpers ---
 
 func extractWasmHashFromInstance(entryXDR string) (xdr.Hash, error) {
-	var entry xdr.LedgerEntry
-	if err := xdr.SafeUnmarshalBase64(entryXDR, &entry); err != nil {
+	// getLedgerEntries returns LedgerEntryData (not the full LedgerEntry wrapper).
+	var data xdr.LedgerEntryData
+	if err := xdr.SafeUnmarshalBase64(entryXDR, &data); err != nil {
 		return xdr.Hash{}, fmt.Errorf("unmarshal ledger entry: %w", err)
 	}
-	if entry.Data.Type != xdr.LedgerEntryTypeContractData {
-		return xdr.Hash{}, fmt.Errorf("expected ContractData entry, got %v", entry.Data.Type)
+	if data.Type != xdr.LedgerEntryTypeContractData {
+		return xdr.Hash{}, fmt.Errorf("expected ContractData entry, got %v", data.Type)
 	}
-	cd := entry.Data.ContractData
+	cd := data.ContractData
 	if cd == nil {
 		return xdr.Hash{}, fmt.Errorf("nil contract data")
 	}
@@ -321,14 +322,15 @@ func extractWasmHashFromInstance(entryXDR string) (xdr.Hash, error) {
 }
 
 func extractWasmBytecode(entryXDR string) ([]byte, error) {
-	var entry xdr.LedgerEntry
-	if err := xdr.SafeUnmarshalBase64(entryXDR, &entry); err != nil {
+	// getLedgerEntries returns LedgerEntryData (not the full LedgerEntry wrapper).
+	var data xdr.LedgerEntryData
+	if err := xdr.SafeUnmarshalBase64(entryXDR, &data); err != nil {
 		return nil, fmt.Errorf("unmarshal ledger entry: %w", err)
 	}
-	if entry.Data.Type != xdr.LedgerEntryTypeContractCode {
-		return nil, fmt.Errorf("expected ContractCode entry, got %v", entry.Data.Type)
+	if data.Type != xdr.LedgerEntryTypeContractCode {
+		return nil, fmt.Errorf("expected ContractCode entry, got %v", data.Type)
 	}
-	code := entry.Data.ContractCode
+	code := data.ContractCode
 	if code == nil {
 		return nil, fmt.Errorf("nil contract code")
 	}
