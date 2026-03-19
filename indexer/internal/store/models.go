@@ -29,6 +29,7 @@ type Transaction struct {
 	ApplicationOrder int32     `db:"application_order"`
 	Account          string    `db:"account"`
 	AccountMuxed     *string   `db:"account_muxed"`
+	AccountMuxedID   *int64    `db:"account_muxed_id"`
 	AccountSequence  int64     `db:"account_sequence"`
 	FeeCharged       int64     `db:"fee_charged"`
 	MaxFee           int64     `db:"max_fee"`

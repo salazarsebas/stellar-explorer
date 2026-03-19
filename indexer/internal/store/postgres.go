@@ -54,10 +54,10 @@ func (s *PostgresStore) InsertTransactionBatch(ctx context.Context, txs []Transa
 
 	stmt, err := dbTx.PrepareContext(ctx, `
 		INSERT INTO transactions (hash, ledger_sequence, application_order, account,
-			account_muxed, account_sequence, fee_charged, max_fee, operation_count,
+			account_muxed, account_muxed_id, account_sequence, fee_charged, max_fee, operation_count,
 			memo_type, memo_text, memo_hash, status, is_soroban, soroban_resources,
 			envelope_xdr, result_xdr, result_meta_xdr, fee_meta_xdr, created_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
 		ON CONFLICT DO NOTHING`)
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (s *PostgresStore) InsertTransactionBatch(ctx context.Context, txs []Transa
 	for _, t := range txs {
 		_, err := stmt.ExecContext(ctx,
 			t.Hash, t.LedgerSequence, t.ApplicationOrder, t.Account,
-			t.AccountMuxed, t.AccountSequence, t.FeeCharged, t.MaxFee, t.OperationCount,
+			t.AccountMuxed, t.AccountMuxedID, t.AccountSequence, t.FeeCharged, t.MaxFee, t.OperationCount,
 			t.MemoType, t.MemoText, t.MemoHash, t.Status, t.IsSoroban, t.SorobanResources,
 			t.EnvelopeXDR, t.ResultXDR, t.ResultMetaXDR, t.FeeMetaXDR, t.CreatedAt)
 		if err != nil {

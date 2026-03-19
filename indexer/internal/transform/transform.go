@@ -87,12 +87,8 @@ func TransactionFromRPC(entry source.TransactionEntry, networkPassphrase string)
 		memoText = &idStr
 	}
 
-	// Determine muxed account if applicable
-	var accountMuxed *string
-	if sourceAccount.Type == xdr.CryptoKeyTypeKeyTypeMuxedEd25519 {
-		addr := sourceAccount.Address()
-		accountMuxed = &addr
-	}
+	// Determine muxed account fields if applicable
+	_, accountMuxed, accountMuxedID := parseMuxedAccount(sourceAccount)
 
 	// Status: 1 = success, 0 = failed
 	var status int16
@@ -113,6 +109,7 @@ func TransactionFromRPC(entry source.TransactionEntry, networkPassphrase string)
 		ApplicationOrder: entry.ApplicationOrder,
 		Account:          accountAddr,
 		AccountMuxed:     accountMuxed,
+		AccountMuxedID:   accountMuxedID,
 		AccountSequence:  envelope.SeqNum(),
 		FeeCharged:       int64(result.FeeCharged),
 		MaxFee:           int64(envelope.Fee()),
