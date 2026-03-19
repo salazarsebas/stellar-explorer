@@ -280,10 +280,13 @@ func ProcessOneLedger(ctx context.Context, rpc *source.RPCClient, db *store.Post
 		if detected, err := transform.DetectNewContracts(ledgerEntry.MetadataXDR, ledgerEntry.Sequence, closedAt); err != nil {
 			log.Printf("ledger %d: detect contracts warning: %v", ledgerEntry.Sequence, err)
 		} else {
+			log.Printf("ledger %d: detected %d new contracts", ledgerEntry.Sequence, len(detected))
 			for _, c := range detected {
 				go transform.ProcessContractSpec(context.Background(), rpc, db, c)
 			}
 		}
+	} else {
+		log.Printf("ledger %d: skipping contract detection (rpc=%v metaXDR_empty=%v)", ledgerEntry.Sequence, rpc == nil, ledgerEntry.MetadataXDR == "")
 	}
 
 	if err := db.InsertTokenEventBatch(ctx, tokenEvents); err != nil {

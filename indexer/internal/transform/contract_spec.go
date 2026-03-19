@@ -38,6 +38,27 @@ type DetectedContract struct {
 	CreatedAt      time.Time
 }
 
+// collectTxApplyChanges extracts ledger entry changes from a TransactionMeta.
+func collectTxApplyChanges(ledgerSeq uint32, meta xdr.TransactionMeta, out *[]xdr.LedgerEntryChange) {
+	log.Printf("detect_contracts: ledger %d tx_meta_version=%d", ledgerSeq, meta.V)
+	switch meta.V {
+	case 3:
+		if meta.V3 != nil {
+			*out = append(*out, meta.V3.TxChangesAfter...)
+			for _, op := range meta.V3.Operations {
+				*out = append(*out, op.Changes...)
+			}
+		}
+	case 4:
+		if meta.V4 != nil {
+			*out = append(*out, meta.V4.TxChangesAfter...)
+			for _, op := range meta.V4.Operations {
+				*out = append(*out, op.Changes...)
+			}
+		}
+	}
+}
+
 // DetectNewContracts scans TransactionMeta for newly created contract instances.
 // Returns a list of contracts detected in this ledger.
 func DetectNewContracts(metaXDR string, ledgerSeq uint32, closedAt time.Time) ([]DetectedContract, error) {
@@ -54,6 +75,7 @@ func DetectNewContracts(metaXDR string, ledgerSeq uint32, closedAt time.Time) ([
 	switch lcm.V {
 	case 0:
 		if lcm.V0 != nil {
+			log.Printf("detect_contracts: ledger %d lcm=V0 txs=%d", ledgerSeq, len(lcm.V0.TxProcessing))
 			for _, txMeta := range lcm.V0.TxProcessing {
 				allChanges = append(allChanges, txMeta.TxApplyProcessing.V3.TxChangesAfter...)
 				for _, op := range txMeta.TxApplyProcessing.V3.Operations {
@@ -63,26 +85,20 @@ func DetectNewContracts(metaXDR string, ledgerSeq uint32, closedAt time.Time) ([
 		}
 	case 1:
 		if lcm.V1 != nil {
+			log.Printf("detect_contracts: ledger %d lcm=V1 txs=%d", ledgerSeq, len(lcm.V1.TxProcessing))
 			for _, txMeta := range lcm.V1.TxProcessing {
-				switch txMeta.TxApplyProcessing.V {
-				case 3:
-					if txMeta.TxApplyProcessing.V3 != nil {
-						allChanges = append(allChanges, txMeta.TxApplyProcessing.V3.TxChangesAfter...)
-						for _, op := range txMeta.TxApplyProcessing.V3.Operations {
-							allChanges = append(allChanges, op.Changes...)
-						}
-					}
-				case 4:
-					if txMeta.TxApplyProcessing.V4 != nil {
-						allChanges = append(allChanges, txMeta.TxApplyProcessing.V4.TxChangesAfter...)
-						for _, op := range txMeta.TxApplyProcessing.V4.Operations {
-							allChanges = append(allChanges, op.Changes...)
-						}
-					}
-				}
+				collectTxApplyChanges(ledgerSeq, txMeta.TxApplyProcessing, &allChanges)
+			}
+		}
+	case 2:
+		if lcm.V2 != nil {
+			log.Printf("detect_contracts: ledger %d lcm=V2 txs=%d", ledgerSeq, len(lcm.V2.TxProcessing))
+			for _, txMeta := range lcm.V2.TxProcessing {
+				collectTxApplyChanges(ledgerSeq, txMeta.TxApplyProcessing, &allChanges)
 			}
 		}
 	}
+	log.Printf("detect_contracts: ledger %d total_changes=%d", ledgerSeq, len(allChanges))
 
 	var detected []DetectedContract
 	for _, change := range allChanges {
@@ -125,6 +141,7 @@ func DetectNewContracts(metaXDR string, ledgerSeq uint32, closedAt time.Time) ([
 // ProcessContractSpec fetches WASM, parses the contract spec, classifies the contract,
 // and upserts it into the store. This is designed to run asynchronously.
 func ProcessContractSpec(ctx context.Context, rpc *source.RPCClient, db *store.PostgresStore, contract DetectedContract) {
+	log.Printf("contract_spec: starting processing for %s (ledger %d)", contract.ContractID, contract.CreatedLedger)
 	// Step 1: Fetch contract instance to get wasm_hash
 	instanceKey, err := contractInstanceLedgerKey(contract.ContractID)
 	if err != nil {
