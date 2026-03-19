@@ -252,6 +252,17 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 		tokenEvents = nil
 	}
 
+	// Extract contract events from each transaction's result meta
+	var contractEvents []store.ContractEvent
+	for _, txEntry := range txEntries {
+		ces, err := transform.ContractEventsFromTransaction(txEntry, networkPassphrase)
+		if err != nil {
+			log.Printf("ledger %d: contract event extraction warning: %v", ledgerEntry.Sequence, err)
+			continue
+		}
+		contractEvents = append(contractEvents, ces...)
+	}
+
 	// Write to database
 	if err := db.InsertLedger(ctx, ledger); err != nil {
 		return fmt.Errorf("insert ledger: %w", err)
@@ -264,6 +275,9 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 	}
 	if err := db.InsertTokenEventBatch(ctx, tokenEvents); err != nil {
 		return fmt.Errorf("insert token events: %w", err)
+	}
+	if err := db.InsertContractEventBatch(ctx, contractEvents); err != nil {
+		return fmt.Errorf("insert contract events: %w", err)
 	}
 
 	// Update cursor

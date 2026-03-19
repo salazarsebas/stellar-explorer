@@ -95,3 +95,20 @@ type TokenEvent struct {
 	OperationIndex  *int32    `db:"operation_index"`
 	CreatedAt       time.Time `db:"created_at"`
 }
+
+// ContractEvent represents a row in the contract_events hypertable.
+type ContractEvent struct {
+	ContractID      string    `db:"contract_id"`
+	TransactionHash string    `db:"transaction_hash"`
+	LedgerSequence  uint32    `db:"ledger_sequence"`
+	Type            int16     `db:"type"`           // 0=contract, 1=system, 2=diagnostic
+	Topic1          *string   `db:"topic_1"`
+	Topic2          *string   `db:"topic_2"`
+	Topic3          *string   `db:"topic_3"`
+	Topic4          *string   `db:"topic_4"`
+	TopicsXDR       string    `db:"topics_xdr"`     // base64 encoded
+	ValueXDR        string    `db:"value_xdr"`      // base64 encoded
+	TopicsDecoded   *string   `db:"topics_decoded"` // JSON
+	ValueDecoded    *string   `db:"value_decoded"`  // JSON
+	CreatedAt       time.Time `db:"created_at"`
+}
