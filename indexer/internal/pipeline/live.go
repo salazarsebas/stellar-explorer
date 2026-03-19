@@ -244,6 +244,14 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 	}
 	ledger.OperationCount = opCount
 
+	// Extract CAP-67 token events from LedgerCloseMeta
+	tokenEvents, err := transform.TokenEventsFromLedgerMeta(ledgerEntry.MetadataXDR, networkPassphrase)
+	if err != nil {
+		log.Printf("ledger %d: token event extraction warning: %v", ledgerEntry.Sequence, err)
+		// Non-fatal: continue without token events
+		tokenEvents = nil
+	}
+
 	// Write to database
 	if err := db.InsertLedger(ctx, ledger); err != nil {
 		return fmt.Errorf("insert ledger: %w", err)
@@ -253,6 +261,9 @@ func ProcessOneLedger(ctx context.Context, db *store.PostgresStore, pub Publishe
 	}
 	if err := db.InsertOperationBatch(ctx, storeOps); err != nil {
 		return fmt.Errorf("insert operations: %w", err)
+	}
+	if err := db.InsertTokenEventBatch(ctx, tokenEvents); err != nil {
+		return fmt.Errorf("insert token events: %w", err)
 	}
 
 	// Update cursor
