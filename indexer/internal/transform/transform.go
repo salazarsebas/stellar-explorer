@@ -61,10 +61,9 @@ func TransactionFromRPC(entry source.TransactionEntry, networkPassphrase string)
 	}
 
 	sourceAccount := envelope.SourceAccount()
-	accountAddr, err := sourceAccount.GetAddress()
-	if err != nil {
-		return nil, fmt.Errorf("get source account address: %w", err)
-	}
+	// Always use the base G-address (ToAccountId strips the muxed memo ID).
+	// The full M-address is stored separately in account_muxed when present.
+	accountAddr := sourceAccount.ToAccountId().Address()
 
 	memo := envelope.Memo()
 	memoType := int16(memo.Type)
@@ -152,10 +151,9 @@ func OperationsFromRPC(entry source.TransactionEntry, networkPassphrase string) 
 
 		var sourceAccount *string
 		if op.SourceAccount != nil {
-			addr, err := op.SourceAccount.GetAddress()
-			if err == nil {
-				sourceAccount = &addr
-			}
+			// ToAccountId strips the muxed memo ID, keeping a plain 56-char G-address.
+			addr := op.SourceAccount.ToAccountId().Address()
+			sourceAccount = &addr
 		}
 
 		details := extractOperationDetails(op)
@@ -285,7 +283,7 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 	switch op.Body.Type {
 	case xdr.OperationTypePayment:
 		payment := op.Body.MustPaymentOp()
-		dest := payment.Destination.Address()
+		dest := payment.Destination.ToAccountId().Address()
 		storeOp.Destination = &dest
 		amount := fmt.Sprintf("%d", payment.Amount)
 		storeOp.Amount = &amount
@@ -300,7 +298,7 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 		storeOp.Amount = &amount
 	case xdr.OperationTypePathPaymentStrictReceive:
 		pp := op.Body.MustPathPaymentStrictReceiveOp()
-		dest := pp.Destination.Address()
+		dest := pp.Destination.ToAccountId().Address()
 		storeOp.Destination = &dest
 		amount := fmt.Sprintf("%d", pp.DestAmount)
 		storeOp.Amount = &amount
@@ -309,7 +307,7 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 		storeOp.AssetIssuer = issuer
 	case xdr.OperationTypePathPaymentStrictSend:
 		pp := op.Body.MustPathPaymentStrictSendOp()
-		dest := pp.Destination.Address()
+		dest := pp.Destination.ToAccountId().Address()
 		storeOp.Destination = &dest
 		amount := fmt.Sprintf("%d", pp.SendAmount)
 		storeOp.Amount = &amount
