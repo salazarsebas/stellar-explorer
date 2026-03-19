@@ -48,20 +48,24 @@ type Transaction struct {
 
 // Operation represents a row in the operations hypertable.
 type Operation struct {
-	TransactionID    int64     `db:"transaction_id"`
-	TransactionHash  string    `db:"transaction_hash"`
-	ApplicationOrder int32     `db:"application_order"`
-	Type             int16     `db:"type"`
-	TypeName         string    `db:"type_name"`
-	SourceAccount    *string   `db:"source_account"`
-	AssetCode        *string   `db:"asset_code"`
-	AssetIssuer      *string   `db:"asset_issuer"`
-	Amount           *string   `db:"amount"`
-	Destination      *string   `db:"destination"`
-	ContractID       *string   `db:"contract_id"`
-	FunctionName     *string   `db:"function_name"`
-	Details          string    `db:"details"` // JSON
-	CreatedAt        time.Time `db:"created_at"`
+	TransactionID      int64     `db:"transaction_id"`
+	TransactionHash    string    `db:"transaction_hash"`
+	ApplicationOrder   int32     `db:"application_order"`
+	Type               int16     `db:"type"`
+	TypeName           string    `db:"type_name"`
+	SourceAccount      *string   `db:"source_account"`
+	SourceAccountMuxed *string   `db:"source_account_muxed"`
+	SourceMuxedID      *int64    `db:"source_muxed_id"`
+	AssetCode          *string   `db:"asset_code"`
+	AssetIssuer        *string   `db:"asset_issuer"`
+	Amount             *string   `db:"amount"`
+	Destination        *string   `db:"destination"`
+	DestinationMuxed   *string   `db:"destination_muxed"`
+	DestinationMuxedID *int64    `db:"destination_muxed_id"`
+	ContractID         *string   `db:"contract_id"`
+	FunctionName       *string   `db:"function_name"`
+	Details            string    `db:"details"` // JSON
+	CreatedAt          time.Time `db:"created_at"`
 }
 
 // Effect represents a row in the effects hypertable.

@@ -150,23 +150,28 @@ func OperationsFromRPC(entry source.TransactionEntry, networkPassphrase string) 
 		typeName := operationTypeName(opType)
 
 		var sourceAccount *string
+		var sourceAccountMuxed *string
+		var sourceMuxedID *int64
 		if op.SourceAccount != nil {
-			// ToAccountId strips the muxed memo ID, keeping a plain 56-char G-address.
-			addr := op.SourceAccount.ToAccountId().Address()
-			sourceAccount = &addr
+			base, muxed, muxedID := parseMuxedAccount(*op.SourceAccount)
+			sourceAccount = &base
+			sourceAccountMuxed = muxed
+			sourceMuxedID = muxedID
 		}
 
 		details := extractOperationDetails(op)
 		detailsJSON, _ := json.Marshal(details)
 
 		storeOp := store.Operation{
-			TransactionHash:  txHash,
-			ApplicationOrder: int32(i + 1),
-			Type:             int16(opType),
-			TypeName:         typeName,
-			SourceAccount:    sourceAccount,
-			Details:          string(detailsJSON),
-			CreatedAt:        createdAt,
+			TransactionHash:    txHash,
+			ApplicationOrder:   int32(i + 1),
+			Type:               int16(opType),
+			TypeName:           typeName,
+			SourceAccount:      sourceAccount,
+			SourceAccountMuxed: sourceAccountMuxed,
+			SourceMuxedID:      sourceMuxedID,
+			Details:            string(detailsJSON),
+			CreatedAt:          createdAt,
 		}
 
 		// Extract denormalized fields from specific operation types
@@ -283,8 +288,10 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 	switch op.Body.Type {
 	case xdr.OperationTypePayment:
 		payment := op.Body.MustPaymentOp()
-		dest := payment.Destination.ToAccountId().Address()
-		storeOp.Destination = &dest
+		base, muxed, muxedID := parseMuxedAccount(payment.Destination)
+		storeOp.Destination = &base
+		storeOp.DestinationMuxed = muxed
+		storeOp.DestinationMuxedID = muxedID
 		amount := fmt.Sprintf("%d", payment.Amount)
 		storeOp.Amount = &amount
 		code, issuer := assetParts(payment.Asset)
@@ -298,8 +305,10 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 		storeOp.Amount = &amount
 	case xdr.OperationTypePathPaymentStrictReceive:
 		pp := op.Body.MustPathPaymentStrictReceiveOp()
-		dest := pp.Destination.ToAccountId().Address()
-		storeOp.Destination = &dest
+		base, muxed, muxedID := parseMuxedAccount(pp.Destination)
+		storeOp.Destination = &base
+		storeOp.DestinationMuxed = muxed
+		storeOp.DestinationMuxedID = muxedID
 		amount := fmt.Sprintf("%d", pp.DestAmount)
 		storeOp.Amount = &amount
 		code, issuer := assetParts(pp.DestAsset)
@@ -307,8 +316,10 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 		storeOp.AssetIssuer = issuer
 	case xdr.OperationTypePathPaymentStrictSend:
 		pp := op.Body.MustPathPaymentStrictSendOp()
-		dest := pp.Destination.ToAccountId().Address()
-		storeOp.Destination = &dest
+		base, muxed, muxedID := parseMuxedAccount(pp.Destination)
+		storeOp.Destination = &base
+		storeOp.DestinationMuxed = muxed
+		storeOp.DestinationMuxedID = muxedID
 		amount := fmt.Sprintf("%d", pp.SendAmount)
 		storeOp.Amount = &amount
 		code, issuer := assetParts(pp.SendAsset)
@@ -319,6 +330,23 @@ func enrichOperation(storeOp *store.Operation, op xdr.Operation, details map[str
 		fnType := invoke.HostFunction.Type.String()
 		storeOp.FunctionName = &fnType
 	}
+}
+
+// parseMuxedAccount splits a MuxedAccount into:
+//   - base: the plain 56-char G-address (always present)
+//   - muxed: the full M-address (only when muxed, nil otherwise)
+//   - muxedID: the 64-bit integer muxed ID (only when muxed, nil otherwise)
+func parseMuxedAccount(m xdr.MuxedAccount) (base string, muxed *string, muxedID *int64) {
+	base = m.ToAccountId().Address()
+	if m.Type == xdr.CryptoKeyTypeKeyTypeMuxedEd25519 {
+		addr := m.Address()
+		muxed = &addr
+		if rawID, ok := m.GetMed25519(); ok {
+			id64 := int64(rawID.Id)
+			muxedID = &id64
+		}
+	}
+	return
 }
 
 func assetString(asset xdr.Asset) string {

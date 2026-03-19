@@ -90,9 +90,11 @@ func (s *PostgresStore) InsertOperationBatch(ctx context.Context, ops []Operatio
 
 	stmt, err := dbTx.PrepareContext(ctx, `
 		INSERT INTO operations (transaction_id, transaction_hash, application_order,
-			type, type_name, source_account, asset_code, asset_issuer, amount,
-			destination, contract_id, function_name, details, created_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+			type, type_name, source_account, source_account_muxed, source_muxed_id,
+			asset_code, asset_issuer, amount,
+			destination, destination_muxed, destination_muxed_id,
+			contract_id, function_name, details, created_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
 		ON CONFLICT DO NOTHING`)
 	if err != nil {
 		return err
@@ -102,8 +104,10 @@ func (s *PostgresStore) InsertOperationBatch(ctx context.Context, ops []Operatio
 	for _, o := range ops {
 		_, err := stmt.ExecContext(ctx,
 			o.TransactionID, o.TransactionHash, o.ApplicationOrder,
-			o.Type, o.TypeName, o.SourceAccount, o.AssetCode, o.AssetIssuer, o.Amount,
-			o.Destination, o.ContractID, o.FunctionName, o.Details, o.CreatedAt)
+			o.Type, o.TypeName, o.SourceAccount, o.SourceAccountMuxed, o.SourceMuxedID,
+			o.AssetCode, o.AssetIssuer, o.Amount,
+			o.Destination, o.DestinationMuxed, o.DestinationMuxedID,
+			o.ContractID, o.FunctionName, o.Details, o.CreatedAt)
 		if err != nil {
 			return err
 		}
