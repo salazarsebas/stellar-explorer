@@ -75,6 +75,9 @@ func DetectNewContracts(metaXDR string, ledgerSeq uint32, closedAt time.Time) ([
 				case 4:
 					if txMeta.TxApplyProcessing.V4 != nil {
 						allChanges = append(allChanges, txMeta.TxApplyProcessing.V4.TxChangesAfter...)
+						for _, op := range txMeta.TxApplyProcessing.V4.Operations {
+							allChanges = append(allChanges, op.Changes...)
+						}
 					}
 				}
 			}
