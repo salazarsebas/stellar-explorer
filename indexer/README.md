@@ -127,6 +127,8 @@ This generates two files in `indexer/migrations/`:
 000014_your_description.down.sql  # rollback (DROP TABLE IF EXISTS ... CASCADE)
 ```
 
+The version is zero-padded to 6 digits by the CLI (`000014`, `000015`, ...).
+
 Fill in both files, then apply:
 
 ```bash
