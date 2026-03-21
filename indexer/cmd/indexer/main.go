@@ -47,8 +47,7 @@ func main() {
 	case "s3backfill":
 		runS3Backfill(cfg)
 	case "migrate":
-		fmt.Println("Running migrations...")
-		// TODO: implement
+		runMigrate(cfg.DatabaseURL)
 	default:
 		log.Fatalf("Unknown command: %s. Use: live, backfill, s3backfill, migrate", os.Args[1])
 	}

@@ -5,13 +5,11 @@ on:
     branches: [main, develop]
     paths:
       - "indexer/**"
-      - "migrations/**"
       - ".github/workflows/indexer-ci.yml"
   pull_request:
     branches: [main, develop]
     paths:
       - "indexer/**"
-      - "migrations/**"
       - ".github/workflows/indexer-ci.yml"
 
 jobs:
@@ -70,7 +68,6 @@ jobs:
         run: sudo apt-get install -y --no-install-recommends postgresql-client
 
       - name: Run migrations
-        working-directory: .
         run: |
           psql "$TEST_DATABASE_URL" -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"
           for f in migrations/*.up.sql; do

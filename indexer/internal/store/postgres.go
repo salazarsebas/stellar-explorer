@@ -264,6 +264,10 @@ func (s *PostgresStore) QueryRow(ctx context.Context, query string, args ...inte
 	return s.db.QueryRowContext(ctx, query, args...)
 }
 
+func (s *PostgresStore) DB() *sql.DB {
+	return s.db
+}
+
 func (s *PostgresStore) Close() error {
 	return s.db.Close()
 }
