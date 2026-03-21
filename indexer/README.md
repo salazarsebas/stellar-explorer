@@ -37,6 +37,7 @@ make build
 
 ```bash
 make build          # Compile to bin/indexer
+make migrate        # Apply pending database migrations
 make test           # Run all tests
 make fmt            # Format code
 make lint           # Run go vet
@@ -100,8 +101,7 @@ Migrations live in `indexer/migrations/` and are embedded in the binary at build
 ### Running migrations
 
 ```bash
-make build
-./bin/indexer migrate
+make migrate
 ```
 
 This applies all pending migrations in order. Running it again when already up to date is safe — it exits cleanly with no changes.
@@ -129,8 +129,7 @@ The `.up.sql` contains the forward change (e.g. `CREATE TABLE`, `ALTER TABLE`, `
 After adding the files, rebuild and migrate:
 
 ```bash
-make build
-./bin/indexer migrate
+make migrate
 ```
 
 ## Resetting the database
