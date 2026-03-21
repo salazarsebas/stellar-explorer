@@ -74,3 +74,24 @@ type Effect struct {
 	Details         string    `db:"details"` // JSON
 	CreatedAt       time.Time `db:"created_at"`
 }
+
+// TokenEvent represents a row in the token_events hypertable (CAP-67 unified events).
+type TokenEvent struct {
+	EventType       int16     `db:"event_type"`      // 0=transfer, 1=mint, 2=burn, 3=clawback, 4=fee
+	EventTypeName   string    `db:"event_type_name"` // "transfer", "mint", etc.
+	FromAddress     *string   `db:"from_address"`
+	FromMuxed       *string   `db:"from_muxed"`
+	ToAddress       *string   `db:"to_address"`
+	ToMuxed         *string   `db:"to_muxed"`
+	ToMuxedID       *int64    `db:"to_muxed_id"`
+	AssetType       int16     `db:"asset_type"`       // 0=native, 1=credit, 2=soroban_token
+	AssetCode       *string   `db:"asset_code"`
+	AssetIssuer     *string   `db:"asset_issuer"`
+	AssetContractID *string   `db:"asset_contract_id"`
+	Amount          string    `db:"amount"`           // i128 as decimal string
+	AmountFormatted *string   `db:"amount_formatted"` // formatted with decimals (optional)
+	TransactionHash string    `db:"transaction_hash"`
+	LedgerSequence  uint32    `db:"ledger_sequence"`
+	OperationIndex  *int32    `db:"operation_index"`
+	CreatedAt       time.Time `db:"created_at"`
+}

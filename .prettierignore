@@ -7,4 +7,5 @@ coverage
 pnpm-lock.yaml
 package-lock.json
 .claude/
+.agents/
 docs/
