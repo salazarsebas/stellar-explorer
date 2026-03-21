@@ -106,6 +106,17 @@ make migrate
 
 This applies all pending migrations in order. Running it again when already up to date is safe — it exits cleanly with no changes.
 
+> **Existing database?** If your database was set up before `make migrate` was introduced (tables already exist but no `schema_migrations` table), mark the current version manually before running:
+>
+> ```sql
+> docker compose exec postgres psql -U explorer -d stellar_explorer -c "
+>   CREATE TABLE IF NOT EXISTS schema_migrations (version bigint not null primary key, dirty boolean not null);
+>   INSERT INTO schema_migrations (version, dirty) VALUES (13, false);
+> "
+> ```
+>
+> This tells golang-migrate the schema is already at version 13. After this, `make migrate` works normally.
+
 ### Creating a new migration
 
 Migration files follow the `golang-migrate` naming convention:
