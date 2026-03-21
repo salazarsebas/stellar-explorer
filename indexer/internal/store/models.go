@@ -89,7 +89,7 @@ type TokenEvent struct {
 	ToAddress       *string   `db:"to_address"`
 	ToMuxed         *string   `db:"to_muxed"`
 	ToMuxedID       *int64    `db:"to_muxed_id"`
-	AssetType       int16     `db:"asset_type"`       // 0=native, 1=credit, 2=soroban_token
+	AssetType       int16     `db:"asset_type"` // 0=native, 1=credit, 2=soroban_token
 	AssetCode       *string   `db:"asset_code"`
 	AssetIssuer     *string   `db:"asset_issuer"`
 	AssetContractID *string   `db:"asset_contract_id"`
@@ -134,7 +134,7 @@ type ContractEvent struct {
 	ContractID      string    `db:"contract_id"`
 	TransactionHash string    `db:"transaction_hash"`
 	LedgerSequence  uint32    `db:"ledger_sequence"`
-	Type            int16     `db:"type"`           // 0=contract, 1=system, 2=diagnostic
+	Type            int16     `db:"type"` // 0=contract, 1=system, 2=diagnostic
 	Topic1          *string   `db:"topic_1"`
 	Topic2          *string   `db:"topic_2"`
 	Topic3          *string   `db:"topic_3"`

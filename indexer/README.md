@@ -17,9 +17,9 @@ This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesen
 - Database migrations applied:
 
 ```bash
-for f in ../migrations/*.up.sql; do
-  cat "$f" | docker compose exec -T postgres psql -U explorer -d stellar_explorer
-done
+# from indexer/
+make build
+./bin/indexer migrate
 ```
 
 ## Configuration
@@ -37,6 +37,7 @@ done
 
 ```bash
 make build          # Compile to bin/indexer
+make migrate        # Apply pending database migrations
 make test           # Run all tests
 make fmt            # Format code
 make lint           # Run go vet
@@ -91,6 +92,47 @@ Key details:
 
 # Use more workers for faster throughput
 WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
+```
+
+## Migrations
+
+Migrations live in `indexer/migrations/` and are embedded in the binary at build time.
+
+### Running migrations
+
+```bash
+make migrate
+```
+
+This applies all pending migrations in order. Running it again when already up to date is safe — it exits cleanly with no changes.
+
+### Creating a new migration
+
+Install the `migrate` CLI if you don't have it:
+
+```bash
+brew install golang-migrate
+```
+
+Then run:
+
+```bash
+migrate create -ext sql -dir migrations -seq your_description
+```
+
+This generates two files in `indexer/migrations/`:
+
+```
+000014_your_description.up.sql    # forward change (CREATE TABLE, ALTER TABLE, etc.)
+000014_your_description.down.sql  # rollback (DROP TABLE IF EXISTS ... CASCADE)
+```
+
+The version is zero-padded to 6 digits by the CLI (`000014`, `000015`, ...).
+
+Fill in both files, then apply:
+
+```bash
+make migrate
 ```
 
 ## Resetting the database
