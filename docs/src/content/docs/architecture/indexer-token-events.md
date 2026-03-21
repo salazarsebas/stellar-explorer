@@ -7,7 +7,7 @@ description: How the indexer extracts unified token transfer events from every l
 
 Before CAP-67, tracking token movements on Stellar required separate pipelines: ledger state diffs for classic assets and contract event logs for Soroban tokens. They used different formats, different APIs, and had no common schema.
 
-CAP-67 introduces a **single unified event stream** that covers every token value movement on the network regardless of whether the asset is a classic Stellar asset (XLM, USDC) or a pure Soroban token. This task implements the indexer side of that stream.
+CAP-67 introduces a **single unified event stream** that covers every token value movement on the network regardless of whether the asset is a classic Stellar asset (XLM, USDC) or a pure Soroban token. This document covers the indexer side of that stream.
 
 With this in place, the explorer can:
 
@@ -136,5 +136,5 @@ These tests exercise the proto-to-store mapping for transfer, mint, Soroban toke
 
 - Fee events have no `operation_index` (they are not tied to a specific operation).
 - Pure Soroban tokens (`asset_type = 2`) have no `asset_code` or `asset_issuer` — only `asset_contract_id`.
-- `amount` is stored as a raw i128 decimal string. Formatting it for display requires the token's `decimals` value from the `contracts` table (populated by Task 3.3).
+- `amount` is stored as a raw i128 decimal string. Formatting it for display requires the token's `decimals` value from the `contracts` table.
 - If `metadataXdr` is missing from a ledger (possible on older protocol versions), the processor returns an empty list and the ledger is still ingested without error.
