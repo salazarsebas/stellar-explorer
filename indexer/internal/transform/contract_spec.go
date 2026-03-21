@@ -19,9 +19,9 @@ import (
 )
 
 const (
-	wasmMagic              = "\x00asm"
-	contractSpecSectionName = "contractspecv0"
-	contractTypWasm        int16 = 0
+	wasmMagic                     = "\x00asm"
+	contractSpecSectionName       = "contractspecv0"
+	contractTypWasm         int16 = 0
 )
 
 // sep41FunctionNames are the required functions for a SEP-41 token contract.
@@ -528,4 +528,3 @@ func nilIfEmpty(s string) *string {
 	}
 	return &s
 }
-

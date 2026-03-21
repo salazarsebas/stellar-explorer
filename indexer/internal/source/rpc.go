@@ -94,12 +94,12 @@ type LedgerEntry struct {
 }
 
 type GetLedgersResult struct {
-	Ledgers              []LedgerEntry `json:"ledgers"`
-	LatestLedger         uint32        `json:"latestLedger"`
-	LatestLedgerCloseTime int64        `json:"latestLedgerCloseTime"`
-	OldestLedger         uint32        `json:"oldestLedger"`
-	OldestLedgerCloseTime int64        `json:"oldestLedgerCloseTime"`
-	Cursor               string        `json:"cursor"`
+	Ledgers               []LedgerEntry `json:"ledgers"`
+	LatestLedger          uint32        `json:"latestLedger"`
+	LatestLedgerCloseTime int64         `json:"latestLedgerCloseTime"`
+	OldestLedger          uint32        `json:"oldestLedger"`
+	OldestLedgerCloseTime int64         `json:"oldestLedgerCloseTime"`
+	Cursor                string        `json:"cursor"`
 }
 
 func (c *RPCClient) GetLedgers(ctx context.Context, params GetLedgersParams) (*GetLedgersResult, error) {
@@ -122,24 +122,24 @@ type GetTransactionsParams struct {
 }
 
 type TransactionEntry struct {
-	Status              string `json:"status"`
-	ApplicationOrder    int32  `json:"applicationOrder"`
-	FeeBump             bool   `json:"feeBump"`
-	EnvelopeXDR         string `json:"envelopeXdr"`
-	ResultXDR           string `json:"resultXdr"`
-	ResultMetaXDR       string `json:"resultMetaXdr"`
+	Status              string   `json:"status"`
+	ApplicationOrder    int32    `json:"applicationOrder"`
+	FeeBump             bool     `json:"feeBump"`
+	EnvelopeXDR         string   `json:"envelopeXdr"`
+	ResultXDR           string   `json:"resultXdr"`
+	ResultMetaXDR       string   `json:"resultMetaXdr"`
 	DiagnosticEventsXDR []string `json:"diagnosticEventsXdr,omitempty"`
-	Ledger              uint32 `json:"ledger"`
-	CreatedAt           int64  `json:"createdAt"`
+	Ledger              uint32   `json:"ledger"`
+	CreatedAt           int64    `json:"createdAt"`
 }
 
 type GetTransactionsResult struct {
-	Transactions              []TransactionEntry `json:"transactions"`
-	LatestLedger              uint32             `json:"latestLedger"`
-	LatestLedgerCloseTimestamp int64             `json:"latestLedgerCloseTimestamp"`
-	OldestLedger              uint32             `json:"oldestLedger"`
-	OldestLedgerCloseTimestamp int64             `json:"oldestLedgerCloseTimestamp"`
-	Cursor                    string             `json:"cursor"`
+	Transactions               []TransactionEntry `json:"transactions"`
+	LatestLedger               uint32             `json:"latestLedger"`
+	LatestLedgerCloseTimestamp int64              `json:"latestLedgerCloseTimestamp"`
+	OldestLedger               uint32             `json:"oldestLedger"`
+	OldestLedgerCloseTimestamp int64              `json:"oldestLedgerCloseTimestamp"`
+	Cursor                     string             `json:"cursor"`
 }
 
 func (c *RPCClient) GetTransactions(ctx context.Context, params GetTransactionsParams) (*GetTransactionsResult, error) {
@@ -161,9 +161,9 @@ type GetLedgerEntriesParams struct {
 }
 
 type LedgerEntryResult struct {
-	Key               string `json:"key"`
-	XDR               string `json:"xdr"`
-	LastModifiedLedger uint32 `json:"lastModifiedLedgerSeq"`
+	Key                string  `json:"key"`
+	XDR                string  `json:"xdr"`
+	LastModifiedLedger uint32  `json:"lastModifiedLedgerSeq"`
 	LiveUntilLedger    *uint32 `json:"liveUntilLedgerSeq,omitempty"`
 }
 
