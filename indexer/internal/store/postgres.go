@@ -150,6 +150,40 @@ func (s *PostgresStore) InsertTokenEventBatch(ctx context.Context, events []Toke
 	return dbTx.Commit()
 }
 
+func (s *PostgresStore) InsertContractEventBatch(ctx context.Context, events []ContractEvent) error {
+	if len(events) == 0 {
+		return nil
+	}
+	dbTx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer dbTx.Rollback()
+
+	stmt, err := dbTx.PrepareContext(ctx, `
+		INSERT INTO contract_events (
+			contract_id, transaction_hash, ledger_sequence, type,
+			topic_1, topic_2, topic_3, topic_4,
+			topics_xdr, value_xdr, topics_decoded, value_decoded, created_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	for _, e := range events {
+		_, err := stmt.ExecContext(ctx,
+			e.ContractID, e.TransactionHash, e.LedgerSequence, e.Type,
+			e.Topic1, e.Topic2, e.Topic3, e.Topic4,
+			e.TopicsXDR, e.ValueXDR, e.TopicsDecoded, e.ValueDecoded, e.CreatedAt)
+		if err != nil {
+			return err
+		}
+	}
+
+	return dbTx.Commit()
+}
+
 // GetLastIngestedLedger returns the last processed ledger sequence.
 func (s *PostgresStore) GetLastIngestedLedger(ctx context.Context) (uint32, error) {
 	var seq uint32
