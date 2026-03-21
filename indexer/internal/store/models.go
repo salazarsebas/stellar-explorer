@@ -29,6 +29,7 @@ type Transaction struct {
 	ApplicationOrder int32     `db:"application_order"`
 	Account          string    `db:"account"`
 	AccountMuxed     *string   `db:"account_muxed"`
+	AccountMuxedID   *int64    `db:"account_muxed_id"`
 	AccountSequence  int64     `db:"account_sequence"`
 	FeeCharged       int64     `db:"fee_charged"`
 	MaxFee           int64     `db:"max_fee"`
@@ -48,20 +49,24 @@ type Transaction struct {
 
 // Operation represents a row in the operations hypertable.
 type Operation struct {
-	TransactionID    int64     `db:"transaction_id"`
-	TransactionHash  string    `db:"transaction_hash"`
-	ApplicationOrder int32     `db:"application_order"`
-	Type             int16     `db:"type"`
-	TypeName         string    `db:"type_name"`
-	SourceAccount    *string   `db:"source_account"`
-	AssetCode        *string   `db:"asset_code"`
-	AssetIssuer      *string   `db:"asset_issuer"`
-	Amount           *string   `db:"amount"`
-	Destination      *string   `db:"destination"`
-	ContractID       *string   `db:"contract_id"`
-	FunctionName     *string   `db:"function_name"`
-	Details          string    `db:"details"` // JSON
-	CreatedAt        time.Time `db:"created_at"`
+	TransactionID      int64     `db:"transaction_id"`
+	TransactionHash    string    `db:"transaction_hash"`
+	ApplicationOrder   int32     `db:"application_order"`
+	Type               int16     `db:"type"`
+	TypeName           string    `db:"type_name"`
+	SourceAccount      *string   `db:"source_account"`
+	SourceAccountMuxed *string   `db:"source_account_muxed"`
+	SourceMuxedID      *int64    `db:"source_muxed_id"`
+	AssetCode          *string   `db:"asset_code"`
+	AssetIssuer        *string   `db:"asset_issuer"`
+	Amount             *string   `db:"amount"`
+	Destination        *string   `db:"destination"`
+	DestinationMuxed   *string   `db:"destination_muxed"`
+	DestinationMuxedID *int64    `db:"destination_muxed_id"`
+	ContractID         *string   `db:"contract_id"`
+	FunctionName       *string   `db:"function_name"`
+	Details            string    `db:"details"` // JSON
+	CreatedAt          time.Time `db:"created_at"`
 }
 
 // Effect represents a row in the effects hypertable.
@@ -94,6 +99,34 @@ type TokenEvent struct {
 	LedgerSequence  uint32    `db:"ledger_sequence"`
 	OperationIndex  *int32    `db:"operation_index"`
 	CreatedAt       time.Time `db:"created_at"`
+}
+
+// Contract represents a row in the contracts table.
+type Contract struct {
+	ContractID         string    `db:"contract_id"`
+	WasmHash           *string   `db:"wasm_hash"`
+	CreatorAccount     *string   `db:"creator_account"`
+	CreatedLedger      uint32    `db:"created_ledger"`
+	CreatedAt          time.Time `db:"created_at"`
+	LastModifiedLedger uint32    `db:"last_modified_ledger"`
+	ContractType       int16     `db:"contract_type"` // 0=wasm, 1=stellar_asset, 2=custom
+	IsSep41Token       bool      `db:"is_sep41_token"`
+	IsSep50NFT         bool      `db:"is_sep50_nft"`
+	TokenName          *string   `db:"token_name"`
+	TokenSymbol        *string   `db:"token_symbol"`
+	TokenDecimals      *int32    `db:"token_decimals"`
+	ContractSpec       *string   `db:"contract_spec"` // JSON
+}
+
+// ContractCode represents a row in the contract_code table.
+type ContractCode struct {
+	WasmHash      string    `db:"wasm_hash"`
+	WasmBytecode  []byte    `db:"wasm_bytecode"`
+	WasmSize      int32     `db:"wasm_size"`
+	SpecXDR       *string   `db:"spec_xdr"`    // base64-encoded raw spec XDR
+	SpecParsed    *string   `db:"spec_parsed"` // JSON parsed spec
+	CreatedLedger uint32    `db:"created_ledger"`
+	CreatedAt     time.Time `db:"created_at"`
 }
 
 // ContractEvent represents a row in the contract_events hypertable.

@@ -152,7 +152,7 @@ func (p *BackfillPipeline) processLedgerBatch(ctx context.Context, startLedger u
 			return processed, fmt.Errorf("extract txs ledger %d: %w", rpcLedger.Sequence, err)
 		}
 
-		if err := ProcessOneLedger(ctx, p.store, nil, p.networkPassphrase, rpcLedger, txEntries); err != nil {
+		if err := ProcessOneLedger(ctx, nil, p.store, nil, p.networkPassphrase, rpcLedger, txEntries); err != nil {
 			return processed, fmt.Errorf("process ledger %d: %w", rpcLedger.Sequence, err)
 		}
 		processed++

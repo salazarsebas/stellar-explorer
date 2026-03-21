@@ -54,10 +54,10 @@ func (s *PostgresStore) InsertTransactionBatch(ctx context.Context, txs []Transa
 
 	stmt, err := dbTx.PrepareContext(ctx, `
 		INSERT INTO transactions (hash, ledger_sequence, application_order, account,
-			account_muxed, account_sequence, fee_charged, max_fee, operation_count,
+			account_muxed, account_muxed_id, account_sequence, fee_charged, max_fee, operation_count,
 			memo_type, memo_text, memo_hash, status, is_soroban, soroban_resources,
 			envelope_xdr, result_xdr, result_meta_xdr, fee_meta_xdr, created_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
 		ON CONFLICT DO NOTHING`)
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (s *PostgresStore) InsertTransactionBatch(ctx context.Context, txs []Transa
 	for _, t := range txs {
 		_, err := stmt.ExecContext(ctx,
 			t.Hash, t.LedgerSequence, t.ApplicationOrder, t.Account,
-			t.AccountMuxed, t.AccountSequence, t.FeeCharged, t.MaxFee, t.OperationCount,
+			t.AccountMuxed, t.AccountMuxedID, t.AccountSequence, t.FeeCharged, t.MaxFee, t.OperationCount,
 			t.MemoType, t.MemoText, t.MemoHash, t.Status, t.IsSoroban, t.SorobanResources,
 			t.EnvelopeXDR, t.ResultXDR, t.ResultMetaXDR, t.FeeMetaXDR, t.CreatedAt)
 		if err != nil {
@@ -90,9 +90,11 @@ func (s *PostgresStore) InsertOperationBatch(ctx context.Context, ops []Operatio
 
 	stmt, err := dbTx.PrepareContext(ctx, `
 		INSERT INTO operations (transaction_id, transaction_hash, application_order,
-			type, type_name, source_account, asset_code, asset_issuer, amount,
-			destination, contract_id, function_name, details, created_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+			type, type_name, source_account, source_account_muxed, source_muxed_id,
+			asset_code, asset_issuer, amount,
+			destination, destination_muxed, destination_muxed_id,
+			contract_id, function_name, details, created_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
 		ON CONFLICT DO NOTHING`)
 	if err != nil {
 		return err
@@ -102,8 +104,10 @@ func (s *PostgresStore) InsertOperationBatch(ctx context.Context, ops []Operatio
 	for _, o := range ops {
 		_, err := stmt.ExecContext(ctx,
 			o.TransactionID, o.TransactionHash, o.ApplicationOrder,
-			o.Type, o.TypeName, o.SourceAccount, o.AssetCode, o.AssetIssuer, o.Amount,
-			o.Destination, o.ContractID, o.FunctionName, o.Details, o.CreatedAt)
+			o.Type, o.TypeName, o.SourceAccount, o.SourceAccountMuxed, o.SourceMuxedID,
+			o.AssetCode, o.AssetIssuer, o.Amount,
+			o.Destination, o.DestinationMuxed, o.DestinationMuxedID,
+			o.ContractID, o.FunctionName, o.Details, o.CreatedAt)
 		if err != nil {
 			return err
 		}
@@ -182,6 +186,46 @@ func (s *PostgresStore) InsertContractEventBatch(ctx context.Context, events []C
 	}
 
 	return dbTx.Commit()
+}
+
+func (s *PostgresStore) UpsertContract(ctx context.Context, c *Contract) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO contracts (
+			contract_id, wasm_hash, creator_account, created_ledger, created_at,
+			last_modified_ledger, contract_type, is_sep41_token, is_sep50_nft,
+			token_name, token_symbol, token_decimals, contract_spec, updated_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())
+		ON CONFLICT (contract_id) DO UPDATE SET
+			wasm_hash            = EXCLUDED.wasm_hash,
+			last_modified_ledger = EXCLUDED.last_modified_ledger,
+			contract_type        = EXCLUDED.contract_type,
+			is_sep41_token       = EXCLUDED.is_sep41_token,
+			is_sep50_nft         = EXCLUDED.is_sep50_nft,
+			token_name           = COALESCE(EXCLUDED.token_name, contracts.token_name),
+			token_symbol         = COALESCE(EXCLUDED.token_symbol, contracts.token_symbol),
+			token_decimals       = COALESCE(EXCLUDED.token_decimals, contracts.token_decimals),
+			contract_spec        = COALESCE(EXCLUDED.contract_spec, contracts.contract_spec),
+			updated_at           = NOW()`,
+		c.ContractID, c.WasmHash, c.CreatorAccount, c.CreatedLedger, c.CreatedAt,
+		c.LastModifiedLedger, c.ContractType, c.IsSep41Token, c.IsSep50NFT,
+		c.TokenName, c.TokenSymbol, c.TokenDecimals, c.ContractSpec,
+	)
+	return err
+}
+
+func (s *PostgresStore) UpsertContractCode(ctx context.Context, code *ContractCode) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO contract_code (
+			wasm_hash, wasm_bytecode, wasm_size, spec_xdr, spec_parsed, created_ledger, created_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7)
+		ON CONFLICT (wasm_hash) DO UPDATE SET
+			spec_xdr    = COALESCE(EXCLUDED.spec_xdr, contract_code.spec_xdr),
+			spec_parsed = COALESCE(EXCLUDED.spec_parsed, contract_code.spec_parsed),
+			contract_count = contract_code.contract_count + 1`,
+		code.WasmHash, code.WasmBytecode, code.WasmSize,
+		code.SpecXDR, code.SpecParsed, code.CreatedLedger, code.CreatedAt,
+	)
+	return err
 }
 
 // GetLastIngestedLedger returns the last processed ledger sequence.

@@ -154,6 +154,36 @@ func (c *RPCClient) GetTransactions(ctx context.Context, params GetTransactionsP
 	return &result, nil
 }
 
+// --- getLedgerEntries ---
+
+type GetLedgerEntriesParams struct {
+	Keys []string `json:"keys"`
+}
+
+type LedgerEntryResult struct {
+	Key               string `json:"key"`
+	XDR               string `json:"xdr"`
+	LastModifiedLedger uint32 `json:"lastModifiedLedgerSeq"`
+	LiveUntilLedger    *uint32 `json:"liveUntilLedgerSeq,omitempty"`
+}
+
+type GetLedgerEntriesResult struct {
+	Entries      []LedgerEntryResult `json:"entries"`
+	LatestLedger uint32              `json:"latestLedger"`
+}
+
+func (c *RPCClient) GetLedgerEntries(ctx context.Context, keys []string) (*GetLedgerEntriesResult, error) {
+	raw, err := c.call(ctx, "getLedgerEntries", GetLedgerEntriesParams{Keys: keys})
+	if err != nil {
+		return nil, err
+	}
+	var result GetLedgerEntriesResult
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return nil, fmt.Errorf("unmarshal getLedgerEntries: %w", err)
+	}
+	return &result, nil
+}
+
 // --- internal transport ---
 
 var requestID atomic.Int64
