@@ -108,25 +108,26 @@ This applies all pending migrations in order. Running it again when already up t
 
 ### Creating a new migration
 
-Migration files follow the `golang-migrate` naming convention:
+Install the `migrate` CLI if you don't have it:
 
-```
-<version>_<description>.up.sql    # applied by `migrate`
-<version>_<description>.down.sql  # applied by a future `migrate down` (rollback)
-```
-
-Where `<version>` is the next sequential integer. For example, if the latest migration is `013_transactions_muxed_id`, the next one would be:
-
-```
-migrations/14_your_description.up.sql
-migrations/14_your_description.down.sql
+```bash
+brew install golang-migrate
 ```
 
-golang-migrate parses the version as an integer, so zero-padding is not required and the files do not need to sort lexicographically.
+Then run:
 
-The `.up.sql` contains the forward change (e.g. `CREATE TABLE`, `ALTER TABLE`, `CREATE INDEX`). The `.down.sql` contains the rollback (e.g. `DROP TABLE IF EXISTS ... CASCADE`).
+```bash
+migrate create -ext sql -dir migrations -seq your_description
+```
 
-After adding the files, rebuild and migrate:
+This generates two files in `indexer/migrations/`:
+
+```
+000014_your_description.up.sql    # forward change (CREATE TABLE, ALTER TABLE, etc.)
+000014_your_description.down.sql  # rollback (DROP TABLE IF EXISTS ... CASCADE)
+```
+
+Fill in both files, then apply:
 
 ```bash
 make migrate
