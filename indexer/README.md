@@ -115,12 +115,14 @@ Migration files follow the `golang-migrate` naming convention:
 <version>_<description>.down.sql  # applied by a future `migrate down` (rollback)
 ```
 
-Where `<version>` is the next sequential number (zero-padded to 3 digits). For example, if the latest migration is `013_transactions_muxed_id`, the next one would be:
+Where `<version>` is the next sequential integer. For example, if the latest migration is `013_transactions_muxed_id`, the next one would be:
 
 ```
-migrations/014_your_description.up.sql
-migrations/014_your_description.down.sql
+migrations/14_your_description.up.sql
+migrations/14_your_description.down.sql
 ```
+
+golang-migrate parses the version as an integer, so zero-padding is not required and the files do not need to sort lexicographically.
 
 The `.up.sql` contains the forward change (e.g. `CREATE TABLE`, `ALTER TABLE`, `CREATE INDEX`). The `.down.sql` contains the rollback (e.g. `DROP TABLE IF EXISTS ... CASCADE`).
 
