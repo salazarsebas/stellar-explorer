@@ -17,9 +17,9 @@ This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesen
 - Database migrations applied:
 
 ```bash
-for f in ../migrations/*.up.sql; do
-  cat "$f" | docker compose exec -T postgres psql -U explorer -d stellar_explorer
-done
+# from indexer/
+make build
+./bin/indexer migrate
 ```
 
 ## Configuration
@@ -91,6 +91,44 @@ Key details:
 
 # Use more workers for faster throughput
 WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
+```
+
+## Migrations
+
+Migrations live in `indexer/migrations/` and are embedded in the binary at build time.
+
+### Running migrations
+
+```bash
+make build
+./bin/indexer migrate
+```
+
+This applies all pending migrations in order. Running it again when already up to date is safe — it exits cleanly with no changes.
+
+### Creating a new migration
+
+Migration files follow the `golang-migrate` naming convention:
+
+```
+<version>_<description>.up.sql    # applied by `migrate`
+<version>_<description>.down.sql  # applied by a future `migrate down` (rollback)
+```
+
+Where `<version>` is the next sequential number (zero-padded to 3 digits). For example, if the latest migration is `013_transactions_muxed_id`, the next one would be:
+
+```
+migrations/014_your_description.up.sql
+migrations/014_your_description.down.sql
+```
+
+The `.up.sql` contains the forward change (e.g. `CREATE TABLE`, `ALTER TABLE`, `CREATE INDEX`). The `.down.sql` contains the rollback (e.g. `DROP TABLE IF EXISTS ... CASCADE`).
+
+After adding the files, rebuild and migrate:
+
+```bash
+make build
+./bin/indexer migrate
 ```
 
 ## Resetting the database
