@@ -1,13 +1,15 @@
 import { Metadata } from "next";
 import { AssetContent } from "./asset-content";
 import { parseAssetSlug } from "@/lib/utils";
+import { buildExplorerMetadata } from "@/lib/seo";
+import type { NetworkKey } from "@/types";
 
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; network: string; slug: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, network, slug } = await params;
   const parsed = parseAssetSlug(slug);
 
   if (!parsed) {
@@ -20,7 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isNative = issuer === "native";
   const shortIssuer = isNative ? "Native" : `${issuer.slice(0, 4)}...${issuer.slice(-4)}`;
 
-  return {
+  return buildExplorerMetadata({
+    locale,
+    network: network as NetworkKey,
+    pathname: `/asset/${slug}`,
     title: isNative ? "XLM - Stellar Lumens" : `${code} Asset`,
     description: isNative
       ? "XLM (Stellar Lumens) is the native asset of the Stellar network."
@@ -39,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Native asset of the Stellar network"
         : `View ${code} asset details on Stellar Explorer`,
     },
-  };
+  });
 }
 
 export default async function AssetPage({ params }: Props) {

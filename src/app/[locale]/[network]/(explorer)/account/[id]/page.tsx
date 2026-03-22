@@ -1,15 +1,20 @@
 import { Metadata } from "next";
 import { AccountContent } from "./account-content";
+import { buildExplorerMetadata } from "@/lib/seo";
+import type { NetworkKey } from "@/types";
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; network: string; id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { locale, network, id } = await params;
   const shortId = `${id.slice(0, 6)}...${id.slice(-6)}`;
 
-  return {
+  return buildExplorerMetadata({
+    locale,
+    network: network as NetworkKey,
+    pathname: `/account/${id}`,
     title: `Account ${shortId}`,
     description: `View Stellar account ${shortId}. Explore balances, transactions, operations, and signers.`,
     openGraph: {
@@ -22,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `Stellar Account ${shortId}`,
       description: `View account details on Stellar Explorer`,
     },
-  };
+  });
 }
 
 export default async function AccountPage({ params }: Props) {

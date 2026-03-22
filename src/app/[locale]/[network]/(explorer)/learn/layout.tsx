@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildExplorerMetadata } from "@/lib/seo";
 import type { NetworkKey } from "@/types";
@@ -9,22 +9,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string; network: string }>;
 }): Promise<Metadata> {
   const { locale, network } = await params;
-  const t = await getTranslations({ locale, namespace: "assets" });
+  const t = await getTranslations({ locale, namespace: "learn" });
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
-    pathname: "/assets",
+    pathname: "/learn",
     title: t("title"),
-    description: t("metaDescription"),
+    description: t("subtitle"),
     openGraph: {
       title: t("title"),
-      description: t("metaDescription"),
+      description: t("subtitle"),
       type: "website",
     },
   });
 }
 
-export default function AssetsLayout({ children }: { children: React.ReactNode }) {
+export default function LearnLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

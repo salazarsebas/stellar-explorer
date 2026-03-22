@@ -1,9 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TransactionContent } from "./transaction-content";
+import { buildExplorerMetadata } from "@/lib/seo";
+import type { NetworkKey } from "@/types";
 
 type Props = {
-  params: Promise<{ hash: string }>;
+  params: Promise<{ locale: string; network: string; hash: string }>;
 };
 
 function isValidTransactionHash(hash: string): boolean {
@@ -11,10 +13,13 @@ function isValidTransactionHash(hash: string): boolean {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { hash } = await params;
+  const { locale, network, hash } = await params;
   const shortHash = `${hash.slice(0, 8)}...${hash.slice(-8)}`;
 
-  return {
+  return buildExplorerMetadata({
+    locale,
+    network: network as NetworkKey,
+    pathname: `/tx/${hash}`,
     title: `Transaction ${shortHash}`,
     description: `View details of Stellar transaction ${shortHash}. Explore operations, effects, and raw XDR data.`,
     openGraph: {
@@ -27,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `Stellar Transaction ${shortHash}`,
       description: `View transaction details on Stellar Explorer`,
     },
-  };
+  });
 }
 
 export default async function TransactionPage({ params }: Props) {

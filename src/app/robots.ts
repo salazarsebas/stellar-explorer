@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/watchlist"],
+        disallow: ["/api/", "/*/*/watchlist", "/*/*/search", "/*/*/analytics"],
       },
     ],
     sitemap: "https://stellar-explorer.acachete.xyz/sitemap.xml",
