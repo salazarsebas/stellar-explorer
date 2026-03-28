@@ -217,6 +217,11 @@
     "failedToLoadCode": "Failed to load contract code",
     "noCode": "No code found",
     "noCodeDescription": "Unable to retrieve the contract code.",
+    "contextTitle": "Contract context",
+    "contextWasmSummary": "This contract is deployed as custom Soroban WASM code and currently exposes {storage} instance storage entries.",
+    "contextSacSummary": "This contract is a Stellar Asset Contract wrapper, so it follows the standard asset interface instead of custom WASM bytecode.",
+    "contextStorageDetail": "Current storage TTL is about {ttl} ledgers.",
+    "contextNoStorageDetail": "No instance storage entries are currently visible.",
     "stellarAssetContract": "Stellar Asset Contract",
     "sacDescription": "This is a native Stellar Asset Contract (SAC). It wraps a Stellar asset and doesn't have custom WASM code.",
     "nativeContract": "Native Contract",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "Failed to load operations",
     "failedToLoadEffects": "Failed to load effects",
     "envelopeXdr": "Envelope XDR",
-    "resultXdr": "Result XDR"
+    "resultXdr": "Result XDR",
+    "contextTitle": "What happened",
+    "contextSuccessSummary": "This transaction reached ledger #{ledger} with {operations} operations and paid {fee} XLM from {source}.",
+    "contextFailedSummary": "This transaction failed in ledger #{ledger} after attempting {operations} operations with a fee charge of {fee} XLM from {source}.",
+    "contextMemoDetail": "A memo was attached: {memo}.",
+    "contextNoMemoDetail": "No memo was attached to this transaction."
   },
   "account": {
     "title": "Account",
@@ -315,7 +325,11 @@
     "limit": "Limit:",
     "max": "Max",
     "sorobanCall": "Soroban Contract Call",
-    "weight": "Weight: {weight}"
+    "weight": "Weight: {weight}",
+    "contextTitle": "Account context",
+    "contextSummary": "This account currently holds {xlm} XLM, tracks {assets} non-native assets, and uses {signers} signer(s) across {subentries} subentries.",
+    "contextHomeDomainDetail": "Its declared home domain is {domain}.",
+    "contextNoHomeDomainDetail": "No home domain is declared for this account."
   },
   "operations": {
     "create_account": "Create Account",
@@ -641,7 +655,12 @@
     "xlmPurpose1": "Pay transaction fees (typically 0.00001 XLM per operation)",
     "xlmPurpose2": "Maintain minimum account balances (base reserve)",
     "xlmPurpose3": "Prevent spam by requiring small amounts for account creation",
-    "xlmPurpose4": "Bridge currency for cross-asset transactions via the DEX"
+    "xlmPurpose4": "Bridge currency for cross-asset transactions via the DEX",
+    "contextTitle": "Asset context",
+    "contextOpenSummary": "{asset} is issued by {issuer} with {holders} holding accounts and an estimated supply of {supply}. Access is currently open for trustlines and transfers.",
+    "contextRestrictedSummary": "{asset} is issued by {issuer} with {holders} holding accounts and an estimated supply of {supply}. Issuer controls such as authorization or revocation are enabled.",
+    "contextOrgDetail": "{org} publishes the related Stellar metadata for this asset.",
+    "contextNoOrgDetail": "The issuer account is the primary on-chain reference for this asset."
   },
   "ledgerDetails": {
     "title": "Ledger",
@@ -663,7 +682,10 @@
     "noTransactionsDesc": "This ledger doesn't contain any transactions.",
     "failedToLoadTx": "Failed to load transactions",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "contextTitle": "Ledger summary",
+    "contextSummary": "Ledger #{sequence} closed at {closedAt} with {successful} successful and {failed} failed transactions, processing {operations} operations on protocol {protocol}.",
+    "contextFeeDetail": "The fee pool stood at {feePool} XLM with a base fee of {baseFee} stroops at close."
   },
   "searchPage": {
     "noQuery": "No search query",

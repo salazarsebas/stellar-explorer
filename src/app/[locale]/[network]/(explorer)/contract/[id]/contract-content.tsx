@@ -13,6 +13,7 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
+import { EntityContextCard } from "@/components/common/entity-context-card";
 import { useContractCode, useContractStorage } from "@/lib/hooks";
 import {
   ContractVerification,
@@ -39,6 +40,45 @@ import {
 
 interface ContractContentProps {
   id: string;
+}
+
+function ContractContext({ contractId }: { contractId: string }) {
+  const t = useTranslations("contract");
+  const { data: code } = useContractCode(contractId);
+  const { data: storage } = useContractStorage(contractId);
+
+  const summary =
+    code?.type === "sac"
+      ? t("contextSacSummary")
+      : t("contextWasmSummary", { storage: storage?.totalEntries ?? 0 });
+
+  const detail =
+    storage?.ttlLedgers !== null && storage?.ttlLedgers !== undefined
+      ? t("contextStorageDetail", { ttl: formatCompactNumber(storage.ttlLedgers) })
+      : t("contextNoStorageDetail");
+
+  return (
+    <EntityContextCard
+      title={t("contextTitle")}
+      summary={summary}
+      detail={detail}
+      metrics={[
+        {
+          label: t("type"),
+          value: code?.type === "sac" ? t("stellarAssetContract") : t("sorobanContract"),
+        },
+        { label: t("status"), value: t("active") },
+        { label: t("instanceStorage"), value: String(storage?.totalEntries ?? 0) },
+        {
+          label: t("ttl"),
+          value:
+            storage?.ttlLedgers !== null && storage?.ttlLedgers !== undefined
+              ? formatCompactNumber(storage.ttlLedgers)
+              : "-",
+        },
+      ]}
+    />
+  );
 }
 
 function ContractSummary({ contractId }: { contractId: string }) {
@@ -492,6 +532,8 @@ export function ContractContent({ id }: ContractContentProps) {
         backLabel={tCommon("home")}
         showQr={false}
       />
+
+      <ContractContext contractId={id} />
 
       <ContractSummary contractId={id} />
 

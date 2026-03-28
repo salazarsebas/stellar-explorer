@@ -256,7 +256,12 @@
     "noTransactions": "트랜잭션 데이터 없음",
     "noTransactionsDesc": "죄송합니다. 현재 인프라는 약 7일간의 트랜잭션 데이터만 보존합니다. 완전한 트랜잭션 기록, 상세한 이벤트 데이터, 전체 블록체인 커버리지를 제공할 인덱서를 적극적으로 구축하고 있습니다.",
     "lastActivity": "마지막 활동",
-    "contractTransactions": "트랜잭션"
+    "contractTransactions": "트랜잭션",
+    "contextTitle": "컨트랙트 맥락",
+    "contextWasmSummary": "이 컨트랙트는 사용자 정의 Soroban WASM 코드로 배포되었으며 현재 {storage}개의 인스턴스 저장소 항목을 노출합니다.",
+    "contextSacSummary": "이 컨트랙트는 Stellar Asset Contract 래퍼이므로 사용자 정의 WASM 바이트코드 대신 표준 자산 인터페이스를 따릅니다.",
+    "contextStorageDetail": "현재 저장소 TTL은 약 {ttl}개 ledger입니다.",
+    "contextNoStorageDetail": "현재 표시 가능한 인스턴스 저장소 항목이 없습니다."
   },
   "watchlist": {
     "title": "관심목록",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "오퍼레이션을 불러오는데 실패했습니다",
     "failedToLoadEffects": "효과를 불러오는데 실패했습니다",
     "envelopeXdr": "엔벨로프 XDR",
-    "resultXdr": "결과 XDR"
+    "resultXdr": "결과 XDR",
+    "contextTitle": "무슨 일이 있었나",
+    "contextSuccessSummary": "이 트랜잭션은 ledger #{ledger}에 포함되었고 {operations}개의 작업을 수행했으며 {source}에서 {fee} XLM 수수료를 지불했습니다.",
+    "contextFailedSummary": "이 트랜잭션은 ledger #{ledger}에서 실패했으며 {operations}개의 작업을 시도한 뒤 {source}에서 {fee} XLM 수수료가 청구되었습니다.",
+    "contextMemoDetail": "메모가 첨부되었습니다: {memo}.",
+    "contextNoMemoDetail": "이 트랜잭션에는 메모가 첨부되지 않았습니다."
   },
   "account": {
     "title": "계정",
@@ -315,7 +325,11 @@
     "limit": "한도:",
     "max": "최대",
     "sorobanCall": "Soroban 컨트랙트 호출",
-    "weight": "가중치: {weight}"
+    "weight": "가중치: {weight}",
+    "contextTitle": "계정 맥락",
+    "contextSummary": "이 계정은 현재 {xlm} XLM을 보유하고, {assets}개의 네이티브 외 자산을 추적하며, {subentries}개의 하위 항목에 대해 {signers}명의 서명자를 사용합니다.",
+    "contextHomeDomainDetail": "선언된 home domain은 {domain}입니다.",
+    "contextNoHomeDomainDetail": "이 계정에는 home domain이 선언되어 있지 않습니다."
   },
   "operations": {
     "create_account": "계정 생성",
@@ -641,7 +655,12 @@
     "xlmPurpose1": "트랜잭션 수수료 지불 (일반적으로 오퍼레이션당 0.00001 XLM)",
     "xlmPurpose2": "최소 계정 잔액 유지 (기본 준비금)",
     "xlmPurpose3": "계정 생성에 소량 요구하여 스팸 방지",
-    "xlmPurpose4": "DEX를 통한 교차 자산 거래의 브릿지 통화"
+    "xlmPurpose4": "DEX를 통한 교차 자산 거래의 브릿지 통화",
+    "contextTitle": "자산 맥락",
+    "contextOpenSummary": "{asset}은(는) {issuer}가 발행했으며, {holders}개의 보유 계정과 추정 공급량 {supply}를 가집니다. 현재 trustline과 전송에 대한 접근은 열려 있습니다.",
+    "contextRestrictedSummary": "{asset}은(는) {issuer}가 발행했으며, {holders}개의 보유 계정과 추정 공급량 {supply}를 가집니다. 승인 또는 회수와 같은 발행자 제어가 활성화되어 있습니다.",
+    "contextOrgDetail": "{org}가 이 자산과 관련된 Stellar 메타데이터를 게시합니다.",
+    "contextNoOrgDetail": "발행 계정은 이 자산의 주요 온체인 기준점입니다."
   },
   "ledgerDetails": {
     "title": "원장",
@@ -663,7 +682,10 @@
     "noTransactionsDesc": "이 원장에는 트랜잭션이 포함되어 있지 않습니다.",
     "failedToLoadTx": "트랜잭션을 불러오는데 실패했습니다",
     "prev": "이전",
-    "next": "다음"
+    "next": "다음",
+    "contextTitle": "원장 요약",
+    "contextSummary": "ledger #{sequence}는 {closedAt}에 마감되었고, {successful}개의 성공 거래와 {failed}개의 실패 거래를 포함했으며, 프로토콜 {protocol}에서 {operations}개의 작업을 처리했습니다.",
+    "contextFeeDetail": "마감 시 fee pool은 {feePool} XLM이었고 기본 수수료는 {baseFee} stroops였습니다."
   },
   "searchPage": {
     "noQuery": "검색어 없음",

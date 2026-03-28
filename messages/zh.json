@@ -256,7 +256,12 @@
     "noTransactions": "暂无交易数据",
     "noTransactionsDesc": "抱歉，我们当前的基础设施仅保留约7天的交易数据。我们正在积极构建索引器，届时将提供完整的交易历史、详细的事件数据和全面的区块链覆盖。",
     "lastActivity": "最后活动",
-    "contractTransactions": "交易"
+    "contractTransactions": "交易",
+    "contextTitle": "合约上下文",
+    "contextWasmSummary": "该合约以自定义 Soroban WASM 代码部署，目前暴露出 {storage} 条实例存储项。",
+    "contextSacSummary": "该合约是 Stellar Asset Contract 的封装，因此遵循标准资产接口，而不是自定义 WASM 字节码。",
+    "contextStorageDetail": "当前存储 TTL 约为 {ttl} 个账本。",
+    "contextNoStorageDetail": "当前没有可见的实例存储项。"
   },
   "watchlist": {
     "title": "关注列表",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "操作加载失败",
     "failedToLoadEffects": "效果加载失败",
     "envelopeXdr": "信封 XDR",
-    "resultXdr": "结果 XDR"
+    "resultXdr": "结果 XDR",
+    "contextTitle": "发生了什么",
+    "contextSuccessSummary": "这笔交易已写入账本 #{ledger}，包含 {operations} 个操作，并从 {source} 支付了 {fee} XLM 费用。",
+    "contextFailedSummary": "这笔交易在账本 #{ledger} 中失败，在尝试 {operations} 个操作后，从 {source} 扣除了 {fee} XLM 费用。",
+    "contextMemoDetail": "附带了一个 memo：{memo}。",
+    "contextNoMemoDetail": "这笔交易没有附带 memo。"
   },
   "account": {
     "title": "账户",
@@ -315,7 +325,11 @@
     "limit": "限额：",
     "max": "最大",
     "sorobanCall": "Soroban 合约调用",
-    "weight": "权重：{weight}"
+    "weight": "权重：{weight}",
+    "contextTitle": "账户上下文",
+    "contextSummary": "该账户当前持有 {xlm} XLM，跟踪 {assets} 个非原生资产，并在 {subentries} 个子条目上使用 {signers} 个签名者。",
+    "contextHomeDomainDetail": "其声明的 home domain 为 {domain}。",
+    "contextNoHomeDomainDetail": "该账户未声明 home domain。"
   },
   "operations": {
     "create_account": "创建账户",
@@ -571,7 +585,12 @@
     "xlmPurpose1": "支付交易费用（通常每笔操作 0.00001 XLM）",
     "xlmPurpose2": "维持最低账户余额（基础储备）",
     "xlmPurpose3": "通过要求创建账户时支付少量金额来防止垃圾交易",
-    "xlmPurpose4": "通过 DEX 进行跨资产交易的桥接货币"
+    "xlmPurpose4": "通过 DEX 进行跨资产交易的桥接货币",
+    "contextTitle": "资产上下文",
+    "contextOpenSummary": "{asset} 由 {issuer} 发行，当前有 {holders} 个持有账户，估算供应量为 {supply}。目前信任线和转账访问是开放的。",
+    "contextRestrictedSummary": "{asset} 由 {issuer} 发行，当前有 {holders} 个持有账户，估算供应量为 {supply}。发行方控制如授权或撤销已启用。",
+    "contextOrgDetail": "{org} 发布了与该资产相关的 Stellar 元数据。",
+    "contextNoOrgDetail": "发行账户是该资产最主要的链上参考。"
   },
   "assetsMeta": {
     "stellarLumens": "Stellar Lumens",
@@ -842,7 +861,10 @@
     "noTransactionsDesc": "此账本不包含任何交易。",
     "failedToLoadTx": "加载交易失败",
     "prev": "上一个",
-    "next": "下一个"
+    "next": "下一个",
+    "contextTitle": "账本摘要",
+    "contextSummary": "账本 #{sequence} 于 {closedAt} 关闭，包含 {successful} 笔成功交易和 {failed} 笔失败交易，共处理 {operations} 个操作，协议版本为 {protocol}。",
+    "contextFeeDetail": "关闭时费用池为 {feePool} XLM，基础费用为 {baseFee} stroops。"
   },
   "noFeeData": "无费用数据",
   "noTransactionData": "无交易数据",

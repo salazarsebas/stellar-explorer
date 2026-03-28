@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LedgerContent } from "./ledger-content";
+import { buildLedgerMetadataCopy } from "@/lib/entity-metadata";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { getLedgerSnapshot } from "@/lib/stellar/server";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -18,23 +20,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const formattedSequence = sequenceNum.toLocaleString("en-US");
+  let copy = buildLedgerMetadataCopy(sequenceNum);
+
+  try {
+    const ledger = await getLedgerSnapshot(network as NetworkKey, sequenceNum);
+    copy = buildLedgerMetadataCopy(sequenceNum, ledger);
+  } catch {
+    // Keep generic metadata when server-side fetching fails.
+  }
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
     pathname: `/ledger/${sequenceNum}`,
-    title: `Ledger #${formattedSequence}`,
-    description: `View details of Stellar ledger #${formattedSequence}. Explore transactions, operations, and protocol information.`,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title: `Stellar Ledger #${formattedSequence}`,
-      description: `View ledger details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: `Stellar Ledger #${formattedSequence}`,
-      description: `View ledger details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
     },
   });
 }

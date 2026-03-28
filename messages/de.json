@@ -256,7 +256,12 @@
     "noTransactions": "Keine Transaktionen verfügbar",
     "noTransactionsDesc": "Entschuldigung, unsere aktuelle Infrastruktur speichert nur etwa 7 Tage an Transaktionsdaten. Wir bauen aktiv einen Indexer, der den vollständigen Transaktionsverlauf, detaillierte Event-Daten und eine vollständige Blockchain-Abdeckung ermöglichen wird.",
     "lastActivity": "Letzte Aktivität",
-    "contractTransactions": "Transaktionen"
+    "contractTransactions": "Transaktionen",
+    "contextTitle": "Kontext des Vertrags",
+    "contextWasmSummary": "Dieser Vertrag ist als benutzerdefinierter Soroban-WASM-Code bereitgestellt und stellt derzeit {storage} Instanzspeichereinträge bereit.",
+    "contextSacSummary": "Dieser Vertrag ist ein Stellar Asset Contract-Wrapper und folgt daher der Standard-Schnittstelle des Assets statt benutzerdefiniertem WASM-Bytecode.",
+    "contextStorageDetail": "Die aktuelle Speicher-TTL beträgt etwa {ttl} Ledger.",
+    "contextNoStorageDetail": "Derzeit sind keine Instanzspeichereinträge sichtbar."
   },
   "watchlist": {
     "title": "Merkliste",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "Operationen konnten nicht geladen werden",
     "failedToLoadEffects": "Effekte konnten nicht geladen werden",
     "envelopeXdr": "Envelope XDR",
-    "resultXdr": "Result XDR"
+    "resultXdr": "Result XDR",
+    "contextTitle": "Was passiert ist",
+    "contextSuccessSummary": "Diese Transaktion wurde in Ledger #{ledger} mit {operations} Operationen aufgenommen und zahlte {fee} XLM von {source}.",
+    "contextFailedSummary": "Diese Transaktion ist in Ledger #{ledger} nach {operations} versuchten Operationen fehlgeschlagen; berechnet wurden {fee} XLM Gebühren von {source}.",
+    "contextMemoDetail": "Ein Memo wurde angehängt: {memo}.",
+    "contextNoMemoDetail": "Dieser Transaktion wurde kein Memo angehängt."
   },
   "account": {
     "title": "Konto",
@@ -315,7 +325,11 @@
     "limit": "Limit:",
     "max": "Max",
     "sorobanCall": "Soroban-Vertragsaufruf",
-    "weight": "Gewicht: {weight}"
+    "weight": "Gewicht: {weight}",
+    "contextTitle": "Kontokontext",
+    "contextSummary": "Dieses Konto hält derzeit {xlm} XLM, verfolgt {assets} nicht-native Assets und verwendet {signers} Signatur(en) über {subentries} Untereinträge.",
+    "contextHomeDomainDetail": "Die angegebene Home-Domain ist {domain}.",
+    "contextNoHomeDomainDetail": "Für dieses Konto ist keine Home-Domain angegeben."
   },
   "operations": {
     "create_account": "Konto erstellen",
@@ -571,7 +585,12 @@
     "xlmPurpose1": "Transaktionsgebühren bezahlen (typischerweise 0.00001 XLM pro Operation)",
     "xlmPurpose2": "Mindestkontostände aufrechterhalten (Basisreserve)",
     "xlmPurpose3": "Spam verhindern durch Anforderung kleiner Beträge für Kontoerstellung",
-    "xlmPurpose4": "Brückenwährung für Asset-übergreifende Transaktionen über DEX"
+    "xlmPurpose4": "Brückenwährung für Asset-übergreifende Transaktionen über DEX",
+    "contextTitle": "Asset-Kontext",
+    "contextOpenSummary": "{asset} wird von {issuer} emittiert, mit {holders} haltenden Konten und einem geschätzten Angebot von {supply}. Der Zugriff für Trustlines und Transfers ist derzeit offen.",
+    "contextRestrictedSummary": "{asset} wird von {issuer} emittiert, mit {holders} haltenden Konten und einem geschätzten Angebot von {supply}. Emittentenkontrollen wie Autorisierung oder Widerruf sind aktiviert.",
+    "contextOrgDetail": "{org} veröffentlicht die zu diesem Asset gehörenden Stellar-Metadaten.",
+    "contextNoOrgDetail": "Das Emittentenkonto ist die wichtigste On-Chain-Referenz für dieses Asset."
   },
   "assetsMeta": {
     "stellarLumens": "Stellar Lumens",
@@ -842,7 +861,10 @@
     "noTransactionsDesc": "Dieser Ledger enthält keine Transaktionen.",
     "failedToLoadTx": "Fehler beim Laden der Transaktionen",
     "prev": "Zurück",
-    "next": "Weiter"
+    "next": "Weiter",
+    "contextTitle": "Ledger-Zusammenfassung",
+    "contextSummary": "Ledger #{sequence} wurde um {closedAt} geschlossen und enthielt {successful} erfolgreiche sowie {failed} fehlgeschlagene Transaktionen; dabei wurden {operations} Operationen unter Protokoll {protocol} verarbeitet.",
+    "contextFeeDetail": "Der Gebührenpool lag beim Schließen bei {feePool} XLM, die Basisgebühr bei {baseFee} Stroops."
   },
   "noFeeData": "Keine Gebührendaten verfügbar",
   "noTransactionData": "Keine Transaktionsdaten",

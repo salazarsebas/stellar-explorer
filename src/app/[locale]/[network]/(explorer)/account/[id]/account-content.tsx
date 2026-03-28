@@ -14,6 +14,7 @@ import { OperationBadge } from "@/components/common/operation-badge";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
+import { EntityContextCard } from "@/components/common/entity-context-card";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import {
   useAccount,
@@ -32,6 +33,35 @@ import { useTranslations } from "next-intl";
 
 interface AccountContentProps {
   id: string;
+}
+
+function AccountContext({ account }: { account: Horizon.ServerApi.AccountRecord }) {
+  const t = useTranslations("account");
+  const xlmBalance = account.balances.find((balance) => balance.asset_type === "native");
+  const otherAssets = account.balances.filter((balance) => balance.asset_type !== "native").length;
+
+  return (
+    <EntityContextCard
+      title={t("contextTitle")}
+      summary={t("contextSummary", {
+        xlm: formatNumber(xlmBalance?.balance ?? 0),
+        assets: otherAssets,
+        signers: account.signers.length,
+        subentries: account.subentry_count,
+      })}
+      detail={
+        account.home_domain
+          ? t("contextHomeDomainDetail", { domain: account.home_domain })
+          : t("contextNoHomeDomainDetail")
+      }
+      metrics={[
+        { label: t("xlmBalance"), value: `${formatNumber(xlmBalance?.balance ?? 0)} XLM` },
+        { label: t("otherAssets"), value: String(otherAssets) },
+        { label: t("signers"), value: String(account.signers.length) },
+        { label: t("subentries"), value: String(account.subentry_count) },
+      ]}
+    />
+  );
 }
 
 function AccountSummary({ account }: { account: Horizon.ServerApi.AccountRecord }) {
@@ -366,6 +396,8 @@ export function AccountContent({ id }: AccountContentProps) {
           </Button>
         }
       />
+
+      <AccountContext account={account} />
 
       <AccountSummary account={account} />
 

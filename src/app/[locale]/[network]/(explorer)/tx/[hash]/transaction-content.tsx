@@ -13,6 +13,7 @@ import { OperationBadge } from "@/components/common/operation-badge";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { DeveloperPanel } from "@/components/common/developer-panel";
+import { EntityContextCard } from "@/components/common/entity-context-card";
 import { useTransaction, useTransactionOperations, useTransactionEffects } from "@/lib/hooks";
 import { useNetwork } from "@/lib/providers";
 import { NETWORKS } from "@/lib/constants";
@@ -31,6 +32,42 @@ import { useTranslations } from "next-intl";
 
 interface TransactionContentProps {
   hash: string;
+}
+
+function TransactionContext({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
+  const t = useTranslations("transaction");
+
+  const summary = transaction.successful
+    ? t("contextSuccessSummary", {
+        ledger: formatLedgerSequence(transaction.ledger_attr),
+        operations: transaction.operation_count,
+        fee: stroopsToXLM(transaction.fee_charged),
+        source: truncateHash(transaction.source_account, 6, 6),
+      })
+    : t("contextFailedSummary", {
+        ledger: formatLedgerSequence(transaction.ledger_attr),
+        operations: transaction.operation_count,
+        fee: stroopsToXLM(transaction.fee_charged),
+        source: truncateHash(transaction.source_account, 6, 6),
+      });
+
+  const detail = transaction.memo
+    ? t("contextMemoDetail", { memo: transaction.memo })
+    : t("contextNoMemoDetail");
+
+  return (
+    <EntityContextCard
+      title={t("contextTitle")}
+      summary={summary}
+      detail={detail}
+      metrics={[
+        { label: t("ledger"), value: `#${formatLedgerSequence(transaction.ledger_attr)}` },
+        { label: t("operationsCount"), value: String(transaction.operation_count) },
+        { label: t("feePaid"), value: `${stroopsToXLM(transaction.fee_charged)} XLM` },
+        { label: t("source"), value: truncateHash(transaction.source_account, 6, 6) },
+      ]}
+    />
+  );
 }
 
 function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
@@ -365,6 +402,8 @@ export function TransactionContent({ hash }: TransactionContentProps) {
         showQr={false}
         badge={<StatusBadge status={transaction.successful ? "success" : "failed"} />}
       />
+
+      <TransactionContext transaction={transaction} />
 
       <TransactionSummary transaction={transaction} />
 

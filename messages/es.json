@@ -217,6 +217,11 @@
     "failedToLoadCode": "Error al cargar el código del contrato",
     "noCode": "No se encontró código",
     "noCodeDescription": "No se pudo obtener el código del contrato.",
+    "contextTitle": "Contexto del contrato",
+    "contextWasmSummary": "Este contrato está desplegado como código WASM personalizado de Soroban y actualmente expone {storage} entradas de almacenamiento de instancia.",
+    "contextSacSummary": "Este contrato es un envoltorio de Stellar Asset Contract, por lo que sigue la interfaz estándar del activo en lugar de bytecode WASM personalizado.",
+    "contextStorageDetail": "El TTL actual del almacenamiento es de aproximadamente {ttl} ledgers.",
+    "contextNoStorageDetail": "Actualmente no hay entradas visibles de almacenamiento de instancia.",
     "stellarAssetContract": "Contrato de Activo Stellar",
     "sacDescription": "Este es un Contrato de Activo Stellar (SAC) nativo. Envuelve un activo Stellar y no tiene código WASM personalizado.",
     "nativeContract": "Contrato Nativo",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "Error al cargar operaciones",
     "failedToLoadEffects": "Error al cargar efectos",
     "envelopeXdr": "Envelope XDR",
-    "resultXdr": "Result XDR"
+    "resultXdr": "Result XDR",
+    "contextTitle": "Qué ocurrió",
+    "contextSuccessSummary": "Esta transacción llegó al ledger #{ledger} con {operations} operaciones y pagó {fee} XLM desde {source}.",
+    "contextFailedSummary": "Esta transacción falló en el ledger #{ledger} tras intentar {operations} operaciones con un cargo de {fee} XLM desde {source}.",
+    "contextMemoDetail": "Se adjuntó un memo: {memo}.",
+    "contextNoMemoDetail": "No se adjuntó ningún memo a esta transacción."
   },
   "account": {
     "title": "Cuenta",
@@ -315,7 +325,11 @@
     "limit": "Límite:",
     "max": "Máx",
     "sorobanCall": "Llamada a contrato Soroban",
-    "weight": "Peso: {weight}"
+    "weight": "Peso: {weight}",
+    "contextTitle": "Contexto de la cuenta",
+    "contextSummary": "Esta cuenta actualmente mantiene {xlm} XLM, sigue {assets} activos no nativos y usa {signers} firmante(s) en {subentries} subentradas.",
+    "contextHomeDomainDetail": "Su home domain declarado es {domain}.",
+    "contextNoHomeDomainDetail": "Esta cuenta no declara un home domain."
   },
   "operations": {
     "create_account": "Crear cuenta",
@@ -641,7 +655,12 @@
     "xlmPurpose1": "Pagar tarifas de transacción (típicamente 0.00001 XLM por operación)",
     "xlmPurpose2": "Mantener balances mínimos de cuenta (reserva base)",
     "xlmPurpose3": "Prevenir spam requiriendo pequeñas cantidades para crear cuentas",
-    "xlmPurpose4": "Moneda puente para transacciones entre activos vía el DEX"
+    "xlmPurpose4": "Moneda puente para transacciones entre activos vía el DEX",
+    "contextTitle": "Contexto del activo",
+    "contextOpenSummary": "{asset} es emitido por {issuer}, tiene {holders} cuentas tenedoras y un suministro estimado de {supply}. El acceso está abierto para trustlines y transferencias.",
+    "contextRestrictedSummary": "{asset} es emitido por {issuer}, tiene {holders} cuentas tenedoras y un suministro estimado de {supply}. Están habilitados controles del emisor como autorización o revocación.",
+    "contextOrgDetail": "{org} publica la metadata de Stellar asociada a este activo.",
+    "contextNoOrgDetail": "La cuenta emisora es la referencia principal on-chain para este activo."
   },
   "ledgerDetails": {
     "title": "Libro",
@@ -663,7 +682,10 @@
     "noTransactionsDesc": "Este libro no contiene ninguna transacción.",
     "failedToLoadTx": "Error al cargar transacciones",
     "prev": "Ant",
-    "next": "Sig"
+    "next": "Sig",
+    "contextTitle": "Resumen del ledger",
+    "contextSummary": "El ledger #{sequence} se cerró en {closedAt} con {successful} transacciones exitosas y {failed} fallidas, procesando {operations} operaciones en el protocolo {protocol}.",
+    "contextFeeDetail": "El fee pool cerró en {feePool} XLM con una tarifa base de {baseFee} stroops."
   },
   "searchPage": {
     "noQuery": "Sin consulta de búsqueda",

@@ -256,7 +256,12 @@
     "noTransactions": "Nenhuma transação disponível",
     "noTransactionsDesc": "Desculpe, nossa infraestrutura atual retém apenas aproximadamente 7 dias de dados de transações. Estamos construindo ativamente um indexador que permitirá o histórico completo de transações, dados detalhados de eventos e cobertura total da blockchain.",
     "lastActivity": "Última Atividade",
-    "contractTransactions": "Transações"
+    "contractTransactions": "Transações",
+    "contextTitle": "Contexto do contrato",
+    "contextWasmSummary": "Este contrato está implantado como código WASM personalizado de Soroban e atualmente expõe {storage} entradas de armazenamento de instância.",
+    "contextSacSummary": "Este contrato é um wrapper de Stellar Asset Contract, portanto segue a interface padrão do ativo em vez de bytecode WASM personalizado.",
+    "contextStorageDetail": "O TTL atual do armazenamento é de cerca de {ttl} livros.",
+    "contextNoStorageDetail": "Nenhuma entrada de armazenamento de instância está visível no momento."
   },
   "watchlist": {
     "title": "Favoritos",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "Falha ao carregar operações",
     "failedToLoadEffects": "Falha ao carregar efeitos",
     "envelopeXdr": "Envelope XDR",
-    "resultXdr": "Result XDR"
+    "resultXdr": "Result XDR",
+    "contextTitle": "O que aconteceu",
+    "contextSuccessSummary": "Esta transação entrou no livro #{ledger} com {operations} operações e pagou {fee} XLM a partir de {source}.",
+    "contextFailedSummary": "Esta transação falhou no livro #{ledger} após tentar {operations} operações, com uma taxa cobrada de {fee} XLM a partir de {source}.",
+    "contextMemoDetail": "Um memo foi anexado: {memo}.",
+    "contextNoMemoDetail": "Nenhum memo foi anexado a esta transação."
   },
   "account": {
     "title": "Conta",
@@ -315,7 +325,11 @@
     "limit": "Limite:",
     "max": "Máx",
     "sorobanCall": "Chamada de Contrato Soroban",
-    "weight": "Peso: {weight}"
+    "weight": "Peso: {weight}",
+    "contextTitle": "Contexto da conta",
+    "contextSummary": "Esta conta atualmente mantém {xlm} XLM, acompanha {assets} ativos não nativos e usa {signers} signatário(s) em {subentries} subentradas.",
+    "contextHomeDomainDetail": "Seu home domain declarado é {domain}.",
+    "contextNoHomeDomainDetail": "Nenhum home domain está declarado para esta conta."
   },
   "operations": {
     "create_account": "Criar conta",
@@ -571,7 +585,12 @@
     "xlmPurpose1": "Pagar taxas de transação (tipicamente 0.00001 XLM por operação)",
     "xlmPurpose2": "Manter saldos mínimos de conta (reserva base)",
     "xlmPurpose3": "Prevenir spam exigindo pequenas quantias para criação de conta",
-    "xlmPurpose4": "Moeda ponte para transações entre ativos via DEX"
+    "xlmPurpose4": "Moeda ponte para transações entre ativos via DEX",
+    "contextTitle": "Contexto do ativo",
+    "contextOpenSummary": "{asset} é emitido por {issuer}, com {holders} contas detentoras e uma oferta estimada de {supply}. O acesso está atualmente aberto para trustlines e transferências.",
+    "contextRestrictedSummary": "{asset} é emitido por {issuer}, com {holders} contas detentoras e uma oferta estimada de {supply}. Controles do emissor, como autorização ou revogação, estão habilitados.",
+    "contextOrgDetail": "{org} publica os metadados Stellar relacionados a este ativo.",
+    "contextNoOrgDetail": "A conta emissora é a principal referência on-chain para este ativo."
   },
   "assetsMeta": {
     "stellarLumens": "Stellar Lumens",
@@ -842,7 +861,10 @@
     "noTransactionsDesc": "Este livro não contém transações.",
     "failedToLoadTx": "Falha ao carregar transações",
     "prev": "Anterior",
-    "next": "Próximo"
+    "next": "Próximo",
+    "contextTitle": "Resumo do livro",
+    "contextSummary": "O livro #{sequence} foi fechado em {closedAt}, com {successful} transações bem-sucedidas e {failed} falhas, processando {operations} operações no protocolo {protocol}.",
+    "contextFeeDetail": "O fee pool fechou em {feePool} XLM, com taxa base de {baseFee} stroops."
   },
   "noFeeData": "Dados de taxa indisponíveis",
   "noTransactionData": "Sem dados de transação",
