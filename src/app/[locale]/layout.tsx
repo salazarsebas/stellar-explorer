@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import { Providers } from "@/lib/providers";
 import { locales, type Locale } from "@/i18n/config";
+import { getBaseUrl, getLocaleOgTag } from "@/lib/seo";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -35,9 +36,7 @@ export async function generateMetadata({
   const description = t("description");
 
   return {
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_BASE_URL || "https://stellar-explorer.acachete.xyz"
-    ),
+    metadataBase: new URL(getBaseUrl()),
     title: {
       default: title,
       template: `%s | ${title}`,
@@ -60,7 +59,7 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "website",
-      locale: locale === "es" ? "es_ES" : "en_US",
+      locale: getLocaleOgTag(locale as Locale),
       siteName: title,
       title: title,
       description: description,
