@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { ContractContent } from "./contract-content";
+import { buildContractMetadataCopy } from "@/lib/entity-metadata";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { getContractCodeSnapshot } from "@/lib/stellar/server";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -9,23 +11,30 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, network, id } = await params;
-  const shortId = `${id.slice(0, 6)}...${id.slice(-6)}`;
+  let copy = buildContractMetadataCopy(id);
+
+  try {
+    const contractCode = await getContractCodeSnapshot(network as NetworkKey, id);
+    copy = buildContractMetadataCopy(id, contractCode);
+  } catch {
+    // Keep generic metadata when server-side fetching fails.
+  }
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
     pathname: `/contract/${id}`,
-    title: `Contract ${shortId}`,
-    description: `View Soroban smart contract ${shortId}. Explore events, storage, and contract code on Stellar.`,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title: `Soroban Contract ${shortId}`,
-      description: `View smart contract details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: `Soroban Contract ${shortId}`,
-      description: `View smart contract details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
     },
   });
 }

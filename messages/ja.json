@@ -256,7 +256,12 @@
     "noTransactions": "トランザクションデータなし",
     "noTransactionsDesc": "申し訳ありません。現在のインフラストラクチャでは約7日間のトランザクションデータのみ保持しています。完全なトランザクション履歴、詳細なイベントデータ、ブロックチェーン全体のカバレッジを提供するインデクサーを積極的に構築中です。",
     "lastActivity": "最終アクティビティ",
-    "contractTransactions": "トランザクション"
+    "contractTransactions": "トランザクション",
+    "contextTitle": "コントラクトの概要",
+    "contextWasmSummary": "このコントラクトはカスタム Soroban WASM コードとしてデプロイされており、現在 {storage} 件のインスタンスストレージ項目を公開しています。",
+    "contextSacSummary": "このコントラクトは Stellar Asset Contract のラッパーであり、カスタム WASM バイトコードではなく標準の資産インターフェースに従います。",
+    "contextStorageDetail": "現在のストレージ TTL は約 {ttl} レジャーです。",
+    "contextNoStorageDetail": "現在表示できるインスタンスストレージ項目はありません。"
   },
   "watchlist": {
     "title": "ウォッチリスト",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "オペレーションの読み込みに失敗",
     "failedToLoadEffects": "エフェクトの読み込みに失敗",
     "envelopeXdr": "エンベロープXDR",
-    "resultXdr": "結果XDR"
+    "resultXdr": "結果XDR",
+    "contextTitle": "何が起きたか",
+    "contextSuccessSummary": "このトランザクションはレジャー #{ledger} に取り込まれ、{operations} 件のオペレーションを含み、{source} から {fee} XLM の手数料を支払いました。",
+    "contextFailedSummary": "このトランザクションはレジャー #{ledger} で失敗し、{operations} 件のオペレーションを試行した結果、{source} から {fee} XLM の手数料が請求されました。",
+    "contextMemoDetail": "メモが添付されています: {memo}。",
+    "contextNoMemoDetail": "このトランザクションにはメモが添付されていません。"
   },
   "account": {
     "title": "アカウント",
@@ -315,7 +325,11 @@
     "limit": "限度：",
     "max": "最大",
     "sorobanCall": "Sorobanコントラクト呼び出し",
-    "weight": "ウェイト：{weight}"
+    "weight": "ウェイト：{weight}",
+    "contextTitle": "アカウントの概要",
+    "contextSummary": "このアカウントは現在 {xlm} XLM を保有し、{assets} 件のネイティブ以外の資産を追跡し、{subentries} 件のサブエントリーに対して {signers} 人の署名者を使用しています。",
+    "contextHomeDomainDetail": "宣言されている home domain は {domain} です。",
+    "contextNoHomeDomainDetail": "このアカウントには home domain が設定されていません。"
   },
   "operations": {
     "create_account": "アカウント作成",
@@ -571,7 +585,12 @@
     "xlmPurpose1": "トランザクション手数料の支払い（通常、操作ごとに0.00001 XLM）",
     "xlmPurpose2": "最低アカウント残高の維持（基本リザーブ）",
     "xlmPurpose3": "アカウント作成に少額を要求することでスパムを防止",
-    "xlmPurpose4": "DEXを介したクロスアセット取引のブリッジ通貨"
+    "xlmPurpose4": "DEXを介したクロスアセット取引のブリッジ通貨",
+    "contextTitle": "アセットの概要",
+    "contextOpenSummary": "{asset} は {issuer} によって発行され、{holders} 件の保有アカウントと推定供給量 {supply} を持ちます。現在、trustline と送金へのアクセスは開放されています。",
+    "contextRestrictedSummary": "{asset} は {issuer} によって発行され、{holders} 件の保有アカウントと推定供給量 {supply} を持ちます。承認や取消しなどの発行者コントロールが有効です。",
+    "contextOrgDetail": "{org} はこのアセットに関連する Stellar メタデータを公開しています。",
+    "contextNoOrgDetail": "発行アカウントはこのアセットの主要なオンチェーン参照です。"
   },
   "assetsMeta": {
     "stellarLumens": "Stellar Lumens",
@@ -842,7 +861,10 @@
     "noTransactionsDesc": "このレジャーにはトランザクションがありません。",
     "failedToLoadTx": "トランザクションの読み込みに失敗しました",
     "prev": "前へ",
-    "next": "次へ"
+    "next": "次へ",
+    "contextTitle": "レジャー概要",
+    "contextSummary": "レジャー #{sequence} は {closedAt} にクローズし、{successful} 件の成功トランザクションと {failed} 件の失敗トランザクションを含み、プロトコル {protocol} 上で {operations} 件のオペレーションを処理しました。",
+    "contextFeeDetail": "クローズ時の fee pool は {feePool} XLM、基本手数料は {baseFee} stroops でした。"
   },
   "noFeeData": "手数料データがありません",
   "noTransactionData": "トランザクションデータがありません",

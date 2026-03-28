@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { AccountContent } from "./account-content";
+import { buildAccountMetadataCopy } from "@/lib/entity-metadata";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { getAccountSnapshot } from "@/lib/stellar/server";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -9,23 +11,30 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, network, id } = await params;
-  const shortId = `${id.slice(0, 6)}...${id.slice(-6)}`;
+  let copy = buildAccountMetadataCopy(id);
+
+  try {
+    const account = await getAccountSnapshot(network as NetworkKey, id);
+    copy = buildAccountMetadataCopy(id, account);
+  } catch {
+    // Keep generic metadata when server-side fetching fails.
+  }
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
     pathname: `/account/${id}`,
-    title: `Account ${shortId}`,
-    description: `View Stellar account ${shortId}. Explore balances, transactions, operations, and signers.`,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title: `Stellar Account ${shortId}`,
-      description: `View account details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: `Stellar Account ${shortId}`,
-      description: `View account details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
     },
   });
 }

@@ -3,6 +3,7 @@ import type { Horizon } from "@stellar/stellar-sdk";
 import { getHorizonClient } from "@/lib/stellar/client";
 import { POPULAR_ASSETS } from "@/lib/constants";
 import type { NetworkKey } from "@/types";
+import { getRpcClient } from "./client";
 
 export const getLatestLedgerSnapshot = cache(async (network: NetworkKey) => {
   const horizon = getHorizonClient(network);
@@ -41,6 +42,54 @@ export const getAssetSnapshot = cache(async (network: NetworkKey, code: string, 
   const horizon = getHorizonClient(network);
   const response = await horizon.assets().forCode(code).forIssuer(issuer).call();
   return response.records[0] ?? null;
+});
+
+export const getContractCodeSnapshot = cache(async (network: NetworkKey, contractId: string) => {
+  const { Contract, xdr } = await import("@stellar/stellar-sdk");
+
+  const contract = new Contract(contractId);
+  const contractInstanceKey = xdr.LedgerKey.contractData(
+    new xdr.LedgerKeyContractData({
+      contract: contract.address().toScAddress(),
+      key: xdr.ScVal.scvLedgerKeyContractInstance(),
+      durability: xdr.ContractDataDurability.persistent(),
+    })
+  );
+
+  const rpc = getRpcClient(network);
+  const instanceResponse = await rpc.getLedgerEntries(contractInstanceKey);
+
+  if (!instanceResponse.entries || instanceResponse.entries.length === 0) {
+    return null;
+  }
+
+  const instanceEntry = instanceResponse.entries[0];
+  const contractData = instanceEntry.val.contractData();
+  const contractInstance = contractData.val().instance();
+  const executable = contractInstance.executable();
+
+  if (executable.switch().name !== "contractExecutableWasm") {
+    return {
+      type: "sac" as const,
+      codeSize: 0,
+    };
+  }
+
+  const wasmHash = executable.wasmHash();
+  const wasmCodeKey = xdr.LedgerKey.contractCode(new xdr.LedgerKeyContractCode({ hash: wasmHash }));
+  const codeResponse = await rpc.getLedgerEntries(wasmCodeKey);
+
+  if (!codeResponse.entries || codeResponse.entries.length === 0) {
+    return null;
+  }
+
+  const codeEntry = codeResponse.entries[0];
+  const contractCode = codeEntry.val.contractCode();
+
+  return {
+    type: "wasm" as const,
+    codeSize: contractCode.code().length,
+  };
 });
 
 export const getTopAssetSnapshots = cache(async (network: NetworkKey) => {

@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TransactionContent } from "./transaction-content";
+import { buildTransactionMetadataCopy } from "@/lib/entity-metadata";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { getTransactionSnapshot } from "@/lib/stellar/server";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -14,23 +16,30 @@ function isValidTransactionHash(hash: string): boolean {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, network, hash } = await params;
-  const shortHash = `${hash.slice(0, 8)}...${hash.slice(-8)}`;
+  let copy = buildTransactionMetadataCopy(hash);
+
+  try {
+    const transaction = await getTransactionSnapshot(network as NetworkKey, hash);
+    copy = buildTransactionMetadataCopy(hash, transaction);
+  } catch {
+    // Keep generic metadata when server-side fetching fails.
+  }
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
     pathname: `/tx/${hash}`,
-    title: `Transaction ${shortHash}`,
-    description: `View details of Stellar transaction ${shortHash}. Explore operations, effects, and raw XDR data.`,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title: `Stellar Transaction ${shortHash}`,
-      description: `View transaction details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: `Stellar Transaction ${shortHash}`,
-      description: `View transaction details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
     },
   });
 }

@@ -10,6 +10,7 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
+import { EntityContextCard } from "@/components/common/entity-context-card";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { useLedger, useLedgerTransactions } from "@/lib/hooks";
 import { formatDateTime, formatLedgerSequence } from "@/lib/utils";
@@ -18,6 +19,41 @@ import { useTranslations } from "next-intl";
 
 interface LedgerContentProps {
   sequence: number;
+}
+
+function LedgerContext({
+  ledger,
+}: {
+  ledger: import("@stellar/stellar-sdk").Horizon.ServerApi.LedgerRecord;
+}) {
+  const t = useTranslations("ledgerDetails");
+
+  return (
+    <EntityContextCard
+      title={t("contextTitle")}
+      summary={t("contextSummary", {
+        sequence: formatLedgerSequence(ledger.sequence),
+        closedAt: formatDateTime(ledger.closed_at),
+        successful: ledger.successful_transaction_count,
+        failed: ledger.failed_transaction_count,
+        operations: ledger.operation_count,
+        protocol: ledger.protocol_version,
+      })}
+      detail={t("contextFeeDetail", {
+        feePool: ledger.fee_pool,
+        baseFee: ledger.base_fee_in_stroops,
+      })}
+      metrics={[
+        {
+          label: t("transactions"),
+          value: `${ledger.successful_transaction_count}/${ledger.failed_transaction_count}`,
+        },
+        { label: t("operations"), value: String(ledger.operation_count) },
+        { label: t("feePool"), value: `${ledger.fee_pool} XLM` },
+        { label: t("protocolVersion"), value: String(ledger.protocol_version) },
+      ]}
+    />
+  );
 }
 
 function LedgerNavigation({ sequence }: { sequence: number }) {
@@ -214,6 +250,8 @@ export function LedgerContent({ sequence }: LedgerContentProps) {
         showCopy={false}
         actions={<LedgerNavigation sequence={sequence} />}
       />
+
+      <LedgerContext ledger={ledger} />
 
       <LedgerSummary ledger={ledger} />
 

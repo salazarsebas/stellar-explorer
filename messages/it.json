@@ -256,7 +256,12 @@
     "noTransactions": "Nessuna transazione disponibile",
     "noTransactionsDesc": "Spiacenti, la nostra infrastruttura attuale conserva circa 7 giorni di dati di transazione. Stiamo costruendo attivamente un indicizzatore che consentirà la cronologia completa delle transazioni, dati di eventi dettagliati e copertura completa della blockchain.",
     "lastActivity": "Ultima attività",
-    "contractTransactions": "Transazioni"
+    "contractTransactions": "Transazioni",
+    "contextTitle": "Contesto del contratto",
+    "contextWasmSummary": "Questo contratto è distribuito come codice WASM Soroban personalizzato ed espone attualmente {storage} voci di storage di istanza.",
+    "contextSacSummary": "Questo contratto è un wrapper Stellar Asset Contract e quindi segue l’interfaccia standard dell’asset invece di un bytecode WASM personalizzato.",
+    "contextStorageDetail": "L’attuale TTL dello storage è di circa {ttl} ledger.",
+    "contextNoStorageDetail": "Al momento non sono visibili voci di storage di istanza."
   },
   "watchlist": {
     "title": "Lista di controllo",
@@ -286,7 +291,12 @@
     "failedToLoadOps": "Impossibile caricare le operazioni",
     "failedToLoadEffects": "Impossibile caricare gli effetti",
     "envelopeXdr": "Envelope XDR",
-    "resultXdr": "Result XDR"
+    "resultXdr": "Result XDR",
+    "contextTitle": "Cosa è successo",
+    "contextSuccessSummary": "Questa transazione è entrata nel ledger #{ledger} con {operations} operazioni e ha pagato {fee} XLM da {source}.",
+    "contextFailedSummary": "Questa transazione è fallita nel ledger #{ledger} dopo aver tentato {operations} operazioni, con una fee addebitata di {fee} XLM da {source}.",
+    "contextMemoDetail": "È stato allegato un memo: {memo}.",
+    "contextNoMemoDetail": "Nessun memo è stato allegato a questa transazione."
   },
   "account": {
     "title": "Conto",
@@ -315,7 +325,11 @@
     "limit": "Limite:",
     "max": "Max",
     "sorobanCall": "Chiamata contratto Soroban",
-    "weight": "Peso: {weight}"
+    "weight": "Peso: {weight}",
+    "contextTitle": "Contesto dell’account",
+    "contextSummary": "Questo account detiene attualmente {xlm} XLM, monitora {assets} asset non nativi e usa {signers} firmatario/i su {subentries} sotto-voci.",
+    "contextHomeDomainDetail": "Il suo home domain dichiarato è {domain}.",
+    "contextNoHomeDomainDetail": "Per questo account non è dichiarato alcun home domain."
   },
   "operations": {
     "create_account": "Crea conto",
@@ -641,7 +655,12 @@
     "xlmPurpose1": "Pagare le commissioni di transazione (tipicamente 0,00001 XLM per operazione)",
     "xlmPurpose2": "Mantenere i saldi minimi del conto (riserva base)",
     "xlmPurpose3": "Prevenire lo spam richiedendo piccole quantità per la creazione dell'account",
-    "xlmPurpose4": "Valuta ponte per transazioni tra diverse risorse tramite il DEX"
+    "xlmPurpose4": "Valuta ponte per transazioni tra diverse risorse tramite il DEX",
+    "contextTitle": "Contesto dell’asset",
+    "contextOpenSummary": "{asset} è emesso da {issuer}, con {holders} account detentori e una supply stimata di {supply}. L’accesso è attualmente aperto per trustline e trasferimenti.",
+    "contextRestrictedSummary": "{asset} è emesso da {issuer}, con {holders} account detentori e una supply stimata di {supply}. Sono abilitati controlli dell’emittente come autorizzazione o revoca.",
+    "contextOrgDetail": "{org} pubblica i metadati Stellar relativi a questo asset.",
+    "contextNoOrgDetail": "L’account emittente è il principale riferimento on-chain per questo asset."
   },
   "ledgerDetails": {
     "title": "Registro",
@@ -663,7 +682,10 @@
     "noTransactionsDesc": "Questo registro non contiene transazioni.",
     "failedToLoadTx": "Impossibile caricare le transazioni",
     "prev": "Prec",
-    "next": "Succ"
+    "next": "Succ",
+    "contextTitle": "Riepilogo del ledger",
+    "contextSummary": "Il ledger #{sequence} si è chiuso alle {closedAt}, con {successful} transazioni riuscite e {failed} non riuscite, elaborando {operations} operazioni sul protocollo {protocol}.",
+    "contextFeeDetail": "Alla chiusura il fee pool era pari a {feePool} XLM con una fee base di {baseFee} stroops."
   },
   "searchPage": {
     "noQuery": "Nessuna query di ricerca",

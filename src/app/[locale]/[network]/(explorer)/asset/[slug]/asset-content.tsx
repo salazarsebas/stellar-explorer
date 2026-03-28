@@ -10,8 +10,9 @@ import { HashDisplay } from "@/components/common/hash-display";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
 import { AssetLogo } from "@/components/common/asset-logo";
+import { EntityContextCard } from "@/components/common/entity-context-card";
 import { useAsset, useAssetMetadata } from "@/lib/hooks";
-import { formatNumber, formatCompactNumber, parseAssetSlug } from "@/lib/utils";
+import { formatNumber, formatCompactNumber, parseAssetSlug, truncateHash } from "@/lib/utils";
 import type { Horizon } from "@stellar/stellar-sdk";
 import {
   Coins,
@@ -35,6 +36,44 @@ type AssetRecordExtended = Horizon.ServerApi.AssetRecord & {
 
 interface AssetContentProps {
   slug: string;
+}
+
+function AssetContext({
+  asset,
+  metadata,
+}: {
+  asset: AssetRecordExtended;
+  metadata?: { orgName?: string | null } | null;
+}) {
+  const t = useTranslations("assetDetails");
+  const isOpenAccess = !asset.flags.auth_required && !asset.flags.auth_revocable;
+  const summaryKey = isOpenAccess ? "contextOpenSummary" : "contextRestrictedSummary";
+
+  return (
+    <EntityContextCard
+      title={t("contextTitle")}
+      summary={t(summaryKey, {
+        asset: asset.asset_code,
+        issuer: truncateHash(asset.asset_issuer, 4, 4),
+        holders: formatCompactNumber(asset.num_accounts),
+        supply: formatCompactNumber(asset.amount),
+      })}
+      detail={
+        metadata?.orgName
+          ? t("contextOrgDetail", { org: metadata.orgName })
+          : t("contextNoOrgDetail")
+      }
+      metrics={[
+        { label: t("totalSupply"), value: formatCompactNumber(asset.amount) },
+        { label: t("accounts"), value: formatCompactNumber(asset.num_accounts) },
+        {
+          label: t("liquidityPools"),
+          value: formatCompactNumber(asset.num_liquidity_pools || 0),
+        },
+        { label: t("flags"), value: isOpenAccess ? t("openAccess") : t("restricted") },
+      ]}
+    />
+  );
 }
 
 function FlagBadge({
@@ -350,6 +389,8 @@ export function AssetContent({ slug }: AssetContentProps) {
           )}
         </div>
       </div>
+
+      <AssetContext asset={asset as AssetRecordExtended} metadata={metadata} />
 
       <AssetSummary asset={asset as AssetRecordExtended} />
 

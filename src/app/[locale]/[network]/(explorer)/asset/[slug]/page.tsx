@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import { AssetContent } from "./asset-content";
+import { buildAssetMetadataCopy } from "@/lib/entity-metadata";
 import { parseAssetSlug } from "@/lib/utils";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { getAssetSnapshot } from "@/lib/stellar/server";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -19,30 +21,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const { code, issuer } = parsed;
-  const isNative = issuer === "native";
-  const shortIssuer = isNative ? "Native" : `${issuer.slice(0, 4)}...${issuer.slice(-4)}`;
+  let copy = buildAssetMetadataCopy(code, issuer);
+
+  if (issuer !== "native") {
+    try {
+      const asset = await getAssetSnapshot(network as NetworkKey, code, issuer);
+      copy = buildAssetMetadataCopy(code, issuer, asset);
+    } catch {
+      // Keep generic metadata when server-side fetching fails.
+    }
+  }
 
   return buildExplorerMetadata({
     locale,
     network: network as NetworkKey,
     pathname: `/asset/${slug}`,
-    title: isNative ? "XLM - Stellar Lumens" : `${code} Asset`,
-    description: isNative
-      ? "XLM (Stellar Lumens) is the native asset of the Stellar network."
-      : `View details of ${code} asset on Stellar. Issuer: ${shortIssuer}. Explore supply, holders, and flags.`,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title: isNative ? "Stellar Lumens (XLM)" : `${code} - Stellar Asset`,
-      description: isNative
-        ? "Native asset of the Stellar network"
-        : `View ${code} asset details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: isNative ? "Stellar Lumens (XLM)" : `${code} - Stellar Asset`,
-      description: isNative
-        ? "Native asset of the Stellar network"
-        : `View ${code} asset details on Stellar Explorer`,
+      title: copy.title,
+      description: copy.description,
     },
   });
 }
