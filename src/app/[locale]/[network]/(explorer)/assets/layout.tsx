@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildExplorerMetadata } from "@/lib/seo";
+import { StructuredDataScript } from "@/components/common";
+import { buildCollectionPageStructuredData, buildExplorerMetadata } from "@/lib/seo";
 import type { NetworkKey } from "@/types";
 
 export async function generateMetadata({
@@ -17,6 +18,12 @@ export async function generateMetadata({
     pathname: "/assets",
     title: t("title"),
     description: t("metaDescription"),
+    keywords: [
+      "stellar assets",
+      "stellar tokens",
+      "stellar asset explorer",
+      "stellar issuer lookup",
+    ],
     openGraph: {
       title: t("title"),
       description: t("metaDescription"),
@@ -25,6 +32,29 @@ export async function generateMetadata({
   });
 }
 
-export default function AssetsLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function AssetsLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string; network: string }>;
+}) {
+  const { locale, network } = await params;
+  const t = await getTranslations({ locale, namespace: "assets" });
+
+  return (
+    <>
+      <StructuredDataScript
+        data={buildCollectionPageStructuredData({
+          locale,
+          network,
+          pathname: "/assets",
+          name: t("title"),
+          description: t("metaDescription"),
+          about: ["Stellar assets", "asset search", "asset issuers", "token holders"],
+        })}
+      />
+      {children}
+    </>
+  );
 }

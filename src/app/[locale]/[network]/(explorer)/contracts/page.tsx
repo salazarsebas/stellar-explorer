@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { EmptyState } from "@/components/common/empty-state";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { FileCode, ExternalLink, Search } from "lucide-react";
@@ -20,6 +21,7 @@ export default function ContractsPage() {
   const [error, setError] = useState("");
   const t = useTranslations("contracts");
   const tCommon = useTranslations("common");
+  const tContract = useTranslations("contract");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +45,16 @@ export default function ContractsPage() {
         backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
+      />
+
+      <SearchContextPanel
+        description={t("contractsDescription")}
+        highlights={[
+          t("findContract"),
+          t("sorobanContracts"),
+          tContract("events"),
+          t("learnSoroban"),
+        ]}
       />
 
       {/* Search for a contract */}

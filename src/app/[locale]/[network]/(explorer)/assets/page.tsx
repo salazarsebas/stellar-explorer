@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { AssetLogo } from "@/components/common/asset-logo";
 import { AssetTable, AssetTableSkeleton, type AssetData } from "@/components/assets";
 import { ErrorState } from "@/components/common/error-state";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { useTopAssets, useAssetsList } from "@/lib/hooks";
@@ -253,6 +254,11 @@ export default function AssetsPage() {
         backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
+      />
+
+      <SearchContextPanel
+        description={t("metaDescription")}
+        highlights={[t("findAsset"), t("popularAssets"), t("topAssets"), t("allAssets")]}
       />
 
       {/* Search Form */}

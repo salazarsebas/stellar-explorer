@@ -12,3 +12,5 @@ export * from "./copy-button";
 export * from "./breadcrumbs";
 export * from "./live-indicator";
 export * from "./asset-logo";
+export * from "./search-context-panel";
+export * from "./structured-data-script";

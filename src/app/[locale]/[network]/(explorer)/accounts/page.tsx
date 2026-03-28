@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { Users, Search } from "lucide-react";
@@ -19,6 +20,7 @@ export default function AccountsPage() {
   const [error, setError] = useState("");
   const t = useTranslations("accounts");
   const tCommon = useTranslations("common");
+  const tAccount = useTranslations("account");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +44,16 @@ export default function AccountsPage() {
         backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
+      />
+
+      <SearchContextPanel
+        description={t("accountsDescription")}
+        highlights={[
+          t("findAccount"),
+          t("stellarAccounts"),
+          tAccount("balances"),
+          tAccount("signers"),
+        ]}
       />
 
       {/* Search for an account */}

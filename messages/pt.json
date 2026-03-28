@@ -71,12 +71,15 @@
     "title": "Explore a Rede Stellar",
     "subtitle": "Descubra transações, contas, ativos e contratos inteligentes com uma experiência de explorador premium.",
     "networkOverview": "Visão Geral da Rede",
+    "networkOverviewSummary": "Acompanhe o livro mais recente, as taxas, a versão do protocolo e a rede ativa em um resumo rastreável.",
     "networkActivity": "Atividade da Rede",
+    "networkActivitySummary": "Revise padrões de transações, operações, taxas e throughput para entender como a Stellar está se movendo agora.",
     "recentTransactions": "Transações Recentes",
     "latestLedger": "Último Livro",
     "viewAllLedgers": "Ver todos os livros para mais histórico",
     "noRecentTransactions": "Nenhuma transação recente",
-    "explore": "Explorar"
+    "explore": "Explorar",
+    "exploreSummary": "Acesse rapidamente as principais seções do explorador para atividade on-chain, histórico de livros, descoberta de ativos e inspeção de contratos Soroban."
   },
   "stats": {
     "latestLedger": "Último Livro",

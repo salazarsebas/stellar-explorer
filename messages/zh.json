@@ -71,12 +71,15 @@
     "title": "探索 Stellar 网络",
     "subtitle": "通过高级浏览器体验发现交易、账户、资产和智能合约。",
     "networkOverview": "网络概览",
+    "networkOverviewSummary": "通过可抓取的摘要跟踪最新账本、费用、协议版本和当前网络环境。",
     "networkActivity": "网络活动",
+    "networkActivitySummary": "查看交易、操作、费用和吞吐趋势，更清楚地理解 Stellar 当前的网络动态。",
     "recentTransactions": "最近交易",
     "latestLedger": "最新账本",
     "viewAllLedgers": "查看所有账本以获取更多历史",
     "noRecentTransactions": "没有最近交易",
-    "explore": "探索"
+    "explore": "探索",
+    "exploreSummary": "直接进入浏览器的主要部分，查看链上活动、账本历史、资产发现和 Soroban 合约检查。"
   },
   "stats": {
     "latestLedger": "最新账本",

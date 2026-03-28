@@ -71,12 +71,15 @@
     "title": "Stellar 네트워크 탐색",
     "subtitle": "프리미엄 익스플로러 경험으로 트랜잭션, 계정, 자산 및 스마트 컨트랙트를 발견하세요.",
     "networkOverview": "네트워크 개요",
+    "networkOverviewSummary": "크롤링 가능한 요약으로 최신 원장, 수수료, 프로토콜 버전, 현재 네트워크 환경을 확인하세요.",
     "networkActivity": "네트워크 활동",
+    "networkActivitySummary": "거래, 작업, 수수료, 처리량 추세를 검토해 현재 Stellar 네트워크 움직임을 파악하세요.",
     "recentTransactions": "최근 트랜잭션",
     "latestLedger": "최신 원장",
     "viewAllLedgers": "더 많은 원장 기록 보기",
     "noRecentTransactions": "최근 트랜잭션 없음",
-    "explore": "탐색"
+    "explore": "탐색",
+    "exploreSummary": "온체인 활동, 원장 기록, 자산 탐색, Soroban 계약 점검을 위해 주요 익스플로러 섹션으로 바로 이동하세요."
   },
   "stats": {
     "latestLedger": "최신 원장",

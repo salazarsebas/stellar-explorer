@@ -71,12 +71,15 @@
     "title": "Stellar ネットワークを探索",
     "subtitle": "プレミアムエクスプローラー体験でトランザクション、アカウント、アセット、スマートコントラクトを発見。",
     "networkOverview": "ネットワーク概要",
+    "networkOverviewSummary": "最新レジャー、手数料、プロトコルバージョン、現在のネットワーク環境をクロールしやすい要約で確認できます。",
     "networkActivity": "ネットワーク活動",
+    "networkActivitySummary": "トランザクション、オペレーション、手数料、スループットの傾向を見て、現在の Stellar の動きを把握できます。",
     "recentTransactions": "最近のトランザクション",
     "latestLedger": "最新レジャー",
     "viewAllLedgers": "履歴を見るにはすべてのレジャーを表示",
     "noRecentTransactions": "最近のトランザクションはありません",
-    "explore": "探索"
+    "explore": "探索",
+    "exploreSummary": "オンチェーン活動、レジャー履歴、資産探索、Soroban コントラクトの確認に直接アクセスできます。"
   },
   "stats": {
     "latestLedger": "最新レジャー",

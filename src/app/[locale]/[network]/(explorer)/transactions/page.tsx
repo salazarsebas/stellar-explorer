@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/transaction-card";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import {
   TransactionSearch,
   TransactionFilters,
@@ -131,10 +132,21 @@ export default function TransactionsPage() {
     <div className="space-y-6">
       <PageHeader
         title={t("title")}
+        subtitle={t("metaDescription")}
         backHref="/"
         backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
+      />
+
+      <SearchContextPanel
+        description={t("metaDescription")}
+        highlights={[
+          t("recentTransactions"),
+          tSearch("accountLabel"),
+          tSearch("ledgerLabel"),
+          tSearch("filterByStatus"),
+        ]}
       />
 
       {/* Search Form */}

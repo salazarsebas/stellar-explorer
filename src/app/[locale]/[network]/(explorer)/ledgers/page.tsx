@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import { useLatestLedger } from "@/lib/hooks";
 import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
@@ -24,6 +25,7 @@ export default function LedgersPage() {
   const { data: latestLedger, isLoading, error, refetch } = useLatestLedger();
   const t = useTranslations("ledgers");
   const tCommon = useTranslations("common");
+  const tStats = useTranslations("stats");
 
   const [ledgerSequence, setLedgerSequence] = useState("");
   const [searchError, setSearchError] = useState("");
@@ -56,10 +58,21 @@ export default function LedgersPage() {
     <div className="space-y-6">
       <PageHeader
         title={t("title")}
+        subtitle={t("metaDescription")}
         backHref="/"
         backLabel={tCommon("home")}
         showCopy={false}
         badge={<NetworkBadge network={network} />}
+      />
+
+      <SearchContextPanel
+        description={t("metaDescription")}
+        highlights={[
+          t("searchLedger"),
+          t("recentLedgers"),
+          tStats("latestLedger"),
+          tCommon("search"),
+        ]}
       />
 
       {/* Search Form */}

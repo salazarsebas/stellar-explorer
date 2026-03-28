@@ -71,12 +71,15 @@
     "title": "Erkunden Sie das Stellar-Netzwerk",
     "subtitle": "Entdecken Sie Transaktionen, Konten, Assets und Smart Contracts mit einer Premium-Explorer-Erfahrung.",
     "networkOverview": "Netzwerk-Übersicht",
+    "networkOverviewSummary": "Verfolge das neueste Ledger, Gebühren, Protokollversion und das aktive Netzwerk in einer crawlbaren Zusammenfassung.",
     "networkActivity": "Netzwerk-Aktivität",
+    "networkActivitySummary": "Analysiere Muster bei Transaktionen, Operationen, Gebühren und Durchsatz, um die aktuelle Stellar-Aktivität zu verstehen.",
     "recentTransactions": "Kürzliche Transaktionen",
     "latestLedger": "Neuester Ledger",
     "viewAllLedgers": "Alle Ledger für mehr Historie anzeigen",
     "noRecentTransactions": "Keine kürzlichen Transaktionen",
-    "explore": "Erkunden"
+    "explore": "Erkunden",
+    "exploreSummary": "Springe direkt in die wichtigsten Explorer-Bereiche für On-Chain-Aktivität, Ledger-Verlauf, Asset-Entdeckung und Soroban-Vertragsprüfung."
   },
   "stats": {
     "latestLedger": "Neuester Ledger",
