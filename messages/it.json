@@ -71,12 +71,15 @@
     "title": "Esplora la rete Stellar",
     "subtitle": "Scopri transazioni, conti, risorse e smart contract con un'esperienza di esplorazione premium.",
     "networkOverview": "Panoramica della rete",
+    "networkOverviewSummary": "Segui l'ultimo registro, le commissioni, la versione del protocollo e la rete attiva in un riepilogo indicizzabile.",
     "networkActivity": "Attività di rete",
+    "networkActivitySummary": "Analizza andamenti di transazioni, operazioni, commissioni e throughput per capire come si muove Stellar in questo momento.",
     "recentTransactions": "Transazioni recenti",
     "latestLedger": "Ultimo registro",
     "viewAllLedgers": "Visualizza tutti i registri per più cronologia",
     "noRecentTransactions": "Nessuna transazione recente",
-    "explore": "Esplora"
+    "explore": "Esplora",
+    "exploreSummary": "Accedi direttamente alle principali sezioni dell'explorer per attività on-chain, cronologia dei registri, scoperta degli asset e ispezione dei contratti Soroban."
   },
   "stats": {
     "latestLedger": "Ultimo registro",

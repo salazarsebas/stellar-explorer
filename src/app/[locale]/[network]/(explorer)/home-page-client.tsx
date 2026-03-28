@@ -8,6 +8,7 @@ import { TransactionCard, TransactionCardSkeleton } from "@/components/cards/tra
 import { LedgerCard, LedgerCardSkeleton } from "@/components/cards/ledger-card";
 import { NetworkStatsCard } from "@/components/stats";
 import { LiveIndicator } from "@/components/common/live-indicator";
+import { SearchContextPanel } from "@/components/common/search-context-panel";
 import {
   useLatestLedger,
   useRecentTransactions,
@@ -203,10 +204,23 @@ export default function HomePage() {
         </div>
       </section>
 
+      <SearchContextPanel
+        description={t("subtitle")}
+        highlights={[
+          t("networkOverview"),
+          t("networkActivity"),
+          tExplore("transactionsDesc"),
+          tExplore("contractsDesc"),
+        ]}
+      />
+
       {/* Network Stats */}
       <section>
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{t("networkOverview")}</h2>
+          <div className="space-y-1">
+            <h2 className="text-lg font-semibold">{t("networkOverview")}</h2>
+            <p className="text-muted-foreground text-sm">{t("networkOverviewSummary")}</p>
+          </div>
         </div>
         <Suspense
           fallback={
@@ -231,9 +245,12 @@ export default function HomePage() {
       {/* Network Activity Charts */}
       <section>
         <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BarChart3 className="text-muted-foreground size-5" />
-            <h2 className="text-lg font-semibold">{t("networkActivity")}</h2>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="text-muted-foreground size-5" />
+              <h2 className="text-lg font-semibold">{t("networkActivity")}</h2>
+            </div>
+            <p className="text-muted-foreground text-sm">{t("networkActivitySummary")}</p>
           </div>
         </div>
         <DashboardCharts />
@@ -311,7 +328,10 @@ export default function HomePage() {
 
       {/* Quick links */}
       <section>
-        <h2 className="mb-5 text-lg font-semibold">{t("explore")}</h2>
+        <div className="mb-5 space-y-1">
+          <h2 className="text-lg font-semibold">{t("explore")}</h2>
+          <p className="text-muted-foreground text-sm">{t("exploreSummary")}</p>
+        </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {[
             {

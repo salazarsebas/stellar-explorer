@@ -96,6 +96,42 @@ export function buildExplorerMetadata({
   };
 }
 
+export function buildCollectionPageStructuredData({
+  locale,
+  network,
+  pathname,
+  name,
+  description,
+  about = [],
+}: {
+  locale: string;
+  network: string;
+  pathname: string;
+  name: string;
+  description: string;
+  about?: string[];
+}) {
+  const url = buildExplorerUrl(locale, network, pathname);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url,
+    inLanguage: locale,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Stellar Explorer",
+      url: buildExplorerUrl(locale, network),
+    },
+    about: about.map((term) => ({
+      "@type": "Thing",
+      name: term,
+    })),
+  };
+}
+
 export function getLocaleOgTag(locale: Locale): string {
   const localeMap: Record<Locale, string> = {
     en: "en_US",

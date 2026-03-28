@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import HomePageClient from "./home-page-client";
 import { buildExplorerMetadata } from "@/lib/seo";
+import { StructuredDataScript } from "@/components/common";
 import type { NetworkKey } from "@/types";
 
 type Props = {
@@ -22,8 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "stellar blockchain explorer",
       "xlm explorer",
       "stellar transactions",
+      "stellar accounts",
+      "stellar assets",
       "stellar ledgers",
       "soroban explorer",
+      "soroban contracts",
     ],
     openGraph: {
       title: "Stellar Blockchain Explorer",
@@ -62,10 +66,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <StructuredDataScript data={structuredData} />
 
       <HomePageClient />
     </>

@@ -68,15 +68,18 @@
   },
   "home": {
     "badge": "Real-time blockchain data",
-    "title": "Explore the Stellar Network",
-    "subtitle": "Discover transactions, accounts, assets, and smart contracts with a premium explorer experience.",
-    "networkOverview": "Network Overview",
-    "networkActivity": "Network Activity",
+    "title": "Stellar blockchain explorer for transactions, accounts, assets, and contracts",
+    "subtitle": "Search Stellar transactions, inspect live ledger activity, and explore accounts, assets, and Soroban smart contracts from one premium explorer.",
+    "networkOverview": "Live Network Overview",
+    "networkOverviewSummary": "Follow the latest ledger, fees, protocol version, and active network environment in a crawlable summary.",
+    "networkActivity": "Network Activity Trends",
+    "networkActivitySummary": "Review transaction, operation, fee, and throughput patterns that explain how the Stellar network is moving right now.",
     "recentTransactions": "Recent Transactions",
     "latestLedger": "Latest Ledger",
     "viewAllLedgers": "View all ledgers for more history",
     "noRecentTransactions": "No recent transactions",
-    "explore": "Explore"
+    "explore": "Explore Stellar Data",
+    "exploreSummary": "Jump directly into the major explorer sections for on-chain activity, ledger history, asset discovery, and Soroban contract inspection."
   },
   "stats": {
     "latestLedger": "Latest Ledger",
@@ -87,27 +90,27 @@
   },
   "exploreCards": {
     "transactions": "Transactions",
-    "transactionsDesc": "View all network activity",
+    "transactionsDesc": "Browse recent Stellar transactions, operations, and status results",
     "ledgers": "Ledgers",
-    "ledgersDesc": "Browse ledger history",
+    "ledgersDesc": "Browse ledger history, close times, and transaction counts",
     "assets": "Assets",
-    "assetsDesc": "Discover tokens",
+    "assetsDesc": "Discover Stellar assets, issuers, holders, and trading signals",
     "contracts": "Contracts",
-    "contractsDesc": "Explore Soroban"
+    "contractsDesc": "Inspect Soroban contracts, events, and verification status"
   },
   "transactions": {
-    "metaTitle": "Transactions | Stellar Explorer",
-    "metaDescription": "Browse recent transactions on the Stellar network. View transaction details, operations, and more.",
-    "title": "Transactions",
+    "metaTitle": "Stellar Transactions | Stellar Explorer",
+    "metaDescription": "Search recent Stellar transactions, inspect operation outcomes, and trace account or ledger activity in one explorer.",
+    "title": "Stellar Transactions",
     "recentTransactions": "Recent Transactions",
     "failedToLoad": "Failed to load transactions",
     "noTransactions": "No transactions",
     "noRecentFound": "No recent transactions found on this network."
   },
   "ledgers": {
-    "metaTitle": "Ledgers | Stellar Explorer",
-    "metaDescription": "Browse ledger history on the Stellar network. Search and explore individual ledgers.",
-    "title": "Ledgers",
+    "metaTitle": "Stellar Ledgers | Stellar Explorer",
+    "metaDescription": "Browse Stellar ledger history, search by sequence, and inspect the latest confirmed ledger activity.",
+    "title": "Stellar Ledgers",
     "searchLedger": "Search Ledger",
     "enterSequence": "Enter ledger sequence number...",
     "enterSequenceError": "Please enter a ledger sequence number",
@@ -119,20 +122,20 @@
     "noLedgersFound": "No ledgers found on this network."
   },
   "accounts": {
-    "title": "Accounts",
-    "subtitle": "Search and explore Stellar accounts",
+    "title": "Stellar Accounts",
+    "subtitle": "Search Stellar accounts, balances, signers, and recent on-chain activity",
     "findAccount": "Find an Account",
     "enterAddress": "Enter account address (G...)",
     "enterAddressError": "Please enter an account address",
     "invalidAddress": "Invalid account address. Must start with G and be 56 characters.",
     "stellarAccounts": "Stellar Accounts",
-    "accountsDescription": "Enter a Stellar address to view account details, balances, transactions, and signing information."
+    "accountsDescription": "Enter a Stellar address to inspect balances, signers, subentries, and recent network activity for any account."
   },
   "assets": {
-    "metaTitle": "Assets | Stellar Explorer",
-    "metaDescription": "Explore assets on the Stellar network. View top assets, search by code or issuer.",
-    "title": "Assets",
-    "subtitle": "Explore tokens and assets on the Stellar network",
+    "metaTitle": "Stellar Assets | Stellar Explorer",
+    "metaDescription": "Explore Stellar assets by code or issuer, compare top tokens, and review holders, supply, and market activity.",
+    "title": "Stellar Assets",
+    "subtitle": "Explore Stellar tokens, issuers, holders, and market activity",
     "findAsset": "Find an Asset",
     "assetCode": "Asset code (e.g., USDC)",
     "issuerAddress": "Issuer address (G...)",
@@ -158,10 +161,10 @@
     "price": "Price"
   },
   "contracts": {
-    "metaTitle": "Smart Contracts | Stellar Explorer",
-    "metaDescription": "Explore Soroban smart contracts on the Stellar network. Search and view contract details.",
-    "title": "Smart Contracts",
-    "subtitle": "Explore Soroban smart contracts on the Stellar network",
+    "metaTitle": "Soroban Smart Contracts | Stellar Explorer",
+    "metaDescription": "Explore Soroban smart contracts on Stellar, search contract IDs, and review events, storage, and verification status.",
+    "title": "Soroban Smart Contracts",
+    "subtitle": "Explore Soroban smart contracts, events, storage, and verification signals",
     "findContract": "Find a Contract",
     "enterContractId": "Enter contract ID (C...)",
     "enterContractIdError": "Please enter a contract ID",
