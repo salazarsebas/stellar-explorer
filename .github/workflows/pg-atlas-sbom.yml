@@ -1,0 +1,20 @@
+name: PG Atlas SBOM
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  submit-sbom:
+    name: Submit SBOM to PG Atlas
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Submit repository SBOM
+        uses: SCF-Public-Goods-Maintenance/pg-atlas-sbom-action@3b49bfea5a8b78d04f00ad7bd633e107241a3485
