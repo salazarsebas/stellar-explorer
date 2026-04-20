@@ -120,14 +120,31 @@ WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 
 ---
 
+## Monorepo Structure
+
+```text
+stellar-explorer/
+├── apps/
+│   ├── explorer-web/ # Next.js explorer frontend
+│   └── docs/        # Astro/Starlight documentation site
+├── services/
+│   └── indexer/     # Go ingestion/indexing service
+├── infra/
+│   ├── docker/      # Local infrastructure files
+│   └── docker-compose.yml
+├── .github/         # CI workflows
+├── package.json     # Bun workspace root
+└── bun.lock         # Shared dependency lockfile
+```
+
 ## Getting Started
 
 ### Frontend
 
 ```bash
-bun install       # Install dependencies
-bun run dev       # Start dev server at http://localhost:3000
-bun run build     # Production build
+bun install           # Install workspace dependencies
+bun run dev:web       # Start frontend at http://localhost:3000
+bun run build:web     # Production build for apps/explorer-web
 ```
 
 ### Indexer
@@ -136,20 +153,26 @@ Requires Docker Compose to be running:
 
 ```bash
 # From project root — starts PostgreSQL, Redis, and Typesense
-docker compose up -d
+docker compose -f infra/docker-compose.yml up -d
 
 # Apply database migrations
-for f in migrations/*.up.sql; do
-  cat "$f" | docker compose exec -T postgres psql -U explorer -d stellar_explorer
+for f in services/indexer/migrations/*.up.sql; do
+  cat "$f" | docker compose -f infra/docker-compose.yml exec -T postgres psql -U explorer -d stellar_explorer
 done
 
 # Build and run the indexer
-cd indexer
-make build
-RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make run-live
+make -C services/indexer build
+RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make -C services/indexer run-live
 ```
 
-See [`indexer/README.md`](./indexer/README.md) for the full configuration reference and all available commands.
+See [`services/indexer/README.md`](./services/indexer/README.md) for the full configuration reference and all available commands.
+
+### Docs
+
+```bash
+bun run dev:docs
+bun run build:docs
+```
 
 ---
 
@@ -157,12 +180,26 @@ See [`indexer/README.md`](./indexer/README.md) for the full configuration refere
 
 | Command          | Description               |
 | ---------------- | ------------------------- |
-| `bun run dev`    | Start development server  |
-| `bun run build`  | Build for production      |
-| `bun run start`  | Start production server   |
-| `bun run lint`   | Run ESLint                |
-| `bun run format` | Format code with Prettier |
-| `bun run test`   | Run tests with Vitest     |
+| `bun run dev:web` | Start frontend development server |
+| `bun run build:web` | Build the frontend |
+| `bun run dev:docs` | Start the documentation site |
+| `bun run build:docs` | Build the documentation site |
+| `bun run indexer:build` | Build the Go indexer |
+| `bun run indexer:test` | Run indexer tests |
+
+## Vercel
+
+For the frontend deployment, point the Vercel project to `apps/explorer-web` as the Root Directory. That isolates the production build from the rest of the monorepo and avoids accidental breakage when `services/` or `apps/docs/` change.
+
+Recommended Vercel settings:
+
+- Framework Preset: `Next.js`
+- Root Directory: `apps/explorer-web`
+- Install Command: leave default so Vercel detects the Bun workspace from repo root
+- Build Command: leave default, or set `bun run build`
+- Output Directory: leave empty
+
+If you later deploy docs on a separate Vercel project, use `apps/docs` as its Root Directory.
 
 ---
 

@@ -1,0 +1,10 @@
+node_modules
+.next
+dist
+build
+coverage
+*.min.js
+pnpm-lock.yaml
+package-lock.json
+.claude/
+.agents/

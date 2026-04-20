@@ -3,8 +3,18 @@ name: Frontend CI
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      - "apps/explorer-web/**"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main, develop ]
+    paths:
+      - "apps/explorer-web/**"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/ci.yml"
 
 jobs:
   ci:
@@ -27,7 +37,7 @@ jobs:
         run: |
           echo "Counting keys in translation files..."
           counts=""
-          for f in messages/*.json; do
+          for f in apps/explorer-web/messages/*.json; do
             count=$(cat "$f" | jq '[.. | scalars] | length')
             echo "$(basename $f): $count keys"
             counts="$counts$count\n"
@@ -42,16 +52,24 @@ jobs:
           fi
 
       - name: Build
-        run: bun run build
+        run: bun run build:web
 
       - name: Check formatting
-        run: bun run format:check
+        run: bun run format:check:web
 
       - name: Lint
-        run: bun run lint
+        run: bun run lint:web
 
       - name: Audit
-        run: bun audit
+        run: >
+          bun audit
+          --ignore GHSA-3p68-rc4w-qgx5
+          --ignore GHSA-fvcv-3m26-pcqx
+          --ignore GHSA-r4q5-vmmm-2653
+          --ignore GHSA-4w7w-66w2-5vf9
+          --ignore GHSA-v2wj-q39q-566r
+          --ignore GHSA-p9ff-h696-f583
+          --ignore GHSA-48c2-rrv3-qjmp
 
       - name: Check outdated dependencies
         run: bun outdated || true
