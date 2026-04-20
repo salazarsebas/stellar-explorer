@@ -4,12 +4,12 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "indexer/**"
+      - "services/indexer/**"
       - ".github/workflows/indexer-ci.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - "indexer/**"
+      - "services/indexer/**"
       - ".github/workflows/indexer-ci.yml"
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: indexer
+        working-directory: services/indexer
 
     services:
       postgres:
@@ -45,8 +45,8 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: indexer/go.mod
-          cache-dependency-path: indexer/go.sum
+          go-version-file: services/indexer/go.mod
+          cache-dependency-path: services/indexer/go.sum
 
       - name: Verify dependencies
         run: go mod verify

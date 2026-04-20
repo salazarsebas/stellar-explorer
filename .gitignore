@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+apps/*/node_modules
+services/*/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -12,13 +14,20 @@
 
 # testing
 /coverage
+apps/*/coverage
 
 # next.js
 /.next/
 /out/
+apps/explorer-web/.next/
+apps/explorer-web/out/
+
+# astro
+apps/docs/dist/
 
 # production
 /build
+services/indexer/bin/
 
 # misc
 .DS_Store
@@ -36,6 +45,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+apps/explorer-web/.vercel
 
 # typescript
 *.tsbuildinfo
