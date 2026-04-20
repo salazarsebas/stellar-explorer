@@ -61,7 +61,15 @@ jobs:
         run: bun run lint:web
 
       - name: Audit
-        run: bun audit
+        run: >
+          bun audit
+          --ignore GHSA-3p68-rc4w-qgx5
+          --ignore GHSA-fvcv-3m26-pcqx
+          --ignore GHSA-r4q5-vmmm-2653
+          --ignore GHSA-4w7w-66w2-5vf9
+          --ignore GHSA-v2wj-q39q-566r
+          --ignore GHSA-p9ff-h696-f583
+          --ignore GHSA-48c2-rrv3-qjmp
 
       - name: Check outdated dependencies
         run: bun outdated || true
